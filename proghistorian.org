@@ -3,11 +3,43 @@
 
 * General
 
+** Posibles temas 
+
+
++ hacer un mapa con el nº de esculturas; algunas por lo menos tiene
+  coordenadas como esta: https://www.wikidata.org/wiki/Q465762
++ misioneros muertos fuera de europa, etc.
++ artistas muertos en otro lugar/país que no sea el del nacimiento;
++ cosas nombradas y donde están por cervantes o lope, o etc. (aunque
+  me temo que esto no saldrían calles o no muchas.. .en parte mejor
+  hacerlo con openstreetmap!)
++ fechas de creación de puentes si es que se encuentra...
++ o de estaciones...
++ películas histórias y sus géneros
++ hay un ejemplo de batallas con coordenadas... se podría añadir por
+  ejemplo el siglo
++ a qué altura snm están las capitales del mundo?
++ hay un ej interesante que muestra antiguas capitales; además es
+  interesante la query en sí...
++ fundación de unis alemanas con fecha por siglo o por cercanía o algo
+  así...
++ lo de sistercities
++ santos por lugares, etc. 
+
+
+
+
 * Organización
 
 ** Tiempo
 
 * Emails
+
+** Email a los editores 
+
++ ya tienen en marcha cosas de r, rdf, etc.
++ 
+
 
 * Biblio
 
@@ -17,6 +49,13 @@
 
 * Proyecto
 
-** General
+** lo de sistercities
 
-** Estructura
+cuestiones:
++ cuántas sister
++ por población?
++ desgraciadamente no fecha
++ qué análisis?
+  + redes? pero cómo se haría?
+  + 
+
