@@ -27,8 +27,6 @@
 + santos por lugares, etc. 
 
 
-
-
 * Organización
 
 ** Tiempo
@@ -38,7 +36,7 @@
 ** Email a los editores 
 
 + ya tienen en marcha cosas de r, rdf, etc.
-+ 
++ lo de las líneas?
 
 
 * Biblio
