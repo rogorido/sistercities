@@ -1,0 +1,22 @@
+#+STARTUP: overview hidestars
+
+
+* General
+
+* Organización
+
+** Tiempo
+
+* Emails
+
+* Biblio
+
+* Cesta
+
+** Empiria
+
+* Proyecto
+
+** General
+
+** Estructura
