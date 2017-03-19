@@ -18,3 +18,4 @@ auto/
 *.odt
 vc.tex
 gitHeadInfo.gin
+*.org
