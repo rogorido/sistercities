@@ -75,11 +75,24 @@ There is plenty of information about ggplot2 on the web, but I recommend you:
 
 1. for a general overview of the package you can visit the [docs](http://docs.ggplot2.org/current/) about the package 
 2. very useful is also for tips the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/)
-3. but the best source of information is of course the book written by Wickham which has been recently [published](http://www.springer.com/br/book/9783319242750) (be careful! this is the 2nd edition which deals with important new features of the last versions of ggplot2). 
+3. but the best source of information is of course the book written by Wickham which has been recently [published](http://www.springer.com/br/book/9783319242750) (be careful! this is the 2nd edition which deals with important new features of the last versions of ggplot2).
+4. very useful is also the cheatsheet you can find [here](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) (please visit [RStudio](https://www.rstudio.com) because they upload sometimes new versions of the cheatsheet).
 
 A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. 
 
+```{R}
+ggplot(cities, aes())
+```
 
+We are telling R the following: "create a ggplot graph using the
+dataframe cities and map the variables ". As you can see, the
+structure is very straightforward, except for the use of *aes*, which
+means in ggplot parlance *aesthetics*. It is maybe a not very telling
+expression, but the idea is very simple: we tell R that it has to map
+the variables with this columns of the dataframe. That means
+(oversimplifying): it is a way to tell R that we are passing some variables of the dataframe.
+
+If you 
 
 [comment] # Local Variables:
 [comment] # eval: (auto-fill-mode -1)
