@@ -57,6 +57,13 @@ The question is therefore: how do we get the data of the sistercities of Europea
 
 # R
 
+There are several ways to get the data into R for further analysis: 
+
+1. exporting the results as CSV/TSV (comma/tab separated values) or JSON, which is what I will cover in this lesson;
+2. using one of the different R packages which are able to connect to a SPARQL endpoint and get the data (a more general one, [SPARQL](https://cran.r-project.org/web/packages/SPARQL/index.html), and a specific package for using with wikidata, [WikidataR](WikidataR)).
+3. downloading?? the data to your computer with one of the 
+
+
 If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/). You can find a good tutorial to using dplyr written by Nabeel Siddiqui. 
 
 # Graphics with ggplot2
