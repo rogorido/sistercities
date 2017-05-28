@@ -1,23 +1,28 @@
-SELECT DISTINCT ?origincityLabel ?originlat ?originlong ?originpopulation
+SELECT DISTINCT ?origincityLabel ?origincountry ?originlat ?originlong ?originpopulation
                 ?sistercityLabel ?destinationlat ?destinationlong ?destinationpopulation
                 (YEAR(?beginning_year) as ?age) ?destination_countryLabel ?dist ?eu
 WHERE {
 
-  ?origincity (wdt:P31/wdt:P279*) wd:Q486972 ;                # look for a city o human settlement
-                                   wdt:P17 wd:Q38 .           # ... in Netherlands
+  # selection of the origincity with coordinates and population in a subquery
+  {
+  SELECT DISTINCT ?origincity (SAMPLE(?lat_o) as ?originlat) (SAMPLE(?lon_o) as ?originlong) ?originpopulation WHERE {
+    ?origincity (wdt:P31/wdt:P279*) wd:Q486972 ; 
+    wdt:P17 wd:Q145 .           # ... in Italy
+    
+    # get the coordinates of origincity 
+    ?origincity p:P625 ?statement .                             # is there a coordinate-location statement?
+    ?statement psv:P625 ?origin_coordinate_node .               # ... which are the coordinates?
+    ?origin_coordinate_node wikibase:geoLatitude  ?lat_o .      # ... extract the latitude
+    ?origin_coordinate_node wikibase:geoLongitude ?lon_o .      # ... extract the longitude 
 
-  # get the coordinates of origincity 
-  ?origincity p:P625 ?statement .                             # is there a coordinate-location statement?
-  ?statement psv:P625 ?origin_coordinate_node .               # ... which are the coordinates?
-  ?origin_coordinate_node wikibase:geoLatitude ?originlat .   # ... extract the latitude
-  ?origin_coordinate_node wikibase:geoLongitude ?originlong . # ... extract the longitude 
-
-  OPTIONAL { ?origincity wdt:P1082 ?originpopulation. }       # get the population of origincity if there is any data
-
+    OPTIONAL { ?origincity wdt:P1082 ?originpopulation. } }     # get the population of origincity if there is any data
+    
+    GROUP BY ?origincity ?originpopulation
+  }
+  
   # look for infos about sister cities of origincity
   ?origincity p:P190 ?sistercity_statement .
   ?sistercity_statement ps:P190 ?sistercity .
-  OPTIONAL {?sistercity_statement pq:P580 ?beginning_year .}  # get the year of beginning
 
   # get the coordinates of sistercity 
   ?sistercity p:P625 ?destination_coordinate_node_statement .
@@ -30,14 +35,18 @@ WHERE {
 
   # is the destination_country a EU country?
   OPTIONAL { ?destination_country p:P31 ?eustatement .
-            ?eustatement ps:P31 wd:Q185441 . }
+             ?eustatement ps:P31 wd:Q185441 . }
   BIND(IF(BOUND(?eustatement), "EU", "Non-EU") as ?eu)
 
   OPTIONAL { ?sistercity wdt:P1082 ?destinationpopulation. }  # get the population of sistercity if there is any data
 
   # calculate the distance between the two cities
-  BIND(geof:distance(?origin_coordinate_node, ?destination_coordinate_node) as ?dist) 
+  ?sistercity wdt:P625 ?coord_d .
+  ?origincity wdt:P625 ?coord_o .
+  BIND(ROUND(geof:distance(?coord_o, ?coord_d)) as ?dist)
+
+  # not very elegant, but we want to avoid timeouts...
+  BIND("Italy" as ?origincountry)
 
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 }
-
