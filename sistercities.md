@@ -177,11 +177,41 @@ eudata.perc <- eudata %>% group_by(typecountry) %>% summarise(total=n()) %>% mut
 I do not want to explain this code since this is not a tutorial about `dplyr`. What we get is a dataframe with percentages. We can represent it so:
 
 ```{R}
-ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
+ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity")
 ```
 
 There is an important difference between the first barplot and this one. In the first ggplot itself counted the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. In this case, we need to tell ggplot where it can find the value by setting `y=freq` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`. [esto me temo que está liado...]
 
+Nevertheless this graph is still not convincing to me. I want to change the y axis to go from 0 to 1 and I want to show a percentage symbol (%) in the y axis. As already mentioned, axes are changed using the `scales` functions. I have to admit this is in ggplot a little bit confusing since there are many different `scales` functions [as you can see etc.]. [añadir tal vez lo que dice el manual]
+
+But let us see it with an example: 
+
+```{R}
+ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
+```
+
+Since we want to change the y-axis we use a `scale_y` function and since the y-axis in our plot is a continuous variable we use `scale_y_continuous`. 
+
+
+## Extending ggplot2 with other geoms
+
+Let say we want to plot the number of countries a EU-contry has relationships with. That means: with how many countries do for instance german cities have relationships? Or: which is the EU country with the most (least) connections? 
+We could do this with a barplot. But I want to show you how ggplot is becoming a very widely used package which has already several extensions. One of them is `ggalt` (see [here](https://github.com/hrbrmstr/ggalt)). Instead of a barplot we can construct a so called lollipop graph.
+
+First of all we need to create a dataframe which summarises the information we want to show in the graph. This can be done for instance in the following way:
+
+```{R}
+# if you do not have the package, install it 
+# install.packages("ggalt")
+library(ggalt)
+eudata.totalcountries <-eudata %>% group_by(origincountry) %>% summarise(total = n_distinct(destination_countryLabel))
+  ggplot(eudata.totalcountries, aes(x=reorder(origincountry, total), y=total)) +
+      geom_lollipop(point.colour = "red", point.size = 2.75) + coord_flip()
+```
+
+Some aspects are relevant here:
+
+1. 
 
 
 # Otros 
