@@ -1,5 +1,5 @@
 ---
-title: XXX with SPARQL and plot maps with ggplot(2)
+title: Analyzing data with SPARQL, R and ggplot2
 authors:
 - Igor Sosa Mayor 
 date: 2016-01-15
@@ -70,7 +70,7 @@ If you want to know how to manipulate data in R, the best option nowadays is to 
 
 # Graphics with ggplot2
 
-In R there are several possibilities to create graphs: the packages provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and [ggplot2](http://ggplot2.org/) which is the system we will learn in this lesson.
+There are several possibilities to create graphs in R: you can use the packages provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and [ggplot2](http://ggplot2.org/), which is the system we will learn in this lesson.
 
 ggplot2 has many advantages:
 
@@ -78,19 +78,29 @@ ggplot2 has many advantages:
 2. it has a lot of extensions which are increasingly being developed by the community. They add new functions, new types of graphs, new themes and enhance the possibilities of ggplot2. You can find them in [this site](http://www.ggplot2-exts.org/).
 3. it also has the possibility of create maps.
 
-ggplot2 is based on a theoretical book dealing with a so-called *grammar of graphics* (hence the *gg* in ggplot2). But, don't panic: you don't have to know anything about grammar. 
+ggplot2 is based on a theoretical book dealing with a so-called
+*grammar of graphics* (hence the *gg* in ggplot2). But, don't panic:
+you don't have to know anything about grammar. The main idea is that a
+plot is made up of a set of independent components that can be
+composed in many different ways. 
 
 There is plenty of information about ggplot2 on the web, but I recommend you:
 
 1. for a general overview of the package you can visit the [docs](http://docs.ggplot2.org/current/) about the package 
 2. very useful is also for tips the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/)
-3. but the best source of information is of course the book written by Wickham which has been recently [published](http://www.springer.com/br/book/9783319242750) (be careful! this is the 2nd edition which deals with important new features of the last versions of ggplot2).
+3. but the best source of information is of course the book written by Wickham which has been recently [published](http://www.springer.com/br/book/9783319242750) (be careful! this is the 2nd edition which deals with important new features of the last versions of ggplot2). The book is also available online añadir!!
 4. very useful is also the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
+
+Creating good graphics is a complicated issue, because you have to take into account different aspects: the information you want to convey, the many possibilities of showing this information (scatterplots, boxplots, histogramms, and so on), the many aspects of a plot which can be adapted (axes, transformation of variable, etc.). 
 
 A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. 
 
+## A first small example: a scatterplot of population data
+
+But, let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We could do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot this coud be done as follows (we use the natural log of the population data to overcome the skewness of the data):
+
 ```{R}
-ggplot(cities, aes())
+ggplot(data=cities, aes(x=))
 ```
 
 We are telling R the following: "create a ggplot graph using the
