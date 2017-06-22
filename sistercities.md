@@ -124,6 +124,63 @@ ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) 
 Now we have a plot, but I think we want to improve its quality, because some aspects are not very convincing: the labels of the axes, the plot's background, the overplotting (too many points), and so on. 
 As you see, ggplot makes several different decisions for you in terms of plot appearance. They are often not bad, but we want to be able to adapt plots to our needs. 
 
+Every single aspect of the plot can be manipulated. We will play with 3 different elements:
+
+1. every ggplot function can take arguments 
+2. *scales* can be modified [añadir def?]
+3. *themes* refer to the 'static' elements of the plot: the background color, the background lines, the fontsize, etc. 
+
+[aquí] As we are plotting a lot of points, one way could be to take only a portion of the data. This 
+
+We will begin with the most simple transformation: we change the color of the points and since we have a lot of points we add some transparency to the points:
+
+```{R}
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_plot(color="red", alpha=0.4)
+```
+
+As you see, this can be easily done: every function can get arguments with which you can influence how the functions makes its job. The function `geom_point()` can take different arguments which are very straitforward. You can see them under the section *Aesthetics* in the help of `geom_point()` by doing so (or [here](http://ggplot2.tidyverse.org/reference/geom_point.html) online):
+
+```{R}
+?geom_point
+```
+
+As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
+
+But we want also to add titles to the axes. Manipulating axes (and
+legends) is done by using the corresponding `scales` functions. We
+will see it later on. But since changing the titles is a very common action, ggplot has shorter commands to do it: `xlab()` and `ylab` (*lab* stands for *label*):
+
+```{R}
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_plot(color="red", alpha=0.4) + xlab("Population of origin city (log)") + ylab("Population of destinatioin city (log)")
+```
+
+For the time being, we will let our graph such it is, without making any changes in the panel background, and so on. Let us try another graph with another `geom`. 
+
+## Bar graphs 
+
+Now we are interested in another aspect of our data. We want to know  which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. And we want to split the graph so that every EU-country has its own graph.
+
+Let's begin with the most simple one. we need another `geom`, namely
+`geom_bar()`. Actually a simple
+
+```{R}
+ggplot(eudata, aes(x=typecountry)) + geom_bar() 
+```
+is sufficient. [atención con los datos de ahora me sale un puto NA, que no se me quita con na.rm=T; pero no debería haber ningún NA!] But this is not want we exactly want. We want percentages. 
+
+There are several ways for doing this. One of them is transforming the data. One way of achieving it, is as follows:
+
+```{R}
+eudata.perc <- eudata %>% group_by(typecountry) %>% summarise(total=n()) %>% mutate(freq= total/sum(total))
+```
+
+I do not want to explain this code since this is not a tutorial about `dplyr`. What we get is a dataframe with percentages. We can represent it so:
+
+```{R}
+ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
+```
+
+There is an important difference between the first barplot and this one. In the first ggplot itself counted the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. 
 
 
 
