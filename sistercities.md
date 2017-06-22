@@ -180,7 +180,7 @@ I do not want to explain this code since this is not a tutorial about `dplyr`. W
 ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
 ```
 
-There is an important difference between the first barplot and this one. In the first ggplot itself counted the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. 
+There is an important difference between the first barplot and this one. In the first ggplot itself counted the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. In this case, we need to tell ggplot where it can find the value by setting `y=freq` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`. [esto me temo que está liado...]
 
 
 
