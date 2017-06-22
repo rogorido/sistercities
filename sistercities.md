@@ -103,6 +103,49 @@ the variables with this columns of the dataframe. That means
 
 If you press return now you will be surprised: you will get an empty plot. Axes and plot area are there, but the data are not represented. However this is the expected behaviour. We have to tell R/ggplot2 which plot we want to create. This is done in ggplot2 by means of the so-called *geom*s (from *geometries*). There are 
 
+# Otros 
+
+as you can see all countries have more relationships to countries in the EU than with non-EU countries. With only one exception: Bulgaria.. 
+
+tal vez mostra r que cmabiando muy poco se puede hacer un gráfico de barras, uno lollipop de esos, etc. 
+
+# Maps 
+
+Representing geographical information is becoming increasingly useful and demanded. In the opensource world you can find several rich programs to deal with geographical information: [QGIS](http://www.qgis.org/), [gvSIG](http://www.gvsig.com/), [GRASS](https://grass.osgeo.org/), and also R. 
+
+As always in R, there are several ways to create maps. You can use:
+the ggplot2 package which is the method we learn here. But there are
+also the very powerful
+package [sp](https://cran.r-project.org/web/packages/sp/index.html).
+You can find a very informative site about spatial methods in
+R [here](https://cran.r-project.org/web/views/Spatial.html). Spatial
+analysis and cartography are very much en vogue. New packags are also
+getting developed. (o algo así: the cartographical abilities of R are
+continously increasing). New packages are always appearing, such
+as [cartography](https://github.com/Groupe-ElementR/cartography). 
+
+Honestly speaking, this richness implies also some complications, since every package has its own syntax. We will stick with ggplot, but I encourage you to make experiments with packages such as the very promising new package `cartography`. 
+
+We need the following packages: 
+```{r}
+install.packages(rgeos)
+install.packages(rgdal)
+library(rgeos)
+library(rgdal)
+```
+These two packages are useful for read a wide range of geographical formats (shapefiles, raster data, etc.). 
+
+## Points 
+
+We will begin with a simple map to show where are the german cities of our data. The most simple way to do this is to show a point for every city. But first we need to get a map to operate with. Again we find here two possibilities [o dejarlo?]. We will 
+
+But first of all we need maps. There are several open sources to get maps: 
+
+1. in [GADM](http://gadm.org/) you will find maps in different formats for every land of the world (but not bigger )
+
+aquí hay una buena expolicación: https://github.com/Robinlovelace/Creating-maps-in-R tal vez coger eso...
+
+
 [comment] # Local Variables:
 [comment] # eval: (auto-fill-mode -1)
 [comment] # eval: (visual-line-mode)
