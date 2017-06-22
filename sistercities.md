@@ -68,6 +68,8 @@ There are several ways to get the data into R for further analysis:
 
 If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/). You can find a good tutorial to using dplyr written by Nabeel Siddiqui. 
 
+poner aquí lo de descargarse. [hacer un Rda para ello ya en bloque?]
+
 # Graphics with ggplot2
 
 There are several possibilities to create graphs in R: you can use the packages provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and [ggplot2](http://ggplot2.org/), which is the system we will learn in this lesson.
@@ -100,18 +102,30 @@ A small trick to learn ggplot2 is to think about the creation of plots like the 
 But, let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We could do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot this coud be done as follows (we use the natural log of the population data to overcome the skewness of the data):
 
 ```{R}
-ggplot(data=cities, aes(x=))
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation)))
 ```
 
 We are telling R the following: "create a ggplot graph using the
-dataframe cities and map the variables ". As you can see, the
+dataframe cities and map the variable originpopulation to x and destinationpopulation to y". As you can see, the
 structure is very straightforward, except for the use of *aes*, which
 means in ggplot parlance *aesthetics*. It is maybe a not very telling
 expression, but the idea is very simple: we tell R that it has to map
 the variables with this columns of the dataframe. That means
 (oversimplifying): it is a way to tell R that we are passing some variables of the dataframe.
 
-If you press return now you will be surprised: you will get an empty plot. Axes and plot area are there, but the data are not represented. However this is the expected behaviour. We have to tell R/ggplot2 which plot we want to create. This is done in ggplot2 by means of the so-called *geom*s (from *geometries*). There are 
+If you press return now you will be surprised: you will get an empty plot! Axes and plot area are there, but the data are not represented. However this is the expected behaviour. We have to tell R/ggplot2 which plot we want to create. That means: we need to add a layer to plot. Adding different layers is the way to construct plots with ggplot. 
+
+In ggplot there are different types of layers [cómo coño poner esto?]. One crucial type is the  *geom* (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in the extension). In our case, what we need is the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
+
+```{R}
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_plot()
+```
+
+Now we have a plot, but I think we want to improve its quality, because some aspects are not very convincing: the labels of the axes, the plot's background, the overplotting (too many points), and so on. 
+As you see, ggplot makes several different decisions for you in terms of plot appearance. They are often not bad, but we want to be able to adapt plots to our needs. 
+
+
+
 
 # Otros 
 
