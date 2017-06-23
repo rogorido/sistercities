@@ -97,7 +97,7 @@ Creating good graphics is a complicated issue, because you have to take into acc
 
 A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. 
 
-In order to use ggplot we have of course to install it. Actually I recommend to install the metapackage `tidyverse` which is a collection of packages written mainly by Wickham for doing most of the most useful operations with dataframes. ggplot is among the packages contained in the [metapackage `tidyverse`](http://tidyverse.org/). Threfore: 
+In order to use ggplot we have of course to install it. Actually I recommend to install the metapackage `tidyverse` which is a collection of packages written mainly by Wickham for doing most of the most useful operations with dataframes ([dplyr](http://dplyr.tidyverse.org/), [readr](http://readr.tidyverse.org/), [tidyr](http://tidyr.tidyverse.org/), [forcats](http://forcats.tidyverse.org/), etc.). ggplot is among the packages contained in the [metapackage `tidyverse`](http://tidyverse.org/). Threfore: 
 
 ```{R}
 install.packages("tidyverse")
