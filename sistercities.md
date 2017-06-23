@@ -215,7 +215,15 @@ ggplot also provides a function `facet_grid()` which is somehow more powerful. Y
 
 ## Themes: changing elements of the XXXX
 
-Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built in themes. The most important is `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. 
+Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built in themes. The most important is `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover, several extensions add additional/extra themes to ggplot. Nevertheless the most important point is that you can easily create you own themes and use them in your plots. 
+
+It is not possible in such a tutorial to get into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and so on. 
+
+Relevant is however the fact that by using `theme()` actually you are modifying the default 
+
+For instance, let say we want to put the legend of the previous graph about XXXX in the bottom of the graph. This can be achieved by the following code: 
+
+
 
 
 
