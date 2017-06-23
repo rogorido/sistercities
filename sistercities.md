@@ -97,11 +97,21 @@ Creating good graphics is a complicated issue, because you have to take into acc
 
 A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. 
 
+In order to use ggplot we have of course to install it. Actually I recommend to install the metapackage `tidyverse` which is a collection of packages written mainly by Wickham for doing most of the most useful operations with dataframes. ggplot is among the packages contained in the [metapackage `tidyverse`](http://tidyverse.org/). Threfore: 
+
+```{R}
+install.packages("tidyverse")
+# or only ggplot2
+# install.packages("ggplot2")
+```
+
 ## A first small example: a scatterplot of population data
 
 But, let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We could do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot this coud be done as follows (we use the natural log of the population data to overcome the skewness of the data):
 
 ```{R}
+library(ggplot2)
+
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation)))
 ```
 
@@ -192,6 +202,23 @@ ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + sc
 
 Since we want to change the y-axis we use a `scale_y` function and since the y-axis in our plot is a continuous variable we use `scale_y_continuous`. 
 
+## Faceting a graph 
+
+In the last graph we plot the percentage of type of countries using [xxxx]. But what if we would to look at the same data per country? This can easily be done in ggplot using `facet_wrap()`.
+
+```{R}
+ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
+```
+
+ggplot also provides a function `facet_grid()` which is somehow more powerful. You can see some examples [here](http://ggplot2.tidyverse.org/reference/facet_grid.html). 
+
+
+## Themes: changing elements of the XXXX
+
+Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built in themes. The most important is `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. 
+
+
+
 
 ## Extending ggplot2 with other geoms
 
@@ -205,13 +232,17 @@ First of all we need to create a dataframe which summarises the information we w
 # install.packages("ggalt")
 library(ggalt)
 eudata.totalcountries <-eudata %>% group_by(origincountry) %>% summarise(total = n_distinct(destination_countryLabel))
-  ggplot(eudata.totalcountries, aes(x=reorder(origincountry, total), y=total)) +
+ggplot(eudata.totalcountries, aes(x=reorder(origincountry, total), y=total)) +
       geom_lollipop(point.colour = "red", point.size = 2.75) + coord_flip()
 ```
 
 Some aspects are relevant here:
 
-1. 
+1. we have to order the data using the function `reorder` to get a descendent order of the number of countries,
+2. we use some arguments in the `geom_lollipop()` such as size, colour, etc. You can get a list by looking at `?geom_lollipop`. 
+  * finally we use a new command: `coord_flip()` with which we can "rotate" the graph. 
+
+
 
 
 # Otros 
