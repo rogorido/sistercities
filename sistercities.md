@@ -202,7 +202,7 @@ ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + sc
 
 Since we want to change the y-axis we use a `scale_y` function and since the y-axis in our plot is a continuous variable we use `scale_y_continuous`. 
 
-## Adding information to graphs through colors 
+## Adding information to graphs through colors [scales!!]
 
 In many cases we want to add information to a graph using different colors (or shapes) for every group. Taking our dataset about sistercities we could color the points of our previous scatterplot using different colors for the different types of cities (in the same country, in a EU-country or in a non-EU-country). 
 
@@ -218,6 +218,14 @@ Two aspects are here relevant:
 1. we modify `geom_point()` adding an argument: `aes(color=typecountry)`. Why do we use `aes()` and not just `color=typecountry` without putting it inside of `aes()`. You can try it (you will get an error). The reason is very easy: using `aes()` we are telling ggplot2 that it has to map the argument `color` to the variable `typecountry`. In other words: we are telling ggplot that `typecountry` is a variable of the data we are using. 
 2. ggplot has made some decisions for us: it selects colors on its own and it puts automatically a legend. 
 
+How can we modify colors and legend? Scales is your friend. Citing the ggplot2 book: "scales control the mapping from data to aesthetics. They take your data and turn it into something that you can see, like size, colour, position or shape". And scales provide the tools that let you read the plot: the axes and legends. That means: actually ggplot is used per default scales when you create a graph [cuáles exactamente en este caso].
+
+Nevertheless I have to admit scales are maybe the least intuitive element in ggplot. But let's take a look at it.
+
+In our graph we can control 3 different scales: 
+
+1. `scales_x_continuous()` which controls the x-axes
+2. `scales_y_continuous()` which controls the y-axes
 
 ## Faceting a graph 
 
