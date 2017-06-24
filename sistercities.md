@@ -232,6 +232,20 @@ Let's take a look at the possibilities of changing colors. (Nevertheless I have 
 
 [atención: aquí hay el problema que la puta leyenda sale con alpha!]
 
+First of all we store our graph in a varible to use it several times, changing only some aspects: 
+
+```{R}
+p2 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(alpha=0.4, aes(color=typecountry))
+```
+
+Now we can add manually the colors we want using `scale_colour_manual()`.
+
+```{R}
+p2 + scale_colour_manual(values = c("red", "blue", "green"))
+```
+
+As you see, `scale_colour_manual()` takes a compulsory argument, namely a vector with the names of colors. This could also be a vector of HTML color codes.
+
 
 ## Faceting a graph 
 
