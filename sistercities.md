@@ -226,6 +226,12 @@ In our graph we can control 3 different scales:
 
 1. `scales_x_continuous()` which controls the x-axes
 2. `scales_y_continuous()` which controls the y-axes
+3. `scales_colour`: to control the color used. 
+
+Let's take a look at the possibilities of changing colors. (Nevertheless I have to warn you: the selection of colors for graphs is by no means an easy task; there is a lot of theoretical work done on this). We could do several things: manually passing some colors, using a color scala [cómo coño explicar esto?]. 
+
+[atención: aquí hay el problema que la puta leyenda sale con alpha!]
+
 
 ## Faceting a graph 
 
