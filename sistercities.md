@@ -161,7 +161,7 @@ legends) is done by using the corresponding `scales` functions. We
 will see it later on. But since changing the titles is a very common action, ggplot has shorter commands to do it: `xlab()` and `ylab` (*lab* stands for *label*):
 
 ```{R}
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_plot(color="red", alpha=0.4) + xlab("Population of origin city (log)") + ylab("Population of destinatioin city (log)")
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4) + xlab("Population of origin city (log)") + ylab("Population of destinatioin city (log)")
 ```
 
 For the time being, we will let our graph such it is, without making any changes in the panel background, and so on. Let us try another graph with another `geom`. 
@@ -202,9 +202,26 @@ ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + sc
 
 Since we want to change the y-axis we use a `scale_y` function and since the y-axis in our plot is a continuous variable we use `scale_y_continuous`. 
 
+## Adding information to graphs through colors 
+
+In many cases we want to add information to a graph using different colors (or shapes) for every group. Taking our dataset about sistercities we could color the points of our previous scatterplot using different colors for the different types of cities (in the same country, in a EU-country or in a non-EU-country). 
+
+With the following code we can create a first version of this new graph:
+
+```{R}
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) 
+	+ geom_point(alpha=0.4, aes(color=typecountry))
+```
+
+
+
+
 ## Faceting a graph 
 
 In the last graph we plot the percentage of type of countries using [xxxx]. But what if we would to look at the same data per country? This can easily be done in ggplot using `facet_wrap()`.
+
+As you remember in the previous step we stored the scatterplot in a variable `p1` (for *plot1*). This is a very useful feature of ggplot, then it enables us to reuse the graph adding other layers. [atención: esto hay que ponerlo antes]
+
 
 ```{R}
 ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
