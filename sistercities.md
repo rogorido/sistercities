@@ -213,7 +213,10 @@ ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation)))
 	+ geom_point(alpha=0.4, aes(color=typecountry))
 ```
 
+Two aspects are here relevant:
 
+1. we modify `geom_point()` adding an argument: `aes(color=typecountry)`. Why do we use `aes()` and not just `color=typecountry` without putting it inside of `aes()`. You can try it (you will get an error). The reason is very easy: using `aes()` we are telling ggplot2 that it has to map the argument `color` to the variable `typecountry`. In other words: we are telling ggplot that `typecountry` is a variable of the data we are using. 
+2. ggplot has made some decisions for us: it selects colors on its own and it puts automatically a legend. 
 
 
 ## Faceting a graph 
