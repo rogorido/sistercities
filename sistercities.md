@@ -246,6 +246,20 @@ p2 + scale_colour_manual(values = c("red", "blue", "green"))
 
 As you see, `scale_colour_manual()` takes a compulsory argument, namely a vector with the names of colors. This could also be a vector of HTML color codes.
 
+In this way we can create graphs with the colors we want. But often it is recommendable?? to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot has already these palettes [integreated](http://ggplot2.tidyverse.org/reference/scale_brewer.html). For instance: 
+
+```{R}
+p2 + scale_colour_brewer()
+```
+
+`scale_colour_brewer()` has different [palettes](http://ggplot2.tidyverse.org/reference/scale_brewer.html#palettes). You can try for instance: 
+
+```{R}
+p2 + scale_colour_brewer(palette = "Greens")
+p2 + scale_colour_brewer(palette = "Set1")
+p2 + scale_colour_brewer(palette = "Pastel1")
+```
+
 
 ## Faceting a graph 
 
