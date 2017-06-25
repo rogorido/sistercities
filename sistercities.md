@@ -105,7 +105,7 @@ install.packages("tidyverse")
 # install.packages("ggplot2")
 ```
 
-## A first small example: a scatterplot of population data
+## A first example: a scatterplot of population data
 
 But, let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We could do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot this coud be done as follows (we use the natural log of the population data to overcome the skewness of the data):
 
@@ -125,7 +125,7 @@ the variables with this columns of the dataframe. That means
 
 If you press return now you will be surprised: you will get an empty plot! Axes and plot area are there, but the data are not represented. However this is the expected behaviour. We have to tell R/ggplot2 which plot we want to create. That means: we need to add a layer to plot. Adding different layers is the way to construct plots with ggplot. 
 
-In ggplot there are different types of layers [cómo coño poner esto?]. One crucial type is the  *geom* (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in the extension). In our case, what we need is the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
+In ggplot there are different types of layers [cómo coño poner esto?]. One crucial type is the  *geom* (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). Since we want to create a scatterplot, we need the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
 
 ```{R}
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point()
@@ -155,6 +155,8 @@ As you see, this can be easily done: every function can get arguments with which
 ```
 
 As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
+
+The graph shows a very clear pattern of lineal relationship between cities' populations: the more population a city has, the bigger the sistercities it has. 
 
 But we want also to add titles to the axes. Manipulating axes (and
 legends) is done by using the corresponding `scales` functions. We
