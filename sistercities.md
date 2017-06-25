@@ -128,7 +128,7 @@ If you press return now you will be surprised: you will get an empty plot! Axes 
 In ggplot there are different types of layers [cómo coño poner esto?]. One crucial type is the  *geom* (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in the extension). In our case, what we need is the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
 
 ```{R}
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_plot()
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point()
 ```
 
 Now we have a plot, but I think we want to improve its quality, because some aspects are not very convincing: the labels of the axes, the plot's background, the overplotting (too many points), and so on. 
@@ -145,7 +145,7 @@ Every single aspect of the plot can be manipulated. We will play with 3 differen
 We will begin with the most simple transformation: we change the color of the points and since we have a lot of points we add some transparency to the points:
 
 ```{R}
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_plot(color="red", alpha=0.4)
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4)
 ```
 
 As you see, this can be easily done: every function can get arguments with which you can influence how the functions makes its job. The function `geom_point()` can take different arguments which are very straitforward. You can see them under the section *Aesthetics* in the help of `geom_point()` by doing so (or [here](http://ggplot2.tidyverse.org/reference/geom_point.html) online):
@@ -298,7 +298,7 @@ Themes give you control over things like fonts, ticks, panel strips, and backgro
 
 It is not possible in such a tutorial to get into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and so on. 
 
-Relevant is however the fact that by using `theme()` actually you are modifying the default 
+Relevant is however the fact that by using `theme()` actually we are modifying the default theme we are using. That means: we modify some aspects. 
 
 For instance, let say we want to put the legend of the previous graph about XXXX in the bottom of the graph. This can be achieved by the following code: 
 
@@ -318,7 +318,11 @@ First of all we need to create a dataframe which summarises the information we w
 # if you do not have the package, install it 
 # install.packages("ggalt")
 library(ggalt)
-eudata.totalcountries <-eudata %>% group_by(origincountry) %>% summarise(total = n_distinct(destination_countryLabel))
+
+# we summarise the data
+eudata.totalcountries <-eudata %>% group_by(origincountry) %>%
+	summarise(total = n_distinct(destination_countryLabel))
+
 ggplot(eudata.totalcountries, aes(x=reorder(origincountry, total), y=total)) +
       geom_lollipop(point.colour = "red", point.size = 2.75) + coord_flip()
 ```
