@@ -273,10 +273,9 @@ But what about if we to change the color used in this graph? Again we need to us
 p3 + scale_colour_gradient(low = "white", high = "red")
 ```
 
-[atención: este ejemplo no queda bien si lo pongo con fondo blanco!]
+[atención: este ejemplo no queda bien si lo pongo con fondo blanco!] atención!!! esto realmente sale mal, pues el puto no me pone la leyenda como log! habría que hacerlo con `scale_x_log10()`, etc. 
+
 Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradientn`) have other possibilities. I encourage you to explore them looking at the [documentation page](http://ggplot2.tidyverse.org/reference/scale_gradient.html).
-
-
 
 
 ## Faceting a graph 
