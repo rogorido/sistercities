@@ -260,6 +260,24 @@ p2 + scale_colour_brewer(palette = "Set1")
 p2 + scale_colour_brewer(palette = "Pastel1")
 ```
 
+[esto no sé cómo coño poner el salto...] But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with in a red scale the distance between the cities. 
+
+```{R}
+p3 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(alpha=0.4, aes(color=dist))
+p3
+```
+
+But what about if we to change the color used in this graph? Again we need to use scales, but in this case another command. As you can see, ggplot does not use in this case discrete colors (that is, one color per every value in the qualitative varible, for every factor in R parlance), but only one color which is graduated[???]. For this reason the scale we have to use is one of the scales which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
+
+```{R}
+p3 + scale_colour_gradient(low = "white", high = "red")
+```
+
+[atención: este ejemplo no queda bien si lo pongo con fondo blanco!]
+Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradientn`) have other possibilities. I encourage you to explore them looking at the [documentation page](http://ggplot2.tidyverse.org/reference/scale_gradient.html).
+
+
+
 
 ## Faceting a graph 
 
