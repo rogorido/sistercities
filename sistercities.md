@@ -89,7 +89,14 @@ Doing so, we have a dataframe `eudata` with the data of the six countries. There
 Now we add some information: is the sister city in the same country? And following this: we create a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country. (I will not explain the details of these transformations. If you have interest, please look at one of the excellent handbooks about R which are around???)
 
 ```{R}
+eudata$samecountry <- ifelse(as.character(eudata$origincountry) == as.character(eudata$destination_countryLabel), "same", "different")
+eudata$samecountry <- as.factor(eudata$samecountry)
 
+# you need at least dplyr version > 0.7 for this code!
+eudata <- eudata %>% dplyr::mutate(typecountry = case_when(samecountry == "same" & eu == "EU" ~ "same",
+                                             samecountry == "different" & eu == "EU" ~ "EU",
+                                             samecountry == "different" & eu == "Non-EU" ~ "Non-EU"))
+eudata$typecountry <- factor(eudata$typecountry)
 ```
 
 
