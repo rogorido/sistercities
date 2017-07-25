@@ -19,14 +19,14 @@ citar lo del tiop este... for specific issues in wikidata you can read this [gen
 
 # Lesson Goals
 
-By the end of this lesson you will:
+By the end of this lesson you will be able:
 
-1. be able to extract data from XXX using the query language  SPARQL
-2. be able to make different queries to
-3. be able to import the extracted data to R
-4. be able to analyze the data using R
-5. be able to plot the data using 'normal plot' the package ggplot
-6. be able to plot the data in maps with ggplot
+1. to extract data from XXX using the query language  SPARQL
+2. to make different queries to
+3. to import the extracted data to R
+4. to analyze the data using R
+5. to plot the data using 'normal plot' the package ggplot
+6. to plot the data in maps with ggplot
 
 # Semantic web: qué más 
 
@@ -132,19 +132,15 @@ But how does ggplot2 cope with this complexity? ggplot2 is based on a theoretica
 *grammar of graphics* (hence the *gg* in ggplot2) written by [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson). But, *don't panic*:
 you don't have to know anything about grammar. The main idea is that a
 plot is made up of a set of independent components that can be
-composed in many different ways. 
+composed in many different ways. In brief we will see how to do it.
 
 There is plenty of information about ggplot2 on the web, but I recommend you:
 
-1. for a general overview of the package you can visit the [docs](http://docs.ggplot2.org/current/) about the package,
-2. very useful is also the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/),
-3. but the best source of information is of course the book written by the author himself which has been recently [published](http://www.springer.com/br/book/9783319242750). The book is also available online añadir!!
-4. very useful[op!!!] is also the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
+1. the best source of information is of course the book written by the author himself which has been recently [published](http://www.springer.com/br/book/9783319242750). The book is also available online añadir!!,
+2. for a general overview of the package you can visit the [documentation](http://docs.ggplot2.org/current/) of the package,
+3. very useful are also the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/) and  the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
 
-
-A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. 
-
-In order to use ggplot we have of course to install it. Actually I recommend to install the metapackage `tidyverse` which is a collection of packages written mainly by Wickham for doing most of the most useful operations with dataframes ([dplyr](http://dplyr.tidyverse.org/), [readr](http://readr.tidyverse.org/), [tidyr](http://tidyr.tidyverse.org/), [forcats](http://forcats.tidyverse.org/), etc.). ggplot is among the packages contained in the [metapackage `tidyverse`](http://tidyverse.org/). 
+But, first of all, in order to use ggplot we have of course to install it. Actually I recommend to install the metapackage `tidyverse` which is a collection of packages written mainly by Wickham for doing most of the most useful operations with dataframes ([dplyr](http://dplyr.tidyverse.org/), [readr](http://readr.tidyverse.org/), [tidyr](http://tidyr.tidyverse.org/), [forcats](http://forcats.tidyverse.org/), etc.). ggplot is among the packages contained in the [metapackage `tidyverse`](http://tidyverse.org/). 
 
 ```{r}
 install.packages("tidyverse")
@@ -162,7 +158,7 @@ library(ggplot2)
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation)))
 ```
 
-We are telling R the following: "create a ggplot graph using the
+A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. We are telling R the following: "create a ggplot graph using the
 dataframe cities and map the variable originpopulation to x and destinationpopulation to y". As you can see, the
 structure is very straightforward, except for the use of *aes*, which
 means in ggplot parlance *aesthetics*. It is maybe a not very telling
