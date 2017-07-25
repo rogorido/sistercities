@@ -163,35 +163,42 @@ dataframe cities and map the variable originpopulation to x and destinationpopul
 structure is very straightforward, except for the use of *aes*, which
 means in ggplot parlance *aesthetics*. It is maybe a not very telling
 expression, but the idea is very simple: we tell R that it has to map
-the variables with this columns of the dataframe. That means
-(oversimplifying): it is a way to tell R that we are passing some variables of the dataframe.
+the variables in the graph with these columns of the dataframe.
 
-If you press return now you will be surprised: you will get an empty plot! Axes and plot area are there, but the data are not represented. However this is the expected behaviour. We have to tell R/ggplot2 which plot we want to create. That means: we need to add a layer to plot. Adding different layers is the way to construct plots with ggplot. 
+If you press return now you will be surprised: you will get an empty
+plot! Axes and plot area are there, but the data are not represented.
+This is however the expected behaviour. We have to tell R/ggplot2
+which type of plot we want to create. That means: we need to add a layer to plot. Adding different layers is the way to construct plots with ggplot. 
 
-In ggplot there are different types of layers [cómo coño poner esto?]. One crucial type is the  *geom* (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). Since we want to create a scatterplot, we need the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
+In ggplot there are different types of layers [cómo coño poner esto?].
+One crucial type of them is the so-called  *geom* (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). Since we want to create a scatterplot, we need the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
 
 ```{r}
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point()
 ```
 
-Now we have a plot, but I think we want to improve its quality, because some aspects are not very convincing: the labels of the axes, the plot's background, the overplotting (too many points), and so on. 
-As you see, ggplot makes several different decisions for you in terms of plot appearance. They are often not bad, but we want to be able to adapt plots to our needs. 
+Now we have a scatterplot relating both variables (if you're using the
+data I gathered, you will get a message that ggplot2 removed 6429 rows
+containing missing values, because some cities do not have information
+about their population). Nevertheless, I think you would like to
+improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, the overplotting (too many points), and so on. 
+As you see, ggplot2 makes several different decisions for you in terms of plot appearance. They are often not bad, but we want to be able to adapt plots to our needs. 
 
 Every single aspect of the plot can be manipulated. We will play with 3 different elements:
 
-1. every ggplot function can take arguments 
+1. every ggplot function can take arguments for modify concrete
+   aspects, 
 2. *scales* can be modified [añadir def?]
 3. *themes* refer to the 'static' elements of the plot: the background color, the background lines, the fontsize, etc. 
 
-[aquí] As we are plotting a lot of points, one way could be to take only a portion of the data. This 
-
-We will begin with the most simple transformation: we change the color of the points and since we have a lot of points we add some transparency to the points:
+We will begin with the most simple transformation: we will change the color
+of the points and since we have a lot of points we will add some transparency to the points:
 
 ```{r}
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4)
 ```
 
-As you see, this can be easily done: every function can get arguments with which you can influence how the functions makes its job. The function `geom_point()` can take different arguments which are very straitforward. You can see them under the section *Aesthetics* in the help of `geom_point()` by doing so (or [here](http://ggplot2.tidyverse.org/reference/geom_point.html) online):
+As you can see, this can be easily done: every function can get arguments with which you can influence how the functions makes its job. The function `geom_point()` can take different arguments which are very straitforward. You can see them under the section *Aesthetics* in the help of `geom_point()` by doing so (or [here](http://ggplot2.tidyverse.org/reference/geom_point.html) online):
 
 ```{r}
 ?geom_point
