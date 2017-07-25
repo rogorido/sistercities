@@ -184,12 +184,15 @@ about their population). Nevertheless, I think you would like to
 improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, the overplotting (too many points), and so on. 
 As you see, ggplot2 makes several different decisions for you in terms of plot appearance. They are often not bad, but we want to be able to adapt plots to our needs. 
 
-Every single aspect of the plot can be manipulated. We will play with 3 different elements:
+Every single plot's aspect can be manipulated. There are three
+different elements which are worth looking at:
 
-1. every ggplot function can take arguments for modify concrete
+1. every ggplot2 function (eg. `geom_point()`) can take arguments to modify concrete
    aspects, 
-2. *scales* can be modified [añadir def?]
-3. *themes* refer to the 'static' elements of the plot: the background color, the background lines, the fontsize, etc. 
+2. *scales* control the way variables are mapped from the data to the
+   plot. This affects axes, legends, etc.
+3. *themes* refer to the 'static' elements of the plot: the
+   background's elements (color, lines, etc.), the fontsize, etc. 
 
 We will begin with the most simple transformation: we will change the color
 of the points and since we have a lot of points we will add some transparency to the points:
@@ -202,10 +205,9 @@ As you can see, this can be easily done: every function can get
 arguments with which you can influence how the functions makes its
 job. The function `geom_point()` can take different arguments which
 are very straitforward. You can see them under the section
-*Aesthetics* in the help of `geom_point()` by typing `?geom_point`
-doing so
-(or [here](http://ggplot2.tidyverse.org/reference/geom_point.html)
-online). As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
+*Aesthetics* in the help of `geom_point()` by typing `?geom_point` in
+R or [here](http://ggplot2.tidyverse.org/reference/geom_point.html)
+online. As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
 
 The graph shows a very clear pattern of lineal relationship between cities' populations: the more population a city has, the bigger the sistercities it has. 
 
@@ -214,10 +216,11 @@ legends) is done by using the corresponding `scales` functions. We
 will see it later on. But since changing the titles is a very common action, ggplot has shorter commands to do it: `xlab()` and `ylab` (*lab* stands for *label*):
 
 ```{r}
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4) + xlab("Population of origin city (log)") + ylab("Population of destinatioin city (log)")
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4) + xlab("Population of origin city (log)") + ylab("Population of destination city (log)")
 ```
 
-For the time being, we will let our graph such it is, without making any changes in the panel background, and so on. Let us try another graph with another `geom`. 
+For the time being, we will let our graph such it is, without making
+any other changes. Before explaining how to change other elements, let us try another graph with another `geom`.
 
 ## Bar graphs 
 
