@@ -383,7 +383,7 @@ Since we want to change the y-axis we use a `scale_y` function and since the y-a
 
 ## Faceting a graph 
 
-Previously we plotted the percentage of type of countries using  [xxxx]. But what if we would to look at the same data per country? This can easily be done in ggplot using `facet_wrap()`.
+But imagine that we would like to look at the same data but represented separately per country. For doing this ggplot2 has powerful possibilities, which are labelled with the name *facetting*. The most simple function in ggplot2 for achieving facetting is  `facet_wrap()`, but you also can take `facet_grid()` (see [here](http://ggplot2.tidyverse.org/reference/facet_grid.html) the doc).
 
 As you remember in the previous step we stored the scatterplot in a variable `p1` (for *plot1*). This is a very useful feature of ggplot, then it enables us to reuse the graph adding other layers. [atención: esto hay que ponerlo antes]
 
