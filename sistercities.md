@@ -216,80 +216,39 @@ legends) is done by using the corresponding `scales` functions. We
 will see it later on. But since changing the titles is a very common action, ggplot has shorter commands to do it: `xlab()` and `ylab` (*lab* stands for *label*):
 
 ```{r}
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4) + xlab("Population of origin city (log)") + ylab("Population of destination city (log)")
+ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) +
+    geom_point(color="red", alpha=0.4) +
+    xlab("Population of origin city (log)") +
+    ylab("Population of destination city (log)")
 ```
 
 For the time being, we will let our graph such it is, without making
 any other changes. Before explaining how to change other elements, let us try another graph with another `geom`.
 
-## Bar graphs 
-
-Now we are interested in another aspect of our data. We want to know  which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. And we want to split the graph so that every EU-country has its own graph.
-
-Let's begin with the most simple one. we need another `geom`, namely
-`geom_bar()`. Actually this can be simply done with this code: 
-
-```{r}
-ggplot(eudata, aes(x=typecountry)) + geom_bar() 
-```
-![nosé](images/bargraph1.png)
-
-But this is not want we exactly want. Percentages would convey more
-information than raw data. There are several ways for doing this. One
-of them is transforming the data. One way of achieving it, is as
-follows (I do not want to explain this code since this is not a
-tutorial about `dplyr`). What we get is a dataframe with percentages. We can represent it so:
-
-```{r}
-eudata.perc <- eudata %>%
-    group_by(typecountry) %>%
-    summarise(total=n()) %>%
-    mutate(freq= total/sum(total))
-
-print(eudata.perc)
-
-ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
-    geom_bar(stat="identity")
-```
-![bargraph2](images/bargraph2.png)
-
-There is an important difference between the first barplot and this
-one. In the first plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. In this case, we need to tell ggplot where it can find the value by setting `y=freq` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`.
-
-Nevertheless this graph is still not convincing to me. I would like to
-improve it by making the following changes: change the y axis to range
-from 0 to 1 and show a percentage symbol (%) in the y axis. Let's see
-the code and then I will explain it: 
-
-```{r}
-ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
-    geom_bar(stat="identity") +
-    scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
-```
-
-![bargraph3](images/bargraph3.png)
-
- As already mentioned, axes are changed using the `scales` functions. I have to admit this is in ggplot a little bit confusing since there are many different `scales` functions [as you can see etc.]. [añadir tal vez lo que dice el manual]
-
-But let us see it with an example: 
-
-Since we want to change the y-axis we use a `scale_y` function and since the y-axis in our plot is a continuous variable we use `scale_y_continuous`. 
-
 ## Adding information to graphs through colors [scales!!]
 
-In many cases we want to add information to a graph using different colors (or shapes) for every group. Taking our dataset about sistercities we could color the points of our previous scatterplot using different colors for the different types of cities (in the same country, in a EU-country or in a non-EU-country). 
-
-With the following code we can create a first version of this new graph:
+In many cases we want to add information to a graph using different
+colors (or shapes) for every group. Taking our dataset we could color
+the points of our previous scatterplot using different colors for the
+different types of cities (in the same country, in a EU-country or in
+a non-EU-country). Let's  create a first version of this new graph
+using the previous code: 
 
 ```{r}
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) 
-	+ geom_point(alpha=0.4, aes(color=typecountry))
+ggplot(eudata, aes(log(originpopulation), log(destinationpopulation))) +
+    geom_point(alpha=0.4, aes(color=typecountry)) +
+    xlab("Population of origin city (log)") +
+    ylab("Population of destination city (log)")
 ```
 
-Two aspects are here relevant:
+Three aspects are here relevant:
 
-1. we modify `geom_point()` adding an argument: `aes(color=typecountry)`. Why do we use `aes()` and not just `color=typecountry` without putting it inside of `aes()`. You can try it (you will get an error). The reason is very easy: using `aes()` we are telling ggplot2 that it has to map the argument `color` to the variable `typecountry`. In other words: we are telling ggplot that `typecountry` is a variable of the data we are using. 
-2. ggplot has made some decisions for us: it selects colors on its own and it puts automatically a legend. 
+1. I remove the name of some parameters (`data`, `x`, `y`), since
+   ggplot2 is intelligent enough to figure them out.
+2. most important: we modify `geom_point()` adding an argument: `aes(color=typecountry)`. Why do we use `aes()` and not just `color=typecountry` without putting it inside of `aes()`? You can try it (you will get an error). The reason is very easy: using `aes()` we are telling ggplot2 that it has to map the argument `color` to the variable `typecountry`. In other words: we are telling ggplot that `typecountry` is a variable of the data we are using. 
+3. ggplot has made some decisions for us: it selects colors on its own
+   and it puts automatically a legend. 
+
 
 How can we modify colors and legend? Scales is your friend. Citing the ggplot2 book: "scales control the mapping from data to aesthetics. They take your data and turn it into something that you can see, like size, colour, position or shape". And scales provide the tools that let you read the plot: the axes and legends. That means: actually ggplot is used per default scales when you create a graph [cuáles exactamente en este caso].
 
@@ -363,6 +322,59 @@ ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + sc
 ```
 
 ggplot also provides a function `facet_grid()` which is somehow more powerful. You can see some examples [here](http://ggplot2.tidyverse.org/reference/facet_grid.html). 
+
+## Bar graphs 
+
+Now we are interested in another aspect of our data. We want to know  which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. And we want to split the graph so that every EU-country has its own graph.
+
+Let's begin with the most simple one. we need another `geom`, namely
+`geom_bar()`. Actually this can be simply done with this code: 
+
+```{r}
+ggplot(eudata, aes(x=typecountry)) + geom_bar() 
+```
+![nosé](images/bargraph1.png)
+
+But this is not want we exactly want. Percentages would convey more
+information than raw data. There are several ways for doing this. One
+of them is transforming the data. One way of achieving it, is as
+follows (I do not want to explain this code since this is not a
+tutorial about `dplyr`). What we get is a dataframe with percentages. We can represent it so:
+
+```{r}
+eudata.perc <- eudata %>%
+    group_by(typecountry) %>%
+    summarise(total=n()) %>%
+    mutate(freq= total/sum(total))
+
+print(eudata.perc)
+
+ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
+    geom_bar(stat="identity")
+```
+![bargraph2](images/bargraph2.png)
+
+There is an important difference between the first barplot and this
+one. In the first plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. In this case, we need to tell ggplot where it can find the value by setting `y=freq` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`.
+
+Nevertheless this graph is still not convincing to me. I would like to
+improve it by making the following changes: change the y axis to range
+from 0 to 1 and show a percentage symbol (%) in the y axis. Let's see
+the code and then I will explain it: 
+
+```{r}
+ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
+    geom_bar(stat="identity") +
+    scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
+```
+
+![bargraph3](images/bargraph3.png)
+
+ As already mentioned, axes are changed using the `scales` functions. I have to admit this is in ggplot a little bit confusing since there are many different `scales` functions [as you can see etc.]. [añadir tal vez lo que dice el manual]
+
+But let us see it with an example: 
+
+Since we want to change the y-axis we use a `scale_y` function and since the y-axis in our plot is a continuous variable we use `scale_y_continuous`. 
 
 
 ## Themes: changing elements of the XXXX
