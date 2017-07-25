@@ -241,6 +241,8 @@ ggplot(eudata, aes(log(originpopulation), log(destinationpopulation))) +
     ylab("Population of destination city (log)")
 ```
 
+![scatter3](images/scatter3.png)
+
 Three aspects are here relevant:
 
 1. I remove the name of some parameters (`data`, `x`, `y`), since
