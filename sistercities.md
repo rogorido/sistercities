@@ -310,19 +310,19 @@ p2 + scale_colour_brewer(palette = "Pastel1")
 But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with a red scale the distance between the cities. 
 
 ```{r}
-p3 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(alpha=0.4, aes(color=dist))
+p3 <- ggplot(eudata, aes(log(originpopulation), log(destinationpopulation))) +
+    geom_point(alpha=0.4, aes(color=dist))
+
 p3
 ```
 
 ![scales3](images/scales3.png)
 
-As you can see, there are two problems with this graph: blue is the used color and not red; the scala is not convincing since null is represented by the more oscuro??? Again we need to use scales, but in this case another command. As you can see, ggplot does not use in this case discrete colors (that is, one color per every value in the qualitative varible, for every factor in R parlance), but only one color which is graduated[???]. For this reason the scale we have to use is one of the scales which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
+As you can see, there are two problems with this graph: blue is the used color and not red; the scala is not convincing since null is represented by the more oscuro??? Again we need to use scales, but in this case another command. As you can see, ggplot does not use in this case discrete colors (that is, one color per every value in the qualitative varible, for every factor in R parlance), but only one color which is graduated[???]. For this reason the scale we have to use is one  deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
 
 ```{r}
 p3 + scale_colour_gradient(low = "white", high = "red")
 ```
-
-[atención: este ejemplo no queda bien si lo pongo con fondo blanco!] atención!!! esto realmente sale mal, pues el puto no me pone la leyenda como log! habría que hacerlo con `scale_x_log10()`, etc. 
 
 Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradientn`) have other possibilities. I encourage you to explore them looking at the [documentation page](http://ggplot2.tidyverse.org/reference/scale_gradient.html).
 
