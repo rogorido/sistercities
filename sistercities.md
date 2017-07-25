@@ -117,7 +117,7 @@ load("sistercities.Rdata")
 
 # Graphics with ggplot2
 
-There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their/its? graphical representation. As always in R, there are several possibilities to create graphs: you can use the packages provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and [ggplot2](http://ggplot2.org/), which is the system we will learn here.
+There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their/its? graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and [ggplot2](http://ggplot2.org/), which is the system we will learn here.
 
 ## ggplot2: Genereal aspects 
 
