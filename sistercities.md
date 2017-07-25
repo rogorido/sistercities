@@ -232,20 +232,23 @@ Let's begin with the most simple one. we need another `geom`, namely
 ```{r}
 ggplot(eudata, aes(x=typecountry)) + geom_bar() 
 ```
+![nosé](images/bargraph1.png)
+
 But this is not want we exactly want. Percentages would convey more
-information than raw data. There are several ways for doing this. One of them is transforming the data. One way of achieving it, is as follows:
+information than raw data. There are several ways for doing this. One
+of them is transforming the data. One way of achieving it, is as
+follows (I do not want to explain this code since this is not a
+tutorial about `dplyr`). What we get is a dataframe with percentages. We can represent it so:
 
 ```{r}
-eudata.perc <- eudata %>% group_by(typecountry) %>% summarise(total=n()) %>% mutate(freq= total/sum(total))
-```
-
-I do not want to explain this code since this is not a tutorial about `dplyr`. What we get is a dataframe with percentages. We can represent it so:
-
-```{r}
+eudata.perc <- eudata %>% group_by(typecountry) %>%
+summarise(total=n()) %>% mutate(freq= total/sum(total))
+print(eudata.perc)
 ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity")
 ```
 
-There is an important difference between the first barplot and this one. In the first ggplot itself counted the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. In this case, we need to tell ggplot where it can find the value by setting `y=freq` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`. [esto me temo que está liado...]
+There is an important difference between the first barplot and this
+one. In the first plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. In this case, we need to tell ggplot where it can find the value by setting `y=freq` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`.
 
 Nevertheless this graph is still not convincing to me. I want to change the y axis to go from 0 to 1 and I want to show a percentage symbol (%) in the y axis. As already mentioned, axes are changed using the `scales` functions. I have to admit this is in ggplot a little bit confusing since there are many different `scales` functions [as you can see etc.]. [añadir tal vez lo que dice el manual]
 
