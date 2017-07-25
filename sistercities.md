@@ -117,15 +117,17 @@ load("sistercities.Rdata")
 
 # Graphics with ggplot2
 
-There are several possibilities to create graphs in R: you can use the packages provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and [ggplot2](http://ggplot2.org/), which is the system we will learn in this lesson.
+There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their/its? graphical representation. As always in R, there are several possibilities to create graphs: you can use the packages provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and [ggplot2](http://ggplot2.org/), which is the system we will learn here.
+
+## ggplot2: Genereal aspects 
 
 ggplot2 has many advantages:
 
-1. it is very powerful, but at the same time quite simple, 
+1. it is very powerful, but at the same time relatively simple, 
 2. it has a lot of extensions which are increasingly being developed by the community. They add new functions, new types of graphs, new themes and enhance the possibilities of ggplot2. You can find them in [this site](http://www.ggplot2-exts.org/).
-3. it also has the possibility of create maps.
+3. it also has the possibility to create maps.
 
-ggplot2 is based on a theoretical book dealing with a so-called
+But how does ggplot2 work? It is based on a theoretical book dealing with a so-called
 *grammar of graphics* (hence the *gg* in ggplot2). But, don't panic:
 you don't have to know anything about grammar. The main idea is that a
 plot is made up of a set of independent components that can be
@@ -133,8 +135,8 @@ composed in many different ways.
 
 There is plenty of information about ggplot2 on the web, but I recommend you:
 
-1. for a general overview of the package you can visit the [docs](http://docs.ggplot2.org/current/) about the package 
-2. very useful is also for tips the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/)
+1. for a general overview of the package you can visit the [docs](http://docs.ggplot2.org/current/) about the package,
+2. very useful is also for tips the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/),
 3. but the best source of information is of course the book written by Wickham which has been recently [published](http://www.springer.com/br/book/9783319242750) (be careful! this is the 2nd edition which deals with important new features of the last versions of ggplot2). The book is also available online añadir!!
 4. very useful is also the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
 
