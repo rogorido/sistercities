@@ -327,19 +327,6 @@ p3 + scale_colour_gradient(low = "white", high = "red")
 Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradientn`) have other possibilities. I encourage you to explore them looking at the [documentation page](http://ggplot2.tidyverse.org/reference/scale_gradient.html).
 
 
-## Faceting a graph 
-
-In the last graph we plot the percentage of type of countries using [xxxx]. But what if we would to look at the same data per country? This can easily be done in ggplot using `facet_wrap()`.
-
-As you remember in the previous step we stored the scatterplot in a variable `p1` (for *plot1*). This is a very useful feature of ggplot, then it enables us to reuse the graph adding other layers. [atención: esto hay que ponerlo antes]
-
-
-```{r}
-ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
-```
-
-ggplot also provides a function `facet_grid()` which is somehow more powerful. You can see some examples [here](http://ggplot2.tidyverse.org/reference/facet_grid.html). 
-
 ## Bar graphs 
 
 Now we are interested in another aspect of our data. We want to know  which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. And we want to split the graph so that every EU-country has its own graph.
@@ -392,6 +379,21 @@ ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
 But let us see it with an example: 
 
 Since we want to change the y-axis we use a `scale_y` function and since the y-axis in our plot is a continuous variable we use `scale_y_continuous`. 
+
+
+## Faceting a graph 
+
+Previously we plotted the percentage of type of countries using  [xxxx]. But what if we would to look at the same data per country? This can easily be done in ggplot using `facet_wrap()`.
+
+As you remember in the previous step we stored the scatterplot in a variable `p1` (for *plot1*). This is a very useful feature of ggplot, then it enables us to reuse the graph adding other layers. [atención: esto hay que ponerlo antes]
+
+
+```{r}
+ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
+```
+
+ggplot also provides a function `facet_grid()` which is somehow more powerful. You can see some examples [here](http://ggplot2.tidyverse.org/reference/facet_grid.html). 
+
 
 
 ## Themes: changing elements of the XXXX
