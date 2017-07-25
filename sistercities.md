@@ -41,14 +41,7 @@ The most important aspect of this (at the first sight very boring) page is the f
 
 # Cities and sister cities in Europe 
 
-The analysis behind this tutorial is a very simple one. I was always
-fascinating by the fact that many cities have sistercities around the
-world. As a historian a lot of more or less relevant questions arise
-out of this empirical fact. This is a very modern phenomenon which
-probably began in the 19th century. The existence of this
-relationships has maybe to do with strong economic relations or with
-the fact that many immigrants of one of the cities migrated to the
-other one.
+The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sistercities around the world. As a historian a lot of more or less relevant questions arise out of this empirical fact. This is a very modern phenomenon which probably began in the 19th century. The existence of this relationships has maybe to do with strong economic relations or with the fact that many immigrants of one of the cities migrated to the other one.
 
 or for instance: are many German cities related to French cities? This could maybe be interpreted (as far as these relationships began after the II World War) as an attempt to  
 
@@ -177,15 +170,9 @@ One crucial type of them is the so-called  *geom* (from *geometries*) layer. As 
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point()
 ```
 
-Now we have a scatterplot relating both variables (if you're using the
-data I gathered, you will get a message that ggplot2 removed 6429 rows
-containing missing values, because some cities do not have information
-about their population). Nevertheless, I think you would like to
-improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, the overplotting (too many points), and so on. 
-As you see, ggplot2 makes several different decisions for you in terms of plot appearance. They are often not bad, but we want to be able to adapt plots to our needs. 
+Now we have a scatterplot relating both variables (if you're using the data I gathered, you will get a message that ggplot2 removed 6429 rows containing missing values, because some cities do not have information about their population). Nevertheless, I think you would like to improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, the overplotting (too many points), and so on. As you see, ggplot2 makes several different decisions for you in terms of plot appearance. They are often not bad, but we want to be able to adapt plots to our needs. 
 
-Every single plot's aspect can be manipulated. There are three
-different elements which are worth looking at:
+Every single plot's aspect can be manipulated. There are three different elements which are worth looking at:
 
 1. every ggplot2 function (eg. `geom_point()`) can take arguments to modify concrete
    aspects, 
@@ -227,7 +214,7 @@ ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) 
 For the time being, we will let our graph such it is, without making
 any other changes. Before explaining how to change other elements, let us try another graph with another `geom`.
 
-## Adding information to graphs through colors [scales!!]
+## Adding information to graphs (colors, shapes, etc.). The use of `scales`
 
 In many cases we want to add information to a graph using different
 colors (or shapes) for every group. Taking our dataset we could color
@@ -253,22 +240,46 @@ Three aspects are here relevant:
 3. ggplot has made some decisions for us: it selects colors on its own
    and it puts automatically a legend. 
 
+Let's say you want to use different shapes for the country's types.
+You could try this code: 
 
-How can we modify colors and legend? Scales is your friend. Citing the ggplot2 book: "scales control the mapping from data to aesthetics. They take your data and turn it into something that you can see, like size, colour, position or shape". And scales provide the tools that let you read the plot: the axes and legends. That means: actually ggplot is used per default scales when you create a graph [cuáles exactamente en este caso].
+```{r}
+ggplot(eudata, aes(log(originpopulation), log(destinationpopulation))) +
+    geom_point(alpha=0.4, aes(shape=typecountry)) +
+    xlab("Population of origin city (log)") +
+    ylab("Population of destination city (log)")
+```
 
-Nevertheless I have to admit scales are maybe the least intuitive element in ggplot. But let's take a look at it.
+### Scales: XXXXX ###
+
+But: how can we modify colors and legend? The so-called `scales` are
+your friend. Citing the ggplot2 book: "scales control the mapping from
+data to aesthetics. They take your data and turn it into something
+that you can see, like size, colour, position or shape". And at the
+same time, scales provide the tools that let you read the plot: the
+axes and legends. Actually ggplot is always using per default scales when you create a graph.
+
+Nevertheless I have to admit scales are maybe the least intuitive
+element in ggplot2. There
+are
+[many different scales](http://ggplot2.tidyverse.org/reference/#section-scales) you
+can use. But let's take a look at it with our previous graph.
 
 In our graph we can control 3 different scales: 
 
-1. `scales_x_continuous()` which controls the x-axes
-2. `scales_y_continuous()` which controls the y-axes
-3. `scales_colour`: to control the color used. 
+1. `scales_x_continuous()` which controls the x-axes,
+2. `scales_y_continuous()` which controls the y-axes,
+3. `scales_colour`: which controls the color(s) used. 
 
-Let's take a look at the possibilities of changing colors. (Nevertheless I have to warn you: the selection of colors for graphs is by no means an easy task; there is a lot of theoretical work done on this). We could do several things: manually passing some colors, using a color scala [cómo coño explicar esto?]. 
+We will take a look at the possibilities of changing colors.
+(Nevertheless I have to warn you: the selection of colors for graphs
+is by no means an easy task; there is a lot of theoretical work done
+on this). We could do several things: manually passing some colors,
+using a color scala, 
 
 [atención: aquí hay el problema que la puta leyenda sale con alpha!]
 
-First of all we store our graph in a varible to use it several times, changing only some aspects: 
+First of all we store our graph in a varible to use it several times, changing only some aspects. This is a very convenient way of ggplot2 to make different versions of the same graph:
 
 ```{r}
 p2 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(alpha=0.4, aes(color=typecountry))
@@ -282,7 +293,7 @@ p2 + scale_colour_manual(values = c("red", "blue", "green"))
 
 As you see, `scale_colour_manual()` takes a compulsory argument, namely a vector with the names of colors. This could also be a vector of HTML color codes.
 
-In this way we can create graphs with the colors we want. But often it is recommendable?? to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot has already these palettes [integreated](http://ggplot2.tidyverse.org/reference/scale_brewer.html). For instance: 
+In this way we can create graphs with our preferred colors. But often it is more recommendable to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot has already these palettes [integreated](http://ggplot2.tidyverse.org/reference/scale_brewer.html) and a specific `scale` for using them. For instance: 
 
 ```{r}
 p2 + scale_colour_brewer()
@@ -296,14 +307,16 @@ p2 + scale_colour_brewer(palette = "Set1")
 p2 + scale_colour_brewer(palette = "Pastel1")
 ```
 
-[esto no sé cómo coño poner el salto...] But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with in a red scale the distance between the cities. 
+But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with a red scale the distance between the cities. 
 
 ```{r}
 p3 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(alpha=0.4, aes(color=dist))
 p3
 ```
 
-But what about if we to change the color used in this graph? Again we need to use scales, but in this case another command. As you can see, ggplot does not use in this case discrete colors (that is, one color per every value in the qualitative varible, for every factor in R parlance), but only one color which is graduated[???]. For this reason the scale we have to use is one of the scales which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
+![scales3](images/scales3.png)
+
+As you can see, there are two problems with this graph: blue is the used color and not red; the scala is not convincing since null is represented by the more oscuro??? Again we need to use scales, but in this case another command. As you can see, ggplot does not use in this case discrete colors (that is, one color per every value in the qualitative varible, for every factor in R parlance), but only one color which is graduated[???]. For this reason the scale we have to use is one of the scales which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
 
 ```{r}
 p3 + scale_colour_gradient(low = "white", high = "red")
