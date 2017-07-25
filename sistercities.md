@@ -109,8 +109,11 @@ eudata <- eudata %>% dplyr::mutate(typecountry = case_when(samecountry == "same"
 eudata$typecountry <- factor(eudata$typecountry)
 ```
 
+If you do not want to follow these steps, you can download this dataframe from here and load it into R in this way:
 
-poner aquí lo de descargarse. [hacer un Rda para ello ya en bloque?]
+```{R}
+load("sistercities.Rdata")
+```
 
 # Graphics with ggplot2
 
