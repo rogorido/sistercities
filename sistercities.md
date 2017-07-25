@@ -136,7 +136,7 @@ composed in many different ways. In brief we will see how to do it.
 
 There is plenty of information about ggplot2 on the web, but I recommend you:
 
-1. the best source of information is of course the book written by the author himself which has been recently [published](http://www.springer.com/br/book/9783319242750). The book is also available online añadir!!,
+1. the best source of information is of course the book written by the author himself which has been recently [published](http://www.springer.com/br/book/9783319242750). The book is also available [online](https://github.com/hadley/ggplot2-book),
 2. for a general overview of the package you can visit the [documentation](http://docs.ggplot2.org/current/) of the package,
 3. very useful are also the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/) and  the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
 
@@ -194,8 +194,8 @@ different elements which are worth looking at:
 3. *themes* refer to the 'static' elements of the plot: the
    background's elements (color, lines, etc.), the fontsize, etc. 
 
-We will begin with the most simple transformation: we will change the color
-of the points and since we have a lot of points we will add some transparency to the points:
+We will begin with the most simple transformation: we want to change the color
+of the points and since we have a lot of points we want to add some transparency to the points:
 
 ```{r}
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4)
@@ -204,7 +204,7 @@ ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) 
 As you can see, this can be easily done: every function can get
 arguments with which you can influence how the functions makes its
 job. The function `geom_point()` can take different arguments which
-are very straitforward. You can see them under the section
+are very straightforward. You can see them under the section
 *Aesthetics* in the help of `geom_point()` by typing `?geom_point` in
 R or [here](http://ggplot2.tidyverse.org/reference/geom_point.html)
 online. As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
