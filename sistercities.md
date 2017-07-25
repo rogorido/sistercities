@@ -227,14 +227,13 @@ any other changes. Before explaining how to change other elements, let us try an
 Now we are interested in another aspect of our data. We want to know  which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. And we want to split the graph so that every EU-country has its own graph.
 
 Let's begin with the most simple one. we need another `geom`, namely
-`geom_bar()`. Actually a simple
+`geom_bar()`. Actually this can be simply done with this code: 
 
 ```{r}
 ggplot(eudata, aes(x=typecountry)) + geom_bar() 
 ```
-is sufficient. [atención con los datos de ahora me sale un puto NA, que no se me quita con na.rm=T; pero no debería haber ningún NA!] But this is not want we exactly want. We want percentages. 
-
-There are several ways for doing this. One of them is transforming the data. One way of achieving it, is as follows:
+But this is not want we exactly want. Percentages would convey more
+information than raw data. There are several ways for doing this. One of them is transforming the data. One way of achieving it, is as follows:
 
 ```{r}
 eudata.perc <- eudata %>% group_by(typecountry) %>% summarise(total=n()) %>% mutate(freq= total/sum(total))
