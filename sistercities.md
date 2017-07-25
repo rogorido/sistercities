@@ -241,22 +241,37 @@ follows (I do not want to explain this code since this is not a
 tutorial about `dplyr`). What we get is a dataframe with percentages. We can represent it so:
 
 ```{r}
-eudata.perc <- eudata %>% group_by(typecountry) %>%
-summarise(total=n()) %>% mutate(freq= total/sum(total))
+eudata.perc <- eudata %>%
+    group_by(typecountry) %>%
+    summarise(total=n()) %>%
+    mutate(freq= total/sum(total))
+
 print(eudata.perc)
-ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity")
+
+ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
+    geom_bar(stat="identity")
 ```
+![bargraph2](images/bargraph2.png)
 
 There is an important difference between the first barplot and this
 one. In the first plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. In this case, we need to tell ggplot where it can find the value by setting `y=freq` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`.
 
-Nevertheless this graph is still not convincing to me. I want to change the y axis to go from 0 to 1 and I want to show a percentage symbol (%) in the y axis. As already mentioned, axes are changed using the `scales` functions. I have to admit this is in ggplot a little bit confusing since there are many different `scales` functions [as you can see etc.]. [añadir tal vez lo que dice el manual]
-
-But let us see it with an example: 
+Nevertheless this graph is still not convincing to me. I would like to
+improve it by making the following changes: change the y axis to range
+from 0 to 1 and show a percentage symbol (%) in the y axis. Let's see
+the code and then I will explain it: 
 
 ```{r}
-ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
+ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
+    geom_bar(stat="identity") +
+    scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
 ```
+
+![bargraph3](images/bargraph3.png)
+
+ As already mentioned, axes are changed using the `scales` functions. I have to admit this is in ggplot a little bit confusing since there are many different `scales` functions [as you can see etc.]. [añadir tal vez lo que dice el manual]
+
+But let us see it with an example: 
 
 Since we want to change the y-axis we use a `scale_y` function and since the y-axis in our plot is a continuous variable we use `scale_y_continuous`. 
 
