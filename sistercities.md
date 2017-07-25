@@ -222,6 +222,8 @@ ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) 
     ylab("Population of destination city (log)")
 ```
 
+![basic3](images/basic3.png)
+
 For the time being, we will let our graph such it is, without making
 any other changes. Before explaining how to change other elements, let us try another graph with another `geom`.
 
