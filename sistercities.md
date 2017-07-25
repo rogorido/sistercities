@@ -2,7 +2,7 @@
 title: Analyzing data with SPARQL, R and ggplot2
 authors:
 - Igor Sosa Mayor 
-date: 2016-01-15
+date: 2016-07-15
 reviewers:
 - 
 layout: default
@@ -39,9 +39,16 @@ it you can find different kind of data structured as a kind of table. mejorar!!!
 
 The most important aspect of this (at the first sight very boring) page is the fact that this data **can be queried** using a query language. In other words: the data can be extracted and eventually??? used for different analyses. 
 
-# Cities and sistercities in Europe 
+# Cities and sister cities in Europe 
 
-The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sistercities around the world. As a historian a lot of more or less relevant questions arise out of this empirical fact. This is a very modern phenomenon which probably began in the 19th century. The existence of this relationships has maybe to do with strong economic relations or with the fact that many immigrants of one of the cities migrated to the other one. 
+The analysis behind this tutorial is a very simple one. I was always
+fascinating by the fact that many cities have sistercities around the
+world. As a historian a lot of more or less relevant questions arise
+out of this empirical fact. This is a very modern phenomenon which
+probably began in the 19th century. The existence of this
+relationships has maybe to do with strong economic relations or with
+the fact that many immigrants of one of the cities migrated to the
+other one.
 
 or for instance: are many German cities related to French cities? This could maybe be interpreted (as far as these relationships began after the II World War) as an attempt to  
 
@@ -86,7 +93,10 @@ rm(bulgaria, france, germany,
 
 Doing so, we have a dataframe `eudata` with the data of the six countries. There are 13081 rows with 15 variables.
 
-Now we add some information: is the sister city in the same country? And following this: we create a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country. (I will not explain the details of these transformations. If you have interest, please look at one of the excellent handbooks about R which are around???)
+In order to analyze this data, we have to add some information: is the sister city in the same country? And following this: we create a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
+
+I will not explain the details of these transformations. 
+If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/), which is included in the metapackage `tidyverse` we have already loaded. You can find a good tutorial to using dplyr written by Nabeel Siddiqui. 
 
 ```{R}
 eudata$samecountry <- ifelse(as.character(eudata$origincountry) == as.character(eudata$destination_countryLabel), "same", "different")
@@ -99,8 +109,6 @@ eudata <- eudata %>% dplyr::mutate(typecountry = case_when(samecountry == "same"
 eudata$typecountry <- factor(eudata$typecountry)
 ```
 
-
-If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/). You can find a good tutorial to using dplyr written by Nabeel Siddiqui. 
 
 poner aquí lo de descargarse. [hacer un Rda para ello ya en bloque?]
 
