@@ -74,7 +74,7 @@ In the present tutorial we will use only the data of six EU-countries: Germany, 
 
 Let's get the data into R: 
 
-```{R}
+```{r}
 bulgaria <- read.csv("/home/igor/geschichte/projekte/proghistorian/sparql/data/bulgaria.tsv", header = T, sep = "\t")
 france <- read.csv("/home/igor/geschichte/projekte/proghistorian/sparql/data/france.tsv", header = T, sep = "\t")
 germany <- read.csv("/home/igor/geschichte/projekte/proghistorian/sparql/data/germany.tsv", header = T, sep = "\t")
@@ -98,7 +98,7 @@ In order to analyze this data, we have to add some information: is the sister ci
 I will not explain the details of these transformations. 
 If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/), which is included in the metapackage `tidyverse` we have already loaded. You can find a good tutorial to using dplyr written by Nabeel Siddiqui. 
 
-```{R}
+```{r}
 eudata$samecountry <- ifelse(as.character(eudata$origincountry) == as.character(eudata$destination_countryLabel), "same", "different")
 eudata$samecountry <- as.factor(eudata$samecountry)
 
@@ -111,7 +111,7 @@ eudata$typecountry <- factor(eudata$typecountry)
 
 If you do not want to follow these steps, you can download this dataframe from here and load it into R in this way:
 
-```{R}
+```{r}
 load("sistercities.Rdata")
 ```
 
@@ -119,7 +119,7 @@ load("sistercities.Rdata")
 
 There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their/its? graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and finally [ggplot2](http://ggplot2.org/), which is the system we will learn here.
 
-## ggplot2: Genereal aspects 
+## ggplot2: General aspects 
 
 ggplot2 has many advantages:
 
@@ -136,9 +136,9 @@ composed in many different ways.
 There is plenty of information about ggplot2 on the web, but I recommend you:
 
 1. for a general overview of the package you can visit the [docs](http://docs.ggplot2.org/current/) about the package,
-2. very useful is also for tips the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/),
-3. but the best source of information is of course the book written by Wickham which has been recently [published](http://www.springer.com/br/book/9783319242750) (be careful! this is the 2nd edition which deals with important new features of the last versions of ggplot2). The book is also available online añadir!!
-4. very useful is also the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
+2. very useful is also the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/),
+3. but the best source of information is of course the book written by the author himself which has been recently [published](http://www.springer.com/br/book/9783319242750). The book is also available online añadir!!
+4. very useful[op!!!] is also the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
 
 Creating good graphics is a complicated issue, because you have to take into account different aspects: the information you want to convey, the many possibilities of showing this information (scatterplots, boxplots, histogramms, and so on), the many aspects of a plot which can be adapted (axes, transformation of variable, etc.). 
 
@@ -146,7 +146,7 @@ A small trick to learn ggplot2 is to think about the creation of plots like the 
 
 In order to use ggplot we have of course to install it. Actually I recommend to install the metapackage `tidyverse` which is a collection of packages written mainly by Wickham for doing most of the most useful operations with dataframes ([dplyr](http://dplyr.tidyverse.org/), [readr](http://readr.tidyverse.org/), [tidyr](http://tidyr.tidyverse.org/), [forcats](http://forcats.tidyverse.org/), etc.). ggplot is among the packages contained in the [metapackage `tidyverse`](http://tidyverse.org/). 
 
-```{R}
+```{r}
 install.packages("tidyverse")
 # or only ggplot2
 # install.packages("ggplot2")
@@ -156,7 +156,7 @@ install.packages("tidyverse")
 
 But, let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We could do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot this coud be done as follows (we use the natural log of the population data to overcome the skewness of the data):
 
-```{R}
+```{r}
 library(ggplot2)
 
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation)))
@@ -174,7 +174,7 @@ If you press return now you will be surprised: you will get an empty plot! Axes 
 
 In ggplot there are different types of layers [cómo coño poner esto?]. One crucial type is the  *geom* (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). Since we want to create a scatterplot, we need the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
 
-```{R}
+```{r}
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point()
 ```
 
@@ -191,13 +191,13 @@ Every single aspect of the plot can be manipulated. We will play with 3 differen
 
 We will begin with the most simple transformation: we change the color of the points and since we have a lot of points we add some transparency to the points:
 
-```{R}
+```{r}
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4)
 ```
 
 As you see, this can be easily done: every function can get arguments with which you can influence how the functions makes its job. The function `geom_point()` can take different arguments which are very straitforward. You can see them under the section *Aesthetics* in the help of `geom_point()` by doing so (or [here](http://ggplot2.tidyverse.org/reference/geom_point.html) online):
 
-```{R}
+```{r}
 ?geom_point
 ```
 
@@ -209,7 +209,7 @@ But we want also to add titles to the axes. Manipulating axes (and
 legends) is done by using the corresponding `scales` functions. We
 will see it later on. But since changing the titles is a very common action, ggplot has shorter commands to do it: `xlab()` and `ylab` (*lab* stands for *label*):
 
-```{R}
+```{r}
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4) + xlab("Population of origin city (log)") + ylab("Population of destinatioin city (log)")
 ```
 
@@ -222,20 +222,20 @@ Now we are interested in another aspect of our data. We want to know  which perc
 Let's begin with the most simple one. we need another `geom`, namely
 `geom_bar()`. Actually a simple
 
-```{R}
+```{r}
 ggplot(eudata, aes(x=typecountry)) + geom_bar() 
 ```
 is sufficient. [atención con los datos de ahora me sale un puto NA, que no se me quita con na.rm=T; pero no debería haber ningún NA!] But this is not want we exactly want. We want percentages. 
 
 There are several ways for doing this. One of them is transforming the data. One way of achieving it, is as follows:
 
-```{R}
+```{r}
 eudata.perc <- eudata %>% group_by(typecountry) %>% summarise(total=n()) %>% mutate(freq= total/sum(total))
 ```
 
 I do not want to explain this code since this is not a tutorial about `dplyr`. What we get is a dataframe with percentages. We can represent it so:
 
-```{R}
+```{r}
 ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity")
 ```
 
@@ -245,7 +245,7 @@ Nevertheless this graph is still not convincing to me. I want to change the y ax
 
 But let us see it with an example: 
 
-```{R}
+```{r}
 ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
 ```
 
@@ -257,7 +257,7 @@ In many cases we want to add information to a graph using different colors (or s
 
 With the following code we can create a first version of this new graph:
 
-```{R}
+```{r}
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) 
 	+ geom_point(alpha=0.4, aes(color=typecountry))
 ```
@@ -283,13 +283,13 @@ Let's take a look at the possibilities of changing colors. (Nevertheless I have 
 
 First of all we store our graph in a varible to use it several times, changing only some aspects: 
 
-```{R}
+```{r}
 p2 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(alpha=0.4, aes(color=typecountry))
 ```
 
 Now we can add manually the colors we want using `scale_colour_manual()`.
 
-```{R}
+```{r}
 p2 + scale_colour_manual(values = c("red", "blue", "green"))
 ```
 
@@ -297,13 +297,13 @@ As you see, `scale_colour_manual()` takes a compulsory argument, namely a vector
 
 In this way we can create graphs with the colors we want. But often it is recommendable?? to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot has already these palettes [integreated](http://ggplot2.tidyverse.org/reference/scale_brewer.html). For instance: 
 
-```{R}
+```{r}
 p2 + scale_colour_brewer()
 ```
 
 `scale_colour_brewer()` has different [palettes](http://ggplot2.tidyverse.org/reference/scale_brewer.html#palettes). You can try for instance: 
 
-```{R}
+```{r}
 p2 + scale_colour_brewer(palette = "Greens")
 p2 + scale_colour_brewer(palette = "Set1")
 p2 + scale_colour_brewer(palette = "Pastel1")
@@ -311,14 +311,14 @@ p2 + scale_colour_brewer(palette = "Pastel1")
 
 [esto no sé cómo coño poner el salto...] But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with in a red scale the distance between the cities. 
 
-```{R}
+```{r}
 p3 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(alpha=0.4, aes(color=dist))
 p3
 ```
 
 But what about if we to change the color used in this graph? Again we need to use scales, but in this case another command. As you can see, ggplot does not use in this case discrete colors (that is, one color per every value in the qualitative varible, for every factor in R parlance), but only one color which is graduated[???]. For this reason the scale we have to use is one of the scales which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
 
-```{R}
+```{r}
 p3 + scale_colour_gradient(low = "white", high = "red")
 ```
 
@@ -334,7 +334,7 @@ In the last graph we plot the percentage of type of countries using [xxxx]. But 
 As you remember in the previous step we stored the scatterplot in a variable `p1` (for *plot1*). This is a very useful feature of ggplot, then it enables us to reuse the graph adding other layers. [atención: esto hay que ponerlo antes]
 
 
-```{R}
+```{r}
 ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
 ```
 
@@ -363,7 +363,7 @@ We could do this with a barplot. But I want to show you how ggplot is becoming a
 
 First of all we need to create a dataframe which summarises the information we want to show in the graph. This can be done for instance in the following way:
 
-```{R}
+```{r}
 # if you do not have the package, install it 
 # install.packages("ggalt")
 library(ggalt)
