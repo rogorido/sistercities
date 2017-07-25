@@ -127,8 +127,9 @@ ggplot2 has many advantages:
 2. it has a lot of [extensions](http://www.ggplot2-exts.org/) which are increasingly being developed by the community. They enhance the possibilities of ggplot2 adding new functions, new types of graphs, new themes, etc.
 3. it also has the possibility to create maps.
 
-But how does ggplot2 work? It is based on a theoretical book dealing with a so-called
-*grammar of graphics* (hence the *gg* in ggplot2). But, don't panic:
+Creating good graphics is a complicated issue, because you have to take into account different aspects: the information you want to convey, the many possibilities of showing this information (scatterplots, boxplots, histogramms, and so on), the many aspects of a plot which can be adapted (axes, transformation of variable, etc.). 
+But how does ggplot2 cope with this complexity? ggplot2 is based on a theoretical book which proposes a so-called
+*grammar of graphics* (hence the *gg* in ggplot2) written by [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson). But, *don't panic*:
 you don't have to know anything about grammar. The main idea is that a
 plot is made up of a set of independent components that can be
 composed in many different ways. 
@@ -140,7 +141,6 @@ There is plenty of information about ggplot2 on the web, but I recommend you:
 3. but the best source of information is of course the book written by the author himself which has been recently [published](http://www.springer.com/br/book/9783319242750). The book is also available online añadir!!
 4. very useful[op!!!] is also the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
 
-Creating good graphics is a complicated issue, because you have to take into account different aspects: the information you want to convey, the many possibilities of showing this information (scatterplots, boxplots, histogramms, and so on), the many aspects of a plot which can be adapted (axes, transformation of variable, etc.). 
 
 A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. 
 
