@@ -165,7 +165,7 @@ means in ggplot parlance *aesthetics*. It is maybe a not very telling
 expression, but the idea is very simple: we tell R that it has to map
 the variables in the graph with these columns of the dataframe.
 
-If you press return now you will be surprised: you will get an empty
+If you press return now, you will be surprised: you will get an empty
 plot! Axes and plot area are there, but the data are not represented.
 This is however the expected behaviour. We have to tell R/ggplot2
 which type of plot we want to create. That means: we need to add a layer to plot. Adding different layers is the way to construct plots with ggplot. 
@@ -198,13 +198,14 @@ of the points and since we have a lot of points we will add some transparency to
 ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4)
 ```
 
-As you can see, this can be easily done: every function can get arguments with which you can influence how the functions makes its job. The function `geom_point()` can take different arguments which are very straitforward. You can see them under the section *Aesthetics* in the help of `geom_point()` by doing so (or [here](http://ggplot2.tidyverse.org/reference/geom_point.html) online):
-
-```{r}
-?geom_point
-```
-
-As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
+As you can see, this can be easily done: every function can get
+arguments with which you can influence how the functions makes its
+job. The function `geom_point()` can take different arguments which
+are very straitforward. You can see them under the section
+*Aesthetics* in the help of `geom_point()` by typing `?geom_point`
+doing so
+(or [here](http://ggplot2.tidyverse.org/reference/geom_point.html)
+online). As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
 
 The graph shows a very clear pattern of lineal relationship between cities' populations: the more population a city has, the bigger the sistercities it has. 
 
