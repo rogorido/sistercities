@@ -117,14 +117,14 @@ load("sistercities.Rdata")
 
 # Graphics with ggplot2
 
-There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their/its? graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and [ggplot2](http://ggplot2.org/), which is the system we will learn here.
+There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their/its? graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and finally [ggplot2](http://ggplot2.org/), which is the system we will learn here.
 
 ## ggplot2: Genereal aspects 
 
 ggplot2 has many advantages:
 
 1. it is very powerful, but at the same time relatively simple, 
-2. it has a lot of extensions which are increasingly being developed by the community. They add new functions, new types of graphs, new themes and enhance the possibilities of ggplot2. You can find them in [this site](http://www.ggplot2-exts.org/).
+2. it has a lot of [extensions](http://www.ggplot2-exts.org/) which are increasingly being developed by the community. They enhance the possibilities of ggplot2 adding new functions, new types of graphs, new themes, etc.
 3. it also has the possibility to create maps.
 
 But how does ggplot2 work? It is based on a theoretical book dealing with a so-called
