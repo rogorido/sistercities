@@ -514,20 +514,34 @@ being developed, such
 as [cartography](https://github.com/Groupe-ElementR/cartography). 
 Honestly speaking, this richness implies also some complications, since every package has its own syntax and its own specifities. In the present lesson we will stick with ggplot2, but I encourage you to make experiments with other packages, such as the very promising new package `cartography`. 
 
-In order to deal with spatial data, the packages `rgeos` and `rgdal` are very convenient,  since they enable us to read a wide range of spatial formats (shapefiles, raster data, etc.). We install and load them so:
+Spatial information can be stored in a huge variety of formats ([shapefiles](https://en.wikipedia.org/wiki/Shapefile), [raster data](https://en.wikipedia.org/wiki/Raster_graphics), etc.). In order to deal with spatial data in R, the packages `rgeos` and `rgdal` are very convenient, since they enable us to read a wide range of spatial formats. We install and load them so:
 ```{r}
 install.packages(c("rgeos", "rgdal"))
-library(rgeos)
-library(rgdal)
 ```
+While the possibilities of presenting spatial information are manifold, we will restrict us in the present lesson to a basic example of create a map with the city data we have collected. I will  stress the fact that creating maps with ggplot2 follows exactly the same principles we have seen so far for other graphs created with ggplot2. 
+
 
 ## Points 
 
-We will begin with a simple map to show where are the german cities of our data. The most simple way to do this is to show a point for every city. But first we need to get a map to operate with. Again we find here two possibilities [o dejarlo?]. We will 
+We will begin with a simple map to show where are the german cities of our data. We want to see a map in which some information is conveyed: where are the cities which have relationships. The most simple way to do this is to show a point for every city. But first we need to get a map to operate with. Again we find here two possibilities [o dejarlo?]. We will 
 
-But first of all we need maps. There are several open sources to get maps: 
+But first of all we need maps. There are several open sources to get maps. For political maps you can use [GADM](http://gadm.org/) where you will find maps in different formats for every land of the world. We will [download the map for Germany](http://gadm.org/country) as shapefile (there is also a format for R and its package `sp`, but forget it for now). You get a zip file with the name `DEU_adm_shp.zip`. After unzipping it, you will get a lot of files, but we are interested only in the `DEU_adm0` files, which represent the highest administrative level in Germany (Germany itself as  country). 
 
-1. in [GADM](http://gadm.org/) you will find maps in different formats for every land of the world (but not bigger )
+Now we will create the map. First of all, we have to read the spatial data, then we read again the data about the german cities (we could also filter our dataframe `eudata`) and finally we make the plot. 
+```{r}
+library(rgdal)
+germany <- readOGR("DEU_adm0.shp") # change the path accordingly
+german.cities <- read.csv("data/germany.tsv", header = T, sep = "\t")
+ggplot(germany, aes(x=long, y=lat, group=group), fill="grey") +
+    geom_polygon() +
+    geom_point(data=german.cities, aes(x=originlong, y=originlat), color="red") +
+    coord_map() +
+    theme_light()
+```
+
+Following aspects are relevatn here: 
+  * as you see we use a new `geom` of ggplot2: `geom_polygon()` which permits us to plot spatial data, 
+  * maybe you are astonished by the `aes()` we use in `ggplot()`: `x`, `y` and `group` are variables which are inside the variable `germany`. This is a convention for shapefiles. Do not worry too much about it. 
 
 aquí hay una buena expolicación: https://github.com/Robinlovelace/Creating-maps-in-R tal vez coger eso...
 
