@@ -394,10 +394,12 @@ eudata.perc.country <- eudata %>%
     summarise(total=n()) %>%
     mutate(freq= total/sum(total))
 
-ggplot(eudata.perc.eu, aes(x=typecountry, y=freq)) +
+p5 <- ggplot(eudata.perc.eu, aes(x=typecountry, y=freq)) +
     geom_bar(stat="identity") +
     scale_y_continuous(lim=c(0,1), labels = scales::percent_format()) +
     facet_wrap(~origincountry)
+
+p5
 ```
 
 We have only added the function `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae. [añadir!] The result is as follows: 
@@ -408,17 +410,25 @@ ggplot2 also provides a function `facet_grid()` which is more powerful. You can 
 
 ## Themes: changing elements of the XXXX
 
+Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes`. Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built-in themes. The most important are `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Several extensions add additional/extra themes to ggplot. Moreover the most important point is that you can easily create you own themes and use them in your plots. 
 
-Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built in themes. The most important is `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover, several extensions add additional/extra themes to ggplot. Nevertheless the most important point is that you can easily create you own themes and use them in your plots. 
+ggplot2 uses per default `theme_grey()`.  It is very easy to use another theme. Using the last graph: 
+
+```{r}
+p5 + theme_bw()
+```
+
+![bargraph5](images/bargraph5.png)
+
+
+
+The definition of the default themes can be found [here](https://github.com/tidyverse/ggplot2/blob/master/R/theme-defaults.r). 
 
 It is not possible in such a tutorial to get into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and so on. 
 
 Relevant is however the fact that by using `theme()` actually we are modifying the default theme we are using. That means: we modify some aspects. 
 
 For instance, let say we want to put the legend of the previous graph about XXXX in the bottom of the graph. This can be achieved by the following code: 
-
-
-
 
 
 
