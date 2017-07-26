@@ -494,7 +494,7 @@ ggplot(eudata.percity.filtered, aes(x=reorder(origincityLabel, total), total)) +
     
 ```
 
-
+![graph8](images/graph8.png)
 
 Some aspects are relevant here:
 
