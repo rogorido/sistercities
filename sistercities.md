@@ -462,10 +462,12 @@ p5 + theme_light() +
 
 ## Extending ggplot2 with other geoms
 
-Let say we want to plot the number of countries a EU-contry has relationships with. That means: with how many countries do for instance german cities have relationships? Or: which is the EU country with the most (least) connections? 
-We could do this with a barplot. But I want to show you how ggplot is becoming a very widely used package which has already several extensions. One of them is `ggalt` (see [here](https://github.com/hrbrmstr/ggalt)). Instead of a barplot we can construct a so called lollipop graph.
+As already mentioned, one of the strengths of ggplot2 is that is increasingly becoming a standard for plotting in R. For this reason, a lot of [extensions](http://www.ggplot2-exts.org/) are being added to R. Their use is incredibly easy. Let's see an example. 
 
-First of all we need to create a dataframe which summarises the information we want to show in the graph. This can be done for instance in the following way:
+Imagine that we want to plot the number of countries a EU-contry has relationships with. That means: with how many countries do for instance german cities have relationships? Or: which is the EU country with the most (least) connections? 
+We could do this with a barplot, but instead of a barplot we can construct a so called lollipop graph. This can be achieved with the package `ggalt` (see [here](https://github.com/hrbrmstr/ggalt)). 
+
+First of all we need to install the package, then we create a dataframe which summarises the information we want to show in the graph and, finally, we plot the graph. This can be done for instance in the following way:
 
 ```{r}
 # if you do not have the package, install it 
@@ -473,16 +475,30 @@ First of all we need to create a dataframe which summarises the information we w
 library(ggalt)
 
 # we summarise the data
-eudata.totalcountries <-eudata %>% group_by(origincountry) %>%
-	summarise(total = n_distinct(destination_countryLabel))
+eudata.percity <- group_by(eudata, origincityLabel) %>%
+    summarise(total = n()) %>%
+    arrange(-total)
 
-ggplot(eudata.totalcountries, aes(x=reorder(origincountry, total), y=total)) +
-      geom_lollipop(point.colour = "red", point.size = 2.75) + coord_flip()
+# we filter the first 25 Cities
+eudata.percity.filtered <- slice(eudata.percity, 1:25)
+
+# we plot the data 
+ggplot(eudata.percity.filtered, aes(x=reorder(origincityLabel, total), total)) +
+    geom_lollipop(point.colour = "red", point.size = 2.75) +
+    coord_flip() +
+    theme_pander() +   # you need library(ggthemes)
+    theme(panel.grid.major.x = element_line(color="black")) +
+    labs(x=NULL, y=NULL,
+         title="Cities with most relationships",
+         caption="Data: wikidata.org")
+    
 ```
+
+
 
 Some aspects are relevant here:
 
-1. we have to order the data using the function `reorder` to get a descendent order of the number of countries,
+1. we have to order the data using the function `reorder` to get a descendent order of the Cities,
 2. we use some arguments in the `geom_lollipop()` such as size, colour, etc. You can get a list by looking at `?geom_lollipop`. 
   * finally we use a new command: `coord_flip()` with which we can "rotate" the graph. 
 
