@@ -431,12 +431,16 @@ p5 + theme_wsj()
 
 ![bargraph6](images/bargraph6.png)
 
-But more interesting is of course the possibility to modify yourself some aspects of the graph. Unfortunately it is not possible in such a lesson to get into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and so on. 
+But more interesting is of course the possibility to modify yourself some aspects of the graph. There are two main possibilities: 
+
+1. create your own theme, taking for instance the code of the existing ones and modifying the concrete aspects you are interested in. The definition of the default themes can be found [here](https://github.com/tidyverse/ggplot2/blob/master/R/theme-defaults.r). 
+2. modify concrete aspects of the theme we are using. This is the approach we will follow here. 
+
+Unfortunately it is not possible in such a lesson to get into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and so on. 
 
 Relevant is however the fact that by using `theme()` actually we are modifying the default theme we are using. That means: we modify some aspects. 
 
 
-The definition of the default themes can be found [here](https://github.com/tidyverse/ggplot2/blob/master/R/theme-defaults.r). 
 
 
 For instance, let say we want to put the legend of the previous graph about XXXX in the bottom of the graph. This can be achieved by the following code: 
