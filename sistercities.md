@@ -541,7 +541,7 @@ ggplot(germany, aes(x=long, y=lat, group=group), fill="grey") +
 
 Following aspects are relevant here: 
   * maybe you are astonished by the `aes()` we use in `ggplot()`: `x`, `y` and `group` are variables which are inside the variable `germany`. This is a convention for shapefiles. Do not worry too much about it. 
-  * as you see we use a new `geom` of ggplot2: `geom_polygon()` which permits us to plot spatial data, 
+  * as you see we use a new `geom` of ggplot2: [`geom_polygon()`](http://ggplot2.tidyverse.org/reference/geom_polygon.html) which permits us to plot spatial data, 
   * important is the fact that we add a new layer (remember: plots are created adding layers) with the data in the form of a `geom_point()` in which we pass the arguments for the coordinates (which are in our dataframe `german.cities`). 
   * then we use another new function of ggplot2: `coord_map()`. This is necessary for getting a map which has the usual shape we are accustomed. Try to plot the map without this function. It works, but the projection is strange. All this is related to one of the most complicated areas in the creation of maps: the [projection](https://en.wikipedia.org/wiki/Map_projection). This is a wide topic I do not want to deal here with. In ggplot2 you can use [`coord_map()`](http://ggplot2.tidyverse.org/reference/coord_map.html) with different arguments to cope with this issue.  
 
