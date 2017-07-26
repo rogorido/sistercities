@@ -400,7 +400,9 @@ ggplot(eudata.perc.eu, aes(x=typecountry, y=freq)) +
     facet_wrap(~origincountry)
 ```
 
-We have only added the function `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae. [añadir!]
+We have only added the function `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae. [añadir!] The result is as follows: 
+
+![bargraph4](images/bargraph4.png)
 
 ggplot2 also provides a function `facet_grid()` which is more powerful. You can see some examples [here](http://ggplot2.tidyverse.org/reference/facet_grid.html). 
 
