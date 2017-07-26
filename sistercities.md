@@ -410,12 +410,23 @@ ggplot2 also provides a function `facet_grid()` which is more powerful. You can 
 
 ## Themes: changing elements of the XXXX
 
-Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes`. Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built-in themes. The most important are `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Several extensions add additional/extra themes to ggplot. Moreover the most important point is that you can easily create you own themes and use them in your plots. 
+Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes`. Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built-in themes. The most important are `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover the most important point is that you can easily create you own themes and use them in your plots. 
 
 ggplot2 uses per default `theme_grey()`.  It is very easy to use another theme. Using the last graph: 
 
 ```{r}
 p5 + theme_bw()
+```
+
+![bargraph5](images/bargraph5.png)
+
+Several extensions add additional/extra themes to ggplot. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance: 
+
+```{r}
+install.packages("ggthemes")
+library(ggthemes)
+
+p5 + theme_wsj()
 ```
 
 ![bargraph5](images/bargraph5.png)
