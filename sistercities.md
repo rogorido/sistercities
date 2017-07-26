@@ -539,6 +539,9 @@ ggplot(germany, aes(x=long, y=lat, group=group), fill="grey") +
     theme_light()
 ```
 
+![graph9](images/graph9.png)
+
+
 Following aspects are relevant here: 
   * we read the spatial data with the function `readOGR()` of the package `rgdal` which is a kind of swiss knife, since it reads a lot of spatial formats, 
   * maybe you are astonished by the `aes()` we use in `ggplot()`: `x`, `y` and `group` are variables which are inside the variable `germany`. This is a convention for shapefiles. Do not worry too much about it.
