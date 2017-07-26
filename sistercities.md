@@ -514,7 +514,7 @@ being developed, such
 as [cartography](https://github.com/Groupe-ElementR/cartography). 
 Honestly speaking, this richness implies also some complications, since every package has its own syntax and its own specifities. In the present lesson we will stick with ggplot2, but I encourage you to make experiments with other packages, such as the very promising new package `cartography`. 
 
-Spatial information can be stored in a huge variety of formats ([shapefiles](https://en.wikipedia.org/wiki/Shapefile), [raster data](https://en.wikipedia.org/wiki/Raster_graphics), etc.). In order to deal with spatial data in R, the packages `rgeos` and `rgdal` are very convenient, since they enable us to read a wide range of spatial formats. We install and load them so:
+Spatial information can be stored in a huge variety of formats ([shapefiles](https://en.wikipedia.org/wiki/Shapefile), [raster data](https://en.wikipedia.org/wiki/Raster_graphics), etc.). In order to deal with spatial data in R, the packages [`rgeos`](https://cran.r-project.org/web/packages/rgeos/index.html) and [`rgdal`](https://cran.r-project.org/web/packages/rgdal/index.html) are very convenient, since they enable us to read a wide range of spatial formats. We install and load them so:
 ```{r}
 install.packages(c("rgeos", "rgdal"))
 ```
@@ -540,7 +540,8 @@ ggplot(germany, aes(x=long, y=lat, group=group), fill="grey") +
 ```
 
 Following aspects are relevant here: 
-  * maybe you are astonished by the `aes()` we use in `ggplot()`: `x`, `y` and `group` are variables which are inside the variable `germany`. This is a convention for shapefiles. Do not worry too much about it. 
+  * we read the spatial data with the function `readOGR()` of the package `rgdal` which is a kind of swiss knife, since it reads a lot of spatial formats, 
+  * maybe you are astonished by the `aes()` we use in `ggplot()`: `x`, `y` and `group` are variables which are inside the variable `germany`. This is a convention for shapefiles. Do not worry too much about it.
   * as you see we use a new `geom` of ggplot2: [`geom_polygon()`](http://ggplot2.tidyverse.org/reference/geom_polygon.html) which permits us to plot spatial data, 
   * important is the fact that we add a new layer (remember: plots are created adding layers) with the data in the form of a `geom_point()` in which we pass the arguments for the coordinates (which are in our dataframe `german.cities`). 
   * then we use another new function of ggplot2: `coord_map()`. This is necessary for getting a map which has the usual shape we are accustomed. Try to plot the map without this function. It works, but the projection is strange. All this is related to one of the most complicated areas in the creation of maps: the [projection](https://en.wikipedia.org/wiki/Map_projection). This is a wide topic I do not want to deal here with. In ggplot2 you can use [`coord_map()`](http://ggplot2.tidyverse.org/reference/coord_map.html) with different arguments to cope with this issue.  
