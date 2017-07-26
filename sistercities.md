@@ -446,11 +446,12 @@ p2 + theme(legend.position = "bottom")
 
 ```
 
-We could also for instance remove the lines of the grid in one of the previous bargraphs. 
+We could also for instance remove the lines of the grid in one of the previous bargraphs modifying the white/black-theme (`theme_light()`):
 
 ```{r}
-p5 + theme(panel.grid.major.x = element_blank(),
-  panel.grid.minor.x = element_blank())
+p5 + theme_light() +
+    theme(panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank())
 
 ```
 
