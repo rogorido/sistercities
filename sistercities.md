@@ -505,17 +505,11 @@ Some aspects are relevant here:
 
 # Maps 
 
-Representing geographical information is becoming increasingly useful and demanded. In the opensource world you can find several rich programs to deal with geographical information (both creating maps and making geostatistical analysis) [QGIS](http://www.qgis.org/), [gvSIG](http://www.gvsig.com/), [GRASS](https://grass.osgeo.org/), and also [R](https://cran.r-project.org/web/views/Spatial.html). 
-
+Representing geographical information is becoming increasingly useful and demanded. In the opensource world you can find several rich programs to deal with geographical information (both creating maps and making geostatistical analysis) [QGIS](http://www.qgis.org/), [gvSIG](http://www.gvsig.com/), [GRASS](https://grass.osgeo.org/), and also R. As for R, you can find a very informative site about spatial methods [here](https://cran.r-project.org/web/views/Spatial.html).
 As always in R, there are several ways to create maps. You can use:
-the ggplot2 package which is the method we learn here. But there are
-also the very powerful
-package [sp](https://cran.r-project.org/web/packages/sp/index.html).
-You can find a very informative site about spatial methods in
-R [here](https://cran.r-project.org/web/views/Spatial.html). Spatial
-analysis and cartography are very much en vogue. New packags are also
-getting developed. (o algo así: the cartographical abilities of R are
-continously increasing). New packages are always appearing, such
+the ggplot2 package which is the method we will learn here. But there are also the very powerful
+package [sp](https://cran.r-project.org/web/packages/sp/index.html). New packages are also
+being developed, such
 as [cartography](https://github.com/Groupe-ElementR/cartography). 
 
 Honestly speaking, this richness implies also some complications, since every package has its own syntax. We will stick with ggplot, but I encourage you to make experiments with packages such as the very promising new package `cartography`. 
