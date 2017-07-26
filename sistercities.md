@@ -498,9 +498,10 @@ ggplot(eudata.percity.filtered, aes(x=reorder(origincityLabel, total), total)) +
 
 Some aspects are relevant here:
 
-1. we have to order the data using the function `reorder` to get a descendent order of the Cities,
-2. we use some arguments in the `geom_lollipop()` such as size, colour, etc. You can get a list by looking at `?geom_lollipop`. 
-  * finally we use a new command: `coord_flip()` with which we can "rotate" the graph. 
+  * we have to order the data using the function `reorder` to get a descendent order of the Cities,
+  * we use some arguments in the `geom_lollipop()` such as size, colour, etc. You can get a list by looking at `?geom_lollipop`. 
+  * we use a new command: `coord_flip()` with which we can "rotate" the graph. 
+  * we use `theme_pander()` (from the package `ggthemes`) and modify some aspects such as the lines of the grid. 
 
 
 
