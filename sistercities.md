@@ -367,9 +367,11 @@ from 0 to 1 and show a percentage symbol (%) in the y axis. Let's see
 the code and then I will explain it: 
 
 ```{r}
-ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
+p4 <- ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
     geom_bar(stat="identity") +
     scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
+
+p4
 ```
 
 ![bargraph3](images/bargraph3.png)
@@ -383,20 +385,27 @@ Since we want to change the y-axis we use a `scale_y` function and since the y-a
 
 ## Faceting a graph 
 
-But imagine that we would like to look at the same data but represent them in separated graphs per country. For doing this ggplot2 has powerful possibilities, which are summarised under the label *facetting*. The most simple facetting function is `facet_wrap()`, but you also can take a look at the richer `facet_grid()` (see [here](http://ggplot2.tidyverse.org/reference/facet_grid.html) the doc).
+But imagine that we would like to represent the same data, but in separated graphs per country. For doing this ggplot2 has powerful possibilities, which are summarised under the label *facetting*. The most simple facetting function is `facet_wrap()`, but you can also take a look at the richer `facet_grid()` (see [here](http://ggplot2.tidyverse.org/reference/facet_grid.html) the doc).
 
-As you remember in the previous step we stored the scatterplot in a variable `p1` (for *plot1*). This is a very useful feature of ggplot, then it enables us to reuse the graph adding other layers. [atención: esto hay que ponerlo antes]
-
-
+For doing this, we have to calculate the percentage per country into a new variable (`eudata.perc.country`) and then we create the graph: 
 ```{r}
-ggplot(eudata.perc, aes(x=typecountry, y=freq)) + geom_bar(stat="identity") + scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
+eudata.perc.country <- eudata %>%
+    group_by(origincountry, typecountry) %>%
+    summarise(total=n()) %>%
+    mutate(freq= total/sum(total))
+
+ggplot(eudata.perc.eu, aes(x=typecountry, y=freq)) +
+    geom_bar(stat="identity") +
+    scale_y_continuous(lim=c(0,1), labels = scales::percent_format()) +
+    facet_wrap(~origincountry)
 ```
 
-ggplot also provides a function `facet_grid()` which is somehow more powerful. You can see some examples [here](http://ggplot2.tidyverse.org/reference/facet_grid.html). 
+We have only added the function `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae. [añadir!]
 
-
+ggplot2 also provides a function `facet_grid()` which is more powerful. You can see some examples [here](http://ggplot2.tidyverse.org/reference/facet_grid.html). 
 
 ## Themes: changing elements of the XXXX
+
 
 Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built in themes. The most important is `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover, several extensions add additional/extra themes to ggplot. Nevertheless the most important point is that you can easily create you own themes and use them in your plots. 
 
