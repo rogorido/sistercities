@@ -483,14 +483,14 @@ eudata.percity <- group_by(eudata, origincityLabel) %>%
 eudata.percity.filtered <- slice(eudata.percity, 1:25)
 
 # we plot the data 
-ggplot(eudata.percity.filtered, aes(x=reorder(origincityLabel, total), total)) +
+ggplot(eudata.percity.filtered, aes(x = reorder(origincityLabel, total), total)) +
     geom_lollipop(point.colour = "red", point.size = 2.75) +
     coord_flip() +
     theme_pander() +   # you need library(ggthemes)
-    theme(panel.grid.major.x = element_line(color="black")) +
-    labs(x=NULL, y=NULL,
-         title="Cities with most relationships",
-         caption="Data: wikidata.org")
+    theme(panel.grid.major.x = element_line(color = "black")) +
+    labs(x = NULL, y = NULL,
+         title = "Cities with most relationships",
+         caption = "Data: wikidata.org")
     
 ```
 
