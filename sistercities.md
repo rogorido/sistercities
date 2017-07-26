@@ -503,18 +503,9 @@ Some aspects are relevant here:
   * we use a new command: `coord_flip()` with which we can "rotate" the graph. 
   * we use `theme_pander()` (from the package `ggthemes`) and modify some aspects such as the lines of the grid. 
 
-
-
-
-# Otros 
-
-as you can see all countries have more relationships to countries in the EU than with non-EU countries. With only one exception: Bulgaria.. 
-
-tal vez mostra r que cmabiando muy poco se puede hacer un gráfico de barras, uno lollipop de esos, etc. 
-
 # Maps 
 
-Representing geographical information is becoming increasingly useful and demanded. In the opensource world you can find several rich programs to deal with geographical information: [QGIS](http://www.qgis.org/), [gvSIG](http://www.gvsig.com/), [GRASS](https://grass.osgeo.org/), and also R. 
+Representing geographical information is becoming increasingly useful and demanded. In the opensource world you can find several rich programs to deal with geographical information (both creating maps and making geostatistical analysis) [QGIS](http://www.qgis.org/), [gvSIG](http://www.gvsig.com/), [GRASS](https://grass.osgeo.org/), and also [R](https://cran.r-project.org/web/views/Spatial.html). 
 
 As always in R, there are several ways to create maps. You can use:
 the ggplot2 package which is the method we learn here. But there are
