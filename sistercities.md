@@ -282,7 +282,8 @@ using a color scala,
 First of all we store our graph in a varible to use it several times, changing only some aspects. This is a very convenient way of ggplot2 to make different versions of the same graph:
 
 ```{r}
-p2 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(alpha=0.4, aes(color=typecountry))
+p2 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) +
+    geom_point(alpha=0.4, aes(color=typecountry))
 ```
 
 Now we can add manually the colors we want using `scale_colour_manual()`.
@@ -436,16 +437,27 @@ But more interesting is of course the possibility to modify yourself some aspect
 1. create your own theme, taking for instance the code of the existing ones and modifying the concrete aspects you are interested in. The definition of the default themes can be found [here](https://github.com/tidyverse/ggplot2/blob/master/R/theme-defaults.r). 
 2. modify concrete aspects of the theme we are using. This is the approach we will follow here. 
 
-Unfortunately it is not possible in such a lesson to get into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and so on. 
+Modifying concrete aspects of a theme can be achieved by means of the function `theme()`. Unfortunately it is not possible in such a lesson to get into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and many others. Relevant is however the fact that by using `theme()` actually we are modifying the default theme we are using. That means: we modify some aspects. 
 
-Relevant is however the fact that by using `theme()` actually we are modifying the default theme we are using. That means: we modify some aspects. 
+For instance, let say we want to put the legend of the previous scatterplot in the bottom of the graph. This can be achieved by means of the following code:
+
+```{r}
+p2 + theme(legend.position = "bottom")
+
+```
+
+We could also for instance remove the lines of the grid in one of the previous bargraphs. 
+
+```{r}
+p5 + theme(panel.grid.major.x = element_blank(),
+  panel.grid.minor.x = element_blank())
+
+```
+
+![bargraph7](images/bargraph7.png)
 
 
-
-
-For instance, let say we want to put the legend of the previous graph about XXXX in the bottom of the graph. This can be achieved by the following code: 
-
-
+[tal vez añadir ref a esto: http://ggplot2.tidyverse.org/reference/element.html]
 
 ## Extending ggplot2 with other geoms
 
