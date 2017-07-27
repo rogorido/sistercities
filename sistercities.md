@@ -532,23 +532,61 @@ Now we will create the map. First of all, we have to read the spatial data, then
 library(rgdal)
 bulgaria.map <- readOGR("BGR_adm1.shp") # change the path accordingly
 bulgaria.cities <- read.csv("data/bulgaria.tsv", header = T, sep = "\t")
-ggplot(bulgaria.map, aes(x = long, y = lat, group = group)) +
-    geom_polygon( fill="grey") +
-    geom_point(data = bulgaria.cities, aes(x = originlong, y = originlat), color = "red", inherit.aes = FALSE) +
-    coord_map() +
-    theme_light()
+ggplot() +
+      geom_polygon(data = bulgaria.map, aes(x = long, y = lat, group = group), fill="grey70") +
+      geom_point(data = bulgaria.cities, aes(x = originlong, y = originlat), color = "red") +
+      coord_map() +
+      theme_light()
 ```
 
 ![graph9](images/graph9.png)
 
 Following aspects are relevant here: 
   * we read the spatial data with the function `readOGR()` of the package `rgdal` which is a kind of swiss knife, since it reads a lot of spatial formats, 
-  * maybe you are astonished by the `aes()` we use in `ggplot()`: `x`, `y` and `group` are variables which are inside the variable `germany`. This is a convention for shapefiles. Do not worry too much about it.
-  * as you see we use a new `geom` of ggplot2: [`geom_polygon()`](http://ggplot2.tidyverse.org/reference/geom_polygon.html) which permits us to plot spatial data, 
-  * important is the fact that we add a new layer (remember: plots are created adding layers) with the data in the form of a `geom_point()` in which we pass the arguments for the coordinates (which are in our dataframe `german.cities`). 
+  * we create a complete void ggplot with `ggplot()` and add to it different layers, 
+  * as you see the first layer is a new `geom` of ggplot2: [`geom_polygon()`](http://ggplot2.tidyverse.org/reference/geom_polygon.html) which permits us to plot spatial data; and we pass to it the parameter `grey70` as fill color,
+  * maybe you are astonished by the `aes()` we use in `ggplot()`: `x`, `y` and `group` are variables which are inside the variable `bulgaria.map`. This is a convention for shapefiles. Do not worry too much about it. 
+  * important is the fact that we add a new layer (remember: plots are created adding layers) with the data in the form of a `geom_point()` in which we pass the arguments for the coordinates (which are in our dataframe `bulgaria.cities`). 
   * then we use another new function of ggplot2: `coord_map()`. This is necessary for getting a map which has the usual shape we are accustomed. Try to plot the map without this function. It works, but the projection is strange. All this is related to one of the most complicated areas in the creation of maps: the [projection](https://en.wikipedia.org/wiki/Map_projection). This is a wide topic I do not want to deal here with. In ggplot2 you can use [`coord_map()`](http://ggplot2.tidyverse.org/reference/coord_map.html) with different arguments to cope with this issue.  
 
 But I think we could enhance a little bit the graph. Again: what we have already learnt about ggplot2 is still relevant for maps (which is of course very useful). 
+
+Let's say we want to plot some relevant aspects of our data. For instance, it could be interesting to add to the plot information about the of the cities and the number of relationships it has. That is: one could expect that bigger cities has more sister cities (which is not always the case) and it could be interesting to make a plot to see it. 
+
+First of all we calculate the number of sister cities per bulgarian city: 
+```{r}
+bulgaria.mod <- bulgaria %>%
+      group_by(origincityLabel, originlat, originlong, originpopulation) %>%
+      summarise(total = n())
+```
+
+Now we will create a rather complex map using most of the features of ggplot2 we have learnt in this lesson. Do not panic about the long code. We will explain it line by line: 
+
+```{r}
+  bp1 <-
+      ggplot() +
+      geom_polygon(data = bulgaria.map,
+                   aes(x = long, y = lat, group = group),
+                   fill = NA, color = "grey80") +
+      geom_point(data =  bulgaria.mod,
+                 aes( x = originlong, y = originlat, size = originpopulation, color = total)) +
+      coord_map() + theme_void() +
+      scale_size_continuous(breaks = c(50000, 100000, 250000, 500000, 1000000),
+                            labels = NULL, name = "Population",
+                            range = c(3, 10),
+                            guide  =  guide_legend(title.position  =  "top" )) +
+      scale_colour_gradient(name  = "Number of connexions",
+                            low  =  "lightblue3", high  =  "blue4",
+                            guide = guide_colorbar(draw.ulim  =  FALSE,
+                                                 draw.llim  =  FALSE,
+                                                 title.position  =  "top")) +
+      theme( legend.position  =  "bottom") +
+      geom_text_repel(data  =  bulgaria.mod2,
+                      aes(x = originlong, y = originlat, label = origincityLabel),
+                      point.padding  =  unit(1, "lines"))
+```
+
+
 
 
 aquí hay una buena expolicación: https://github.com/Robinlovelace/Creating-maps-in-R tal vez coger eso...
