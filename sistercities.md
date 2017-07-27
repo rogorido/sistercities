@@ -532,9 +532,9 @@ Now we will create the map. First of all, we have to read the spatial data, then
 library(rgdal)
 bulgaria.map <- readOGR("BGR_adm1.shp") # change the path accordingly
 bulgaria.cities <- read.csv("data/bulgaria.tsv", header = T, sep = "\t")
-ggplot(bulgaria.map, aes(x = long, y = lat, group = group), fill="grey") +
-    geom_polygon() +
-    geom_point(data = bulgaria.cities, aes(x = originlong, y = originlat), color = "red") +
+ggplot(bulgaria.map, aes(x = long, y = lat, group = group)) +
+    geom_polygon( fill="grey") +
+    geom_point(data = bulgaria.cities, aes(x = originlong, y = originlat), color = "red", inherit.aes = FALSE) +
     coord_map() +
     theme_light()
 ```
