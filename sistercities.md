@@ -563,7 +563,11 @@ bulgaria.mod <- bulgaria %>%
 Now we will create a rather complex map using most of the features of ggplot2 we have learnt in this lesson. Do not panic about the long code. We will explain it line by line: 
 
 ```{r}
-  bp1 <-
+bulgaria.mod <- bulgaria %>%
+      group_by(origincityLabel, originlat, originlong, originpopulation) %>%
+      summarise(total = n())
+
+bp1 <-
       ggplot() +
       geom_polygon(data = bulgaria.map,
                    aes(x = long, y = lat, group = group),
@@ -572,19 +576,37 @@ Now we will create a rather complex map using most of the features of ggplot2 we
                  aes( x = originlong, y = originlat, size = originpopulation, color = total)) +
       coord_map() + theme_void() +
       scale_size_continuous(breaks = c(50000, 100000, 250000, 500000, 1000000),
-                            labels = NULL, name = "Population",
+                            labels = NULL, 
                             range = c(3, 10),
-                            guide  =  guide_legend(title.position  =  "top" )) +
+                            guide  =  guide_legend(title = "Population",
+                                                   title.position  =  "top" )) +
       scale_colour_gradient(name  = "Number of connexions",
                             low  =  "lightblue3", high  =  "blue4",
                             guide = guide_colorbar(draw.ulim  =  FALSE,
                                                  draw.llim  =  FALSE,
                                                  title.position  =  "top")) +
-      theme( legend.position  =  "bottom") +
-      geom_text_repel(data  =  bulgaria.mod2,
-                      aes(x = originlong, y = originlat, label = origincityLabel),
-                      point.padding  =  unit(1, "lines"))
+    theme( legend.position  =  "bottom")
+
+bp1
 ```
+
+What we are doing is the following: 
+
+  1. we create a dataframe `bulgaria.mod` where we calculate how many connections every bulgarian city has, 
+  2. we put the graph in a variable, because we will add some elements later on,
+  3. we use the same structure as in the previous graph, but we add two parameters to `geom_point()`, namely `size` and `color` and map them to two variables (`originpopulation` and `total`),
+  4. we use two scales (`scale_size_continuous` and `scale_colour_gradient`) to control how these two variables are represented and how this is explained in the legend (this is not compulsory; ggplot2 uses by itself both functions with default values),
+  5. more precisely, with `scale_size_continuous` we control several things: 
+	 * how many symbol (and with which values) should be represented for the population (the parameter `breaks`)
+	 * that it should not show labels for them (the parameter `labels`)
+	 * the range of the symbols (how big they should be)
+	 * and the appearance of the legend (`guide`): that it should have a title and the position of this title. 
+ 6. with `scale_colour_gradient` we control several things: 
+     * both colors for the lowest and the highest range 
+	 * again the legend (`guide`): but in this case we select a colorbar (`guide_colorbar`) with title, position, and the parameters `draw.ulim` and `draw.llim` which control some ticks of the colorbar. 
+  7. finally we put the legends in the bottom. 
+  
+
 
 
 
