@@ -523,24 +523,23 @@ While the possibilities of presenting spatial information are manifold, we will 
 
 ## Points 
 
-We will begin with a simple map to show where are the german cities of our data. We want to see a map in which some information is conveyed: where are the cities which have relationships. The most simple way to do this is to show a point for every city. But first we need to get a map to operate with. Again we find here two possibilities [o dejarlo?]. We will 
+We will begin with a simple map to show where are the bulgarian cities of our data. We want to see a map in which some information is conveyed: where are the cities which have relationships. The most simple way to do this is to show a point for every city. But first we need to get a map to operate with. Again we find here two possibilities [o dejarlo?]. We will 
 
-But first of all we need maps. There are several open sources to get maps. For political maps you can use [GADM](http://gadm.org/) where you will find maps in different formats for every land of the world. We will [download the map for Germany](http://gadm.org/country) as shapefile (there is also a format for R and its package `sp`, but forget it for now). You get a zip file with the name `DEU_adm_shp.zip`. After unzipping it, you will get a lot of files, but we are interested only in the `DEU_adm0` files, which represent the highest administrative level in Germany (Germany itself as  country). 
+But first of all we need maps. There are several open sources to get maps. For political maps you can use [GADM](http://gadm.org/) where you will find maps in different formats for every land of the world. We will [download the map for Bulgaria](http://gadm.org/country) as shapefile (there is also a format for R and its package `sp`, but forget it for now). You get a zip file with the name `BGR_adm_shp.zip`. After unzipping it, you will get a lot of files, but we are interested only in the `BGR_adm1` files (`BGR_adm1_shp`, `BGR_adm1_dbf`, etc.), which represent Bulgaria and its provinces.
 
 Now we will create the map. First of all, we have to read the spatial data, then we read again the data about the german cities (we could also filter our dataframe `eudata`) and finally we make the plot. 
 ```{r}
 library(rgdal)
-germany <- readOGR("DEU_adm0.shp") # change the path accordingly
-german.cities <- read.csv("data/germany.tsv", header = T, sep = "\t")
-ggplot(germany, aes(x=long, y=lat, group=group), fill="grey") +
+bulgaria.map <- readOGR("BGR_adm1.shp") # change the path accordingly
+bulgaria.cities <- read.csv("data/bulgaria.tsv", header = T, sep = "\t")
+ggplot(bulgaria.map, aes(x = long, y = lat, group = group), fill="grey") +
     geom_polygon() +
-    geom_point(data=german.cities, aes(x=originlong, y=originlat), color="red") +
+    geom_point(data = bulgaria.cities, aes(x = originlong, y = originlat), color = "red") +
     coord_map() +
     theme_light()
 ```
 
 ![graph9](images/graph9.png)
-
 
 Following aspects are relevant here: 
   * we read the spatial data with the function `readOGR()` of the package `rgdal` which is a kind of swiss knife, since it reads a lot of spatial formats, 
@@ -548,6 +547,9 @@ Following aspects are relevant here:
   * as you see we use a new `geom` of ggplot2: [`geom_polygon()`](http://ggplot2.tidyverse.org/reference/geom_polygon.html) which permits us to plot spatial data, 
   * important is the fact that we add a new layer (remember: plots are created adding layers) with the data in the form of a `geom_point()` in which we pass the arguments for the coordinates (which are in our dataframe `german.cities`). 
   * then we use another new function of ggplot2: `coord_map()`. This is necessary for getting a map which has the usual shape we are accustomed. Try to plot the map without this function. It works, but the projection is strange. All this is related to one of the most complicated areas in the creation of maps: the [projection](https://en.wikipedia.org/wiki/Map_projection). This is a wide topic I do not want to deal here with. In ggplot2 you can use [`coord_map()`](http://ggplot2.tidyverse.org/reference/coord_map.html) with different arguments to cope with this issue.  
+
+But I think we could enhance a little bit the graph. Again: what we have already learnt about ggplot2 is still relevant for maps (which is of course very useful). 
+
 
 aquí hay una buena expolicación: https://github.com/Robinlovelace/Creating-maps-in-R tal vez coger eso...
 
