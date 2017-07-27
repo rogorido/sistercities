@@ -563,10 +563,6 @@ bulgaria.mod <- bulgaria %>%
 Now we will create a rather complex map using most of the features of ggplot2 we have learnt in this lesson. Do not panic about the long code. We will explain it line by line: 
 
 ```{r}
-bulgaria.mod <- bulgaria %>%
-      group_by(origincityLabel, originlat, originlong, originpopulation) %>%
-      summarise(total = n())
-
 bp1 <-
       ggplot() +
       geom_polygon(data = bulgaria.map,
@@ -592,22 +588,36 @@ bp1
 
 What we are doing is the following: 
 
-  1. we create a dataframe `bulgaria.mod` where we calculate how many connections every bulgarian city has, 
-  2. we put the graph in a variable, because we will add some elements later on,
-  3. we use the same structure as in the previous graph, but we add two parameters to `geom_point()`, namely `size` and `color` and map them to two variables (`originpopulation` and `total`),
-  4. we use two scales (`scale_size_continuous` and `scale_colour_gradient`) to control how these two variables are represented and how this is explained in the legend (this is not compulsory; ggplot2 uses by itself both functions with default values),
-  5. more precisely, with `scale_size_continuous` we control several things: 
+  1. we put the graph in a variable, because we will add some elements later on,
+  2. we use the same structure as in the previous graph, but we add two parameters to `geom_point()`, namely `size` and `color` and map them to two variables (`originpopulation` and `total`),
+  3. we use two scales (`scale_size_continuous` and `scale_colour_gradient`) to control how these two variables are represented and how this is explained in the legend (this is not compulsory; ggplot2 uses by itself both functions with default values),
+  4. more precisely, with `scale_size_continuous` we control several things: 
 	 * how many symbol (and with which values) should be represented for the population (the parameter `breaks`)
 	 * that it should not show labels for them (the parameter `labels`)
 	 * the range of the symbols (how big they should be)
 	 * and the appearance of the legend (`guide`): that it should have a title and the position of this title. 
- 6. with `scale_colour_gradient` we control several things: 
+ 5. with `scale_colour_gradient` we control several things: 
      * both colors for the lowest and the highest range 
 	 * again the legend (`guide`): but in this case we select a colorbar (`guide_colorbar`) with title, position, and the parameters `draw.ulim` and `draw.llim` which control some ticks of the colorbar. 
-  7. finally we put the legends in the bottom. 
+  6. finally we put the legends in the bottom. 
   
+We could even improve more the map by adding the name of the most relevant cities. Let's do it by using one of the new extensions of ggplot2: [`ggrepel`](https://github.com/slowkow/ggrepel). First we install the package, We will label the cities which have more than seven sister cities. We will create a new dataframe with this information. 
 
+```{r}
+install.packages("ggrepel")
+library(ggrepel)
 
+bulgaria.mod2 <- filter(bulgaria.mod, total>7)
+
+bp2 <- bp1 +
+      geom_text_repel(data  =  bulgaria.mod2,
+                      aes(x = originlong, y = originlat, label = origincityLabel),
+                      point.padding  =  unit(1, "lines"))
+
+bp2
+```
+
+As you can see, we reuse the previous variable `bp1` in which we put our bulgarian graph and add a new layer, the labels, by means of the function `geom_text_repel`. It is also a `geom` and has the usual parameters: `data`, `aes`, etc. What do we need another dataframe for this geom? We could use the `bulgaria.mod`, but in this case `geom_text_repel` will use every city's name as label. `geom_text_repel` has a lot of parameters which control the appearance of the labels. In this case we used `point.padding`, but you can explore [other possibilities](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html) and in the help page (with `?geom_text_repel`). 
 
 
 
