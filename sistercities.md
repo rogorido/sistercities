@@ -331,39 +331,39 @@ But let's take a look at it with our previous graph. In our last graph we can co
 2. `scales_y_continuous()` which controls the data of y-axis,
 3. `scales_colour`: which controls the color(s) used. 
 
-We will take a look at the possibilities of changing colors.
-(Nevertheless I have to warn you: the selection of colors for graphs
-is by no means an easy task; there is a lot of theoretical work done
-on this). We could do several things: manually passing some colors,
-using a color scala, 
+We will take a look at the possibilities of changing colors. Nevertheless I have to warn you: the selection of colors for graphs is by no means an easy task; there is a lot of theoretical work done on this. We could do several things: manually passing some colors or  using a predefined color scala.
 
 First of all we store our graph in a varible to use it several times, changing only some aspects. This is a very convenient way of ggplot2 to make different versions of the same graph:
 
 ```{r}
-p2 <- ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) +
-    geom_point(alpha=0.4, aes(color=typecountry))
+p1 <- ggplot(data = eudata.sample,
+       aes(x = log(originpopulation),
+           y = log(destinationpopulation))) +
+    geom_point(size = 3, aes( color = typecountry )) +
+    labs(title = "Population data of origin and destination city",
+         caption = "Data: www.wikidata.org",
+         x = "Population of origin city (log)",
+         y = "Population of destination city (log)")
 ```
 
-Now we can add manually the colors we want using `scale_colour_manual()`.
+Now we can add manually the colors using `scale_colour_manual()`. In this case we using colors which are [already defined in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf), but we could also use hexadecimal codes for specific colors. As you see, `scale_colour_manual()` takes a compulsory argument (`values =`), namely a vector with the names of colors. 
 
 ```{r}
-p2 + scale_colour_manual(values = c("red", "blue", "green"))
+p1 + scale_colour_manual(values = c("red", "blue", "green"))
 ```
+![plot5](images/plot5.png)
 
-As you see, `scale_colour_manual()` takes a compulsory argument, namely a vector with the names of colors. This could also be a vector of HTML color codes.
-
-In this way we can create graphs with our preferred colors. But often it is more recommendable to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot has already these palettes [integreated](http://ggplot2.tidyverse.org/reference/scale_brewer.html) and a specific `scale` for using them. For instance: 
+In this way we can create graphs with our preferred colors. But often it is more recommendable to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot2 has already these palettes [integrated](http://ggplot2.tidyverse.org/reference/scale_brewer.html) and a specific `scale` for using them. For instance: 
 
 ```{r}
-p2 + scale_colour_brewer()
+p1 + scale_colour_brewer(palette = "Dark2")
 ```
+![plot6](images/plot6.png)
 
-`scale_colour_brewer()` has different [palettes](http://ggplot2.tidyverse.org/reference/scale_brewer.html#palettes). You can try for instance: 
-
+You could also try other palettes for qualitative colors: 
 ```{r}
-p2 + scale_colour_brewer(palette = "Greens")
-p2 + scale_colour_brewer(palette = "Set1")
-p2 + scale_colour_brewer(palette = "Pastel1")
+p1 + scale_colour_brewer(palette = "Set1")
+p1 + scale_colour_brewer(palette = "Accent")
 ```
 
 But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with a red scale the distance between the cities. 
