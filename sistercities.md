@@ -248,13 +248,13 @@ The graph shows a very clear pattern of lineal relationship between cities' popu
 
 But we want also to add titles to the axes. Manipulating axes (and
 legends) is done by using the corresponding `scales` functions. We
-will see it later on. But since changing the titles is a very common action, ggplot has shorter commands to do it: `xlab()` and `ylab` (*lab* stands for *label*):
+will see it later on. But since changing the titles is a very common action, ggplot has shorter commands to do it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (*labs* stands for *label*):
 
 ```{r}
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) +
-    geom_point(color="red", alpha=0.4) +
-    xlab("Population of origin city (log)") +
-    ylab("Population of destination city (log)")
+ggplot(data = eudata, aes(x = log(originpopulation), y = log(destinationpopulation))) +
+    geom_point(color = "red", alpha=0.4) +
+    labs(x = "Population of origin city (log)",
+         y = "Population of destination city (log)")
 ```
 
 ![basic3](images/basic3.png)
@@ -274,7 +274,7 @@ Let us try change some aspects of the graph.
 
 ## Adding information to graphs (colors, shapes, etc.). The use of `scales`
 
-In many cases we want to add information to a graph using different
+In many cases we want to add information to the graph using different
 colors (or shapes) for every group. Taking our dataset we could color
 the points of our previous scatterplot using different colors for the
 different types of cities (in the same country, in a EU-country or in
