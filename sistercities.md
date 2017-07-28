@@ -316,18 +316,19 @@ your friend. Citing the ggplot2 book: "scales control the mapping from
 data to aesthetics. They take your data and turn it into something
 that you can see, like size, colour, position or shape". And at the
 same time, scales provide the tools that let you read the plot: the
-axes and legends. Actually ggplot is always using per default scales when you create a graph.
+axes and legends. Actually ggplot2 is always using per default scales when you create a graph.
 
 Nevertheless I have to admit scales are maybe the least intuitive
-element in ggplot2. There
-are
-[many different scales](http://ggplot2.tidyverse.org/reference/#section-scales) you
-can use. But let's take a look at it with our previous graph.
+element in ggplot2. There are [many different scales](http://ggplot2.tidyverse.org/reference/#section-scales) you can use. The naming scheme for scales is made up of three pieces separated by “_“:
 
-In our graph we can control 3 different scales: 
+  1. scale
+  2. The name of the aesthetic (e.g., colour, shape or x)
+  3. The name of the scale (e.g., continuous, discrete, brewer).
 
-1. `scales_x_continuous()` which controls the x-axes,
-2. `scales_y_continuous()` which controls the y-axes,
+But let's take a look at it with our previous graph. In our last graph we can control 3 different scales: 
+
+1. `scales_x_continuous()` which controls the data of the x-axis,
+2. `scales_y_continuous()` which controls the data of y-axis,
 3. `scales_colour`: which controls the color(s) used. 
 
 We will take a look at the possibilities of changing colors.
@@ -335,8 +336,6 @@ We will take a look at the possibilities of changing colors.
 is by no means an easy task; there is a lot of theoretical work done
 on this). We could do several things: manually passing some colors,
 using a color scala, 
-
-[atención: aquí hay el problema que la puta leyenda sale con alpha!]
 
 First of all we store our graph in a varible to use it several times, changing only some aspects. This is a very convenient way of ggplot2 to make different versions of the same graph:
 
