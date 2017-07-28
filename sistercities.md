@@ -526,10 +526,8 @@ p4 + theme_light() +
 
 ```
 
-![bargraph7](images/bargraph7.png)
+![plot17](images/plot17.png)
 
-
-[tal vez añadir ref a esto: http://ggplot2.tidyverse.org/reference/element.html]
 
 ## Extending ggplot2 with other geoms
 
