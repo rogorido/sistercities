@@ -211,42 +211,42 @@ A small trick to learn ggplot2 is to think about the creation of plots like the 
 structure is very straightforward, except for the use of [`aes()`](http://ggplot2.tidyverse.org/reference/aes.html), which means in ggplot parlance *aesthetics*. It is maybe a not very telling expression, but the idea is very simple: we tell R that it has to map variables in the data to visual properties (aesthetics) of geoms in the graph.
 
 If you press return now, you will be surprised: you will get an empty
-plot! Axes and plot area are there, but the data are not represented.
-This is however the expected behaviour. We have to tell R/ggplot2
-which type of plot we want to create. That means: we need to add a layer to plot. Adding different layers is the way to construct plots with ggplot. 
+plot! Axes and plot area are there, but the data are not represented. This is however the expected behaviour. We have to tell ggplot2 which type of plot we want to create. That means: we need to add a layer to our plot. Adding different layers is the way to construct plots with ggplot2. 
 
-In ggplot there are different types of layers [cómo coño poner esto?].
-One crucial type of them is the so-called  *geom* (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). Since we want to create a scatterplot, we need the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
+In ggplot2 there are different types of layers. One crucial type of them is the so-called  `geom()` (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). In our case since we want to create a scatterplot, we need the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
 
 ```{r}
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point()
+ggplot(data = eudata.sample,
+       aes(x = log(originpopulation),
+           y = log(destinationpopulation))) +
+       geom_point()
 ```
 
-Now we have a scatterplot relating both variables (if you're using the data I gathered, you will get a message that ggplot2 removed 6429 rows containing missing values, because some cities do not have information about their population). Nevertheless, I think you would like to improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, the overplotting (too many points), and so on. As you see, ggplot2 makes several different decisions for you in terms of plot appearance. They are often not bad, but we want to be able to adapt plots to our needs. 
+![plot1](images/plot1.png)
 
-Every single plot's aspect can be manipulated. There are three different elements which are worth looking at:
+Now we have a scatterplot relating both variables. As you can see, it seems to be a clear lineal relationships between both variables. As for the aspects relevant here, we see that ggplot2 has made some decisions on its own: background color, fontsize, etc. I think you would like to improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, the size of the points, and so on. 
+Every single plot's aspect can be manipulated.
 
-1. every ggplot2 function (eg. `geom_point()`) can take arguments to modify concrete
-   aspects, 
-2. *scales* control the way variables are mapped from the data to the
+There are three different elements which are worth looking at:
+
+1. every ggplot2 function (eg. `geom_point()`) can take arguments to modify concrete  aspects, 
+2. `scales` control the way variables are mapped from the data to the
    plot. This affects axes, legends, etc.
-3. *themes* refer to the 'static' elements of the plot: the
+3. `themes` refer to the 'static' elements of the plot: the
    background's elements (color, lines, etc.), the fontsize, etc. 
 
-We will begin with the most simple transformation: we want to change the color
-of the points and since we have a lot of points we want to add some transparency to the points:
+We will begin with the most simple transformation: we want to change the size and the color of the points:
 
 ```{r}
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) + geom_point(color="red", alpha=0.4)
+ggplot(data = eudata.sample,
+       aes(x = log(originpopulation),
+           y = log(destinationpopulation))) +
+       geom_point(size = 3, color = "red")
 ```
 
-As you can see, this can be easily done: every function can get
-arguments with which you can influence how the functions makes its
-job. The function `geom_point()` can take different arguments which
-are very straightforward. You can see them under the section
-*Aesthetics* in the help of `geom_point()` by typing `?geom_point` in
-R or [here](http://ggplot2.tidyverse.org/reference/geom_point.html)
-online. As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
+![plot2](images/plot2.png)
+
+As you can see, this can easily be done: every function can get arguments which influence how the function makes its job. In this case, we pass to the function `geom_point()` different arguments (`size` and `color` or `colour`) which are straightforward. To find out which arguments are avalaible you can visit the help page of `geom_point()` by typing `?geom_point` in R or [here online](http://ggplot2.tidyverse.org/reference/geom_point.html). As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
 
 The graph shows a very clear pattern of lineal relationship between cities' populations: the more population a city has, the bigger the sistercities it has. 
 
