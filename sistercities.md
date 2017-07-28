@@ -92,7 +92,7 @@ WHERE {
 
 ```
 
-I do not want to explain the query itself, since you have already excellent tutorials. 
+I do not want to explain the query itself, since you have already excellent tutorials. All queries for all EU countries can be found here. 
 
 With the data we can find in Wikidata a great deal of empirical questions can be posed. 
 
