@@ -466,31 +466,37 @@ ggplot(eudata.perc.country, aes(x = typecountry, y = frequency)) +
     scale_y_continuous(lim = c(0,1), labels = scales::percent_format()) +
     facet_wrap(~origincountry)
 ```
+![plot13](images/plot13.png)
 
 We have only added the function `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae.
 
 ## Themes: changing static elements of the graphs
 
-Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes`. Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built-in themes. The most important are `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover the most important point is that you can easily create you own themes and use them in your plots. 
+Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes` which control things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built-in themes. The most important are `theme_grey()` (the default on), `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover the most important point is that you can easily create you own themes and use them in your plots. 
 
 ggplot2 uses per default `theme_grey()`.  It is very easy to use another theme. Using the last graph: 
 
 ```{r}
-p5 + theme_bw()
+p3 <- ggplot(eudata.perc.country, aes(x = typecountry, y = frequency)) +
+    geom_bar(stat = "identity") +
+    scale_y_continuous(lim = c(0,1), labels = scales::percent_format()) +
+    facet_wrap(~origincountry)
+
+p3 + theme_bw()
 ```
 
-![bargraph5](images/bargraph5.png)
+![plot14](images/plot14.png)
 
-Several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance using this last theme: 
+Even more: several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance using this last theme: 
 
 ```{r}
 install.packages("ggthemes")
 library(ggthemes)
 
-p5 + theme_wsj()
+p3 + theme_wsj()
 ```
 
-![bargraph6](images/bargraph6.png)
+![plot15](images/plot15.png)
 
 But more interesting is of course the possibility to modify yourself some aspects of the graph. There are two main possibilities: 
 
