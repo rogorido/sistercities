@@ -134,12 +134,15 @@ str(eudata)
 
 As you can see we have the following information in the dataframe: the name of the "origin city", that is the city whose sister cities we are looking for (in the column `origincityLabel`), the country (`origincountry`), the coordinates (in `originlat` and `originlong`) and the population (`originpopulation`). The same information ofr the sister city. Moreover we have the column `dist` with the distance between the two cities (in km) and the categorial column `eu` which informs us whether the "destination city" is in the EU or not. 
 
-This data are however not complete and it is a good idea to add some information. We want to add two additional columns. The first one holds the information whether the sister city is in the same country as the origin city (`samecountry`). We create Moreover a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
+This data are however not complete and it is a good idea to add some information. We want to add two additional columns. The first one holds the information whether the sister city is in the same country as the origin city (`samecountry`). We create moreover a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
 
 I will not explain the details of these transformations. 
-If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/), which is included in the metapackage `tidyverse` we have already loaded. You can find a [good tutorial](http://programminghistorian.github.io/ph-submissions/lessons/data_wrangling_and_management_in_R) to using dplyr written by Nabeel Siddiqui. 
+If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/) (the author of ggplot2), which is included in the metapackage `tidyverse`. You can find a [good tutorial](http://programminghistorian.github.io/ph-submissions/lessons/data_wrangling_and_management_in_R) to using dplyr written by Nabeel Siddiqui. 
 
 ```{r}
+install.packages("tidyverse")
+library(tidyverse)
+
 eudata$samecountry <- ifelse(as.character(eudata$origincountry) ==
                              as.character(eudata$destination_countryLabel), "same", "different")
 eudata$samecountry <- as.factor(eudata$samecountry)
@@ -159,7 +162,7 @@ load("sistercities.Rdata")
 
 # Graphics with ggplot2
 
-There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](http://lattice.r-forge.r-project.org/), and finally [ggplot2](http://ggplot2.tidyverse.org/), which is the system we will learn here.
+There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](http://lattice.r-forge.r-project.org/), and finally [ggplot2](http://ggplot2.tidyverse.org/), created by [Hadley Wickham ](http://hadley.nz/) and which is the system we will learn here.
 
 ## ggplot2: General aspects 
 
@@ -176,9 +179,9 @@ There is plenty of information about ggplot2 on the web, but I recommend you:
 
 1. the best source of information is of course the book written by the author himself which has been recently [published](http://www.springer.com/br/book/9783319242750). The book is also available [online](https://github.com/hadley/ggplot2-book),
 2. for a general overview of the package you can visit the [documentation](http://docs.ggplot2.org/current/) of the package,
-3. very useful are also the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/) (based on the book [*R Graphics Cookbook. Practical Recipes for Visualizing Data](http://shop.oreilly.com/product/0636920023135.do) by Winston Chang) and the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
+3. very useful are also the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/) (based on the book [*R Graphics Cookbook. Practical Recipes for Visualizing Data*](http://shop.oreilly.com/product/0636920023135.do) by Winston Chang) and the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
 
-But, first of all, in order to use ggplot we have of course to install it. Actually I recommend to install the metapackage `tidyverse` which is a collection of packages written mainly by Wickham for doing most of the most useful operations with dataframes ([dplyr](http://dplyr.tidyverse.org/), [readr](http://readr.tidyverse.org/), [tidyr](http://tidyr.tidyverse.org/), [forcats](http://forcats.tidyverse.org/), etc.). ggplot is among the packages contained in the [metapackage `tidyverse`](http://tidyverse.org/). 
+But, first of all, in order to use ggplot we have of course to install it. Actually I recommend to install the already mentioned metapackage [`tidyverse`](http://tidyverse.org/) which is a collection of packages written mainly by Wickham for doing most of the most useful operations with dataframes ([dplyr](http://dplyr.tidyverse.org/), [readr](http://readr.tidyverse.org/), [tidyr](http://tidyr.tidyverse.org/), [forcats](http://forcats.tidyverse.org/), etc.). ggplot2 is among these packages.
 
 ```{r}
 install.packages("tidyverse")
@@ -257,7 +260,17 @@ ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation))) 
 ![basic3](images/basic3.png)
 
 For the time being, we will let our graph such it is, without making
-any other changes. Before explaining how to change other elements, let us try another graph with another `geom`.
+any other changes. Useful is the possibility to save the graph. This can be done very in the following way: 
+
+```{r}
+ggsave("eudata.png")
+# for getting a pdf
+# ggsave("eudata.pdf")
+```
+
+This will create a PNG file with the last plot we have constructed. The function `ggsave()` has [many parameters](http://ggplot2.tidyverse.org/reference/ggsave.html) you can adjust (dpi, height, width, format, etc.).
+
+Let us try change some aspects of the graph.
 
 ## Adding information to graphs (colors, shapes, etc.). The use of `scales`
 
