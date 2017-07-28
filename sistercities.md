@@ -281,13 +281,16 @@ Let us try change some aspects of the graph.
 In many cases we want to add information to the graph using different colors (or shapes) for every group. For instance we could color the points of our previous scatterplot using colors for the different types of cities (in the same country, in a EU-country or in a non-EU-country). Let's  create a first version of this new graph using the previous code: 
 
 ```{r}
-ggplot(data = eudata, aes(x = log(originpopulation), y = log(destinationpopulation))) +
-    geom_point(alpha=0.4, aes( color = typecountry )) +
-    labs(x = "Population of origin city (log)",
+ggplot(data = eudata.sample,
+       aes(x = log(originpopulation),
+           y = log(destinationpopulation))) +
+    geom_point(size = 3, aes( color = typecountry )) +
+    labs(title = "Population data of origin and destination city",
+         caption = "Data: www.wikidata.org",
+         x = "Population of origin city (log)",
          y = "Population of destination city (log)")
 ```
-
-![scatter3](images/scatter3.png)
+![plot4](images/plot4.png)
 
 Two aspects are here relevant:
 
@@ -295,16 +298,18 @@ Two aspects are here relevant:
   * ggplot2 has made some decisions for us: it selects colors on its own and it adds automatically a legend to the graph. 
 
 Let's say you want to use different shapes for the country's types.
-You could try this code: 
+You could try this code (it is not really beautiful...):
 
 ```{r}
-ggplot(data = eudata, aes(x = log(originpopulation), y = log(destinationpopulation))) +
-    geom_point(alpha=0.4, aes( shape = typecountry )) +
-    labs(x = "Population of origin city (log)",
+ggplot(data = eudata.sample,
+       aes(x = log(originpopulation),
+           y = log(destinationpopulation))) +
+    geom_point(size = 3, aes( shape = typecountry )) +
+    labs(title = "Population data of origin and destination city",
+         caption = "Data: www.wikidata.org",
+         x = "Population of origin city (log)",
          y = "Population of destination city (log)")
 ```
-
-### Scales: XXXXX ###
 
 But: how can we modify colors and legend? The so-called `scales` are
 your friend. Citing the ggplot2 book: "scales control the mapping from
