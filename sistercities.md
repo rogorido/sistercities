@@ -191,20 +191,24 @@ install.packages("tidyverse")
 
 ## A first example: a scatterplot of population data
 
-But, let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We could do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot this coud be done as follows (we use the natural log of the population data to overcome the skewness of the data):
+But, let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We can do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot2 this coud be done using the following code. 
 
 ```{r}
 library(ggplot2)
 
-ggplot(data=eudata, aes(x=log(originpopulation), y=log(destinationpopulation)))
+# we extract a random sample of 15% of the cities
+eudata.sample <- sample_frac(eudata, 0.15)
+
+ggplot(data = eudata.sample,
+       aes(x = log(originpopulation),
+           y = log(destinationpopulation)))
 ```
 
-A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. We are telling R the following: "create a ggplot graph using the
-dataframe cities and map the variable originpopulation to x and destinationpopulation to y". As you can see, the
-structure is very straightforward, except for the use of *aes*, which
-means in ggplot parlance *aesthetics*. It is maybe a not very telling
-expression, but the idea is very simple: we tell R that it has to map
-the variables in the graph with these columns of the dataframe.
+Two notes before continuing: since the dataframe `eudata` has many points, this leads to an overplotting (too many points). Therefore we select a random sample of 15% of the cities in our dataframe with the function [`sample_frac()`](http://dplyr.tidyverse.org/reference/sample.html) (in package `dplyr` ). Moreover we use the natural log of the population data to overcome the skewness of the data.
+
+And now let's take a look to the important command: `ggplot()`. 
+A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. In our example we are telling R the following: "create a ggplot graph using the data in `eudata.sample` and map the variable `originpopulation` to x and `destinationpopulation` to y". As you can see, the
+structure is very straightforward, except for the use of [`aes()`](http://ggplot2.tidyverse.org/reference/aes.html), which means in ggplot parlance *aesthetics*. It is maybe a not very telling expression, but the idea is very simple: we tell R that it has to map variables in the data to visual properties (aesthetics) of geoms in the graph.
 
 If you press return now, you will be surprised: you will get an empty
 plot! Axes and plot area are there, but the data are not represented.
@@ -294,10 +298,10 @@ Let's say you want to use different shapes for the country's types.
 You could try this code: 
 
 ```{r}
-ggplot(eudata, aes(log(originpopulation), log(destinationpopulation))) +
-    geom_point(alpha=0.4, aes(shape=typecountry)) +
-    xlab("Population of origin city (log)") +
-    ylab("Population of destination city (log)")
+ggplot(data = eudata, aes(x = log(originpopulation), y = log(destinationpopulation))) +
+    geom_point(alpha=0.4, aes( shape = typecountry )) +
+    labs(x = "Population of origin city (log)",
+         y = "Population of destination city (log)")
 ```
 
 ### Scales: XXXXX ###
