@@ -366,25 +366,47 @@ p1 + scale_colour_brewer(palette = "Set1")
 p1 + scale_colour_brewer(palette = "Accent")
 ```
 
-But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with a red scale the distance between the cities. 
+But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with a red scale the distance between the cities (we use again the log of the distance because of the skewness). 
 
 ```{r}
-p3 <- ggplot(eudata, aes(log(originpopulation), log(destinationpopulation))) +
-    geom_point(alpha=0.4, aes(color=dist))
-
-p3
+p2 <- ggplot(data = eudata.sample,
+       aes(x = log(originpopulation),
+           y = log(destinationpopulation))) +
+    geom_point(size = 3, aes( color = log(dist) )) +
+    labs(title = "Population data of origin and destination city",
+         subtitle = "Colored by distance between the cities",
+         caption = "Data: www.wikidata.org",
+         x = "Population of origin city (log)",
+         y = "Population of destination city (log)")
+		 
+p2
 ```
 
-![scales3](images/scales3.png)
+![plot7](images/plot7.png)
 
-As you can see, there are two problems with this graph: blue is the used color and not red; the scala is not convincing since null is represented by the more oscuro??? Again we need to use scales, but in this case another command. As you can see, ggplot does not use in this case discrete colors (that is, one color per every value in the qualitative varible, for every factor in R parlance), but only one color which is graduated[???]. For this reason the scale we have to use is one  deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
+As you can see, there are two problems with this graph: blue is the used color and not red; the scala is not convincing since smaller distances are represented by the more dark blue. Again we need to use scales, but in this case another function. ggplot2 does not use in this case discrete colors (that is, one color for every distinct value of the qualitative variable), but only one color which is graduated. For this reason the scale we have to use is one  deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
 
 ```{r}
-p3 + scale_colour_gradient(low = "white", high = "red")
+p2 + scale_colour_gradient(low = "white", high = "red3")
 ```
+
+![plot8](images/plot8.png)
 
 Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradientn`) have other possibilities. I encourage you to explore them looking at the [documentation page](http://ggplot2.tidyverse.org/reference/scale_gradient.html).
 
+Finally we will slightly modify the legend, which is something (as I have already mentioned) which is controlled by the scales. We want to modify of course the terrible title of the legend and to 
+
+```{r}
+p2 + scale_colour_gradient(low = "white",
+                           high = "red3",
+                           guide = guide_colorbar(title = "Distance in log(km)",
+                                                  direction = "horizontal",
+                                                  title.position = "top"))
+
+```
+![plot9](images/plot9.png)
+
+The legend is controlled by the parameter `guide`. In this case we tell ggplot2 to use a `guide_colorbar()` with the parameters you can see regarding the title (caption, position, etc.).
 
 ## Bar graphs 
 
