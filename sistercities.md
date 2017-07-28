@@ -224,7 +224,7 @@ ggplot(data = eudata.sample,
 
 ![plot1](images/plot1.png)
 
-Now we have a scatterplot relating both variables. As you can see, it seems to be a clear lineal relationships between both variables. As for the aspects relevant here, we see that ggplot2 has made some decisions on its own: background color, fontsize, etc. I think you would like to improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, the size of the points, and so on. 
+Now we have a scatterplot relating both variables. As you can see, it seems to be a clear lineal relationships between both variables. The more population a city has, the bigger its sistercities.  As for the aspects relevant here, we see that ggplot2 has made some decisions on its own: background color, fontsize, etc. I think you would like to improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, the size of the points, and so on. 
 Every single plot's aspect can be manipulated.
 
 There are three different elements which are worth looking at:
@@ -246,22 +246,22 @@ ggplot(data = eudata.sample,
 
 ![plot2](images/plot2.png)
 
-As you can see, this can easily be done: every function can get arguments which influence how the function makes its job. In this case, we pass to the function `geom_point()` different arguments (`size` and `color` or `colour`) which are straightforward. To find out which arguments are avalaible you can visit the help page of `geom_point()` by typing `?geom_point` in R or [here online](http://ggplot2.tidyverse.org/reference/geom_point.html). As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
+As you can see, this can easily be done: every function can get arguments which influence how the function makes its job. In this case, we pass to the function `geom_point()` different arguments (`size` and `color` or `colour`) which are straightforward. To find out which arguments are avalaible you can visit the help page of `geom_point()` by typing `?geom_point` in R or here [online](http://ggplot2.tidyverse.org/reference/geom_point.html). As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
 
-The graph shows a very clear pattern of lineal relationship between cities' populations: the more population a city has, the bigger the sistercities it has. 
-
-But we want also to add titles to the axes. Manipulating axes (and
-legends) is done by using the corresponding `scales` functions. We
-will see it later on. But since changing the titles is a very common action, ggplot has shorter commands to do it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (*labs* stands for *label*):
+The plot looks a bit better, but there are still a lot of things to improve. For instance, we want to add titles to the axes. Manipulating axes (and legends) is done by using the corresponding `scales` functions. We will see it later on. But since changing the titles is a very common action, ggplot has a shorter command to achieve it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (*labs* stands for *label*):
 
 ```{r}
-ggplot(data = eudata, aes(x = log(originpopulation), y = log(destinationpopulation))) +
-    geom_point(color = "red", alpha=0.4) +
-    labs(x = "Population of origin city (log)",
+ggplot(data = eudata.sample,
+       aes(x = log(originpopulation),
+           y = log(destinationpopulation))) +
+    geom_point(size = 3, color = "red") +
+    labs(title = "Population data of origin and destination city",
+         caption = "Data: www.wikidata.org",
+         x = "Population of origin city (log)",
          y = "Population of destination city (log)")
 ```
 
-![basic3](images/basic3.png)
+![plot3](images/plot3.png)
 
 For the time being, we will let our graph such it is, without making
 any other changes. Useful is the possibility to save the graph. This can be done very in the following way: 
@@ -272,7 +272,7 @@ ggsave("eudata.png")
 # ggsave("eudata.pdf")
 ```
 
-This will create a PNG file with the last plot we have constructed. The function `ggsave()` has [many parameters](http://ggplot2.tidyverse.org/reference/ggsave.html) you can adjust (dpi, height, width, format, etc.).
+This will create a [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics) file with the last plot we have constructed. The function `ggsave()` has [many parameters](http://ggplot2.tidyverse.org/reference/ggsave.html) you can adjust (dpi, height, width, format, etc.).
 
 Let us try change some aspects of the graph.
 
