@@ -454,28 +454,22 @@ As always consult the very rich documentation for the many parameters present in
 
 But imagine that we would like to represent the same data, but in separated graphs per country. For doing this ggplot2 has powerful possibilities, which are summarised under the label [*facetting*](http://ggplot2.tidyverse.org/reference/index.html#section-facetting). The most simple facetting function is [`facet_wrap()`](http://ggplot2.tidyverse.org/reference/facet_wrap.html), but you can also take a look at the richer [`facet_grid()`](http://ggplot2.tidyverse.org/reference/facet_grid.html).
 
-For doing this, we have to calculate the percentage per country into a new variable (`eudata.perc.country`) and then we create the graph: 
+For getting the graph we are aiming at, we have to calculate the percentage per country into a new variable (`eudata.perc.country`) and then we create the graph: 
 ```{r}
 eudata.perc.country <- eudata %>%
     group_by(origincountry, typecountry) %>%
-    summarise(total=n()) %>%
-    mutate(freq= total/sum(total))
+    summarise(total = n()) %>%
+    mutate(frequency = total / sum(total))
 
-p5 <- ggplot(eudata.perc.eu, aes(x=typecountry, y=freq)) +
-    geom_bar(stat="identity") +
-    scale_y_continuous(lim=c(0,1), labels = scales::percent_format()) +
+ggplot(eudata.perc.country, aes(x = typecountry, y = frequency)) +
+    geom_bar(stat = "identity") +
+    scale_y_continuous(lim = c(0,1), labels = scales::percent_format()) +
     facet_wrap(~origincountry)
-
-p5
 ```
 
-We have only added the function `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae. [añadir!] The result is as follows: 
+We have only added the function `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae.
 
-![bargraph4](images/bargraph4.png)
-
-ggplot2 also provides a function `facet_grid()` which is more powerful. You can see some examples [here](http://ggplot2.tidyverse.org/reference/facet_grid.html). 
-
-## Themes: changing elements of the XXXX
+## Themes: changing static elements of the graphs
 
 Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes`. Themes give you control over things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built-in themes. The most important are `theme_grey()`, `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover the most important point is that you can easily create you own themes and use them in your plots. 
 
