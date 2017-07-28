@@ -31,10 +31,11 @@ By the end of this lesson you will be able:
 
 The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sister cities around the world. As a historian a lot of relevant questions arise out of this empirical fact. For instance, when did this phenomenon begin (probably in the 19th century)? Why are the reasons behind the whole phenomenon? And more concrete: which are the concrete reasons for a city to seek for such relationships (economic, religious, cultural)? Or even more concrete: are German cities related to French or Polish cities, maybe as a an attempt to overcome deep historical tensions? Have Spanish cities proportionally more relationships to the spanish-speaking American cities? Do small cities (<10000) have also such relationships? Are EU-cities more related to other EU-cities or is this aspect not relevant at all? 
 
-But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option. [Programming historian](http://www.programming-historian.org) añadir!! has already two excellent tutorial on wikidata:  for specific issues in wikidata the more general and  friendly [introduction](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL) and for a more [technichal description](https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/queries). 
+But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option. The question is therefore: how do we get the data of the sistercities of European cities? Wikidata has already this information. We only have to query it. 
+ [Programming historian](http://www.programming-historian.org) añadir!! has already two excellent tutorial on wikidata:  for specific issues in wikidata the more general and  friendly [introduction](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL) and for a more [technichal description](https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/queries). 
 
 
-I have prepared some queries using SPARQL in order to get all cities of EU countries and their sister cities. The queries are rather complex. For instance the query to get the french cities looks like this: 
+I have prepared some queries using SPARQL in order to get all cities of EU countries and their sister cities. The queries are rather complex. For instance the query to get the Polish cities looks [like this](http://tinyurl.com/ybvzdkke): 
 
 ```{sparql}
 SELECT DISTINCT ?origincityLabel ?origincountry ?originlat ?originlong ?originpopulation
@@ -46,7 +47,7 @@ WHERE {
   {
   SELECT DISTINCT ?origincity (SAMPLE(?lat_o) as ?originlat) (SAMPLE(?lon_o) as ?originlong) ?originpopulation WHERE {
     ?origincity (wdt:P31/wdt:P279*) wd:Q486972 ; 
-                                    wdt:P17 wd:Q142  .           # ... in France
+                                    wdt:P17 wd:Q36  .           # ... in Poland
     
     # get the coordinates of origincity 
     ?origincity p:P625 ?statement .                             # is there a coordinate-location statement?
@@ -85,29 +86,23 @@ WHERE {
   BIND(ROUND(geof:distance(?coord_o, ?coord_d)) as ?dist)
 
   # not very elegant, but we want to avoid timeouts...
-  BIND("France" as ?origincountry)
+  BIND("Poland" as ?origincountry)
 
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 }
-
 ```
 
-I do not want to explain the query itself, since you have already excellent tutorials. All queries for all EU countries can be found here. 
+I do not want to explain the query itself, since you have already excellent tutorials on AÑADIR. The queries for all EU countries can be found here. 
 
-With the data we can find in Wikidata a great deal of empirical questions can be posed. 
+Running this query against the [wikidata server](https://query.wikidata.org/) you will get a table with the results, that you can export into different formats. We want to export them as TSV (tab separated values). Since some queries sometimes failed due to the timeout limitations of the wikidata servers, you have the downloaded data and you can find them [here]. 
 
-unfortunately the data in Wikidata do not enable us to ask an important question for historians: the temporal question. In other words: since when are two cities sister cities? 
+# Analyzing the data with R
 
-The question is therefore: how do we get the data of the sistercities of European cities? Wikidata has already this information. We only have to query it. 
+Actually there are several ways to get the data into R for further analysis: 
 
-
-# R
-
-There are several ways to get the data into R for further analysis: 
-
-1. exporting the results as CSV/TSV (comma/tab separated values) or JSON, which is what I will cover in this lesson;
-2. using one of the different R packages which are able to connect to a SPARQL endpoint and get the data (a more general one, [SPARQL](https://cran.r-project.org/web/packages/SPARQL/index.html), and a specific package for using with wikidata, [WikidataR](WikidataR)).
-3. downloading?? the data to your computer with one of the available programs for doing this (I can recommend [wikidata-cli](https://github.com/maxlath/wikidata-cli)).
+1. exporting the results as CSV/TSV (comma/tab separated values) or JSON, which is what I did,
+2. using one of the different R packages which are able to connect to a SPARQL endpoint and get the data (a general package, [SPARQL](https://cran.r-project.org/web/packages/SPARQL/index.html), and a specific one for using with wikidata, [WikidataR](WikidataR)).
+3. downloading the data to your computer with one of the available programs for doing this (I can recommend [wikidata-cli](https://github.com/maxlath/wikidata-cli)).
 
 In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). But if you want to play with the data of all EU-countries you can find it here. 
 
