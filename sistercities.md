@@ -410,63 +410,49 @@ The legend is controlled by the parameter [`guide`](http://ggplot2.tidyverse.org
 
 ## Bar graphs and faceting
 
-Let's continue with other aspects of ggplot2. I want to remember that ggplot2 has a lot of different `geom`s to represent data: [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html), [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html), [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html), [density plots](http://ggplot2.tidyverse.org/reference/geom_density.html), [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html), etc. Now we are interested in another aspect of our data. We want to know  which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. And we want to split the graph so that every EU-country has its own graph.
+Let's continue with other aspects of ggplot2. I want to remember that ggplot2 has a lot of different `geom`s to represent data: [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html), [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html), [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html), [density plots](http://ggplot2.tidyverse.org/reference/geom_density.html), [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html), and many more. Now we are interested in another aspect of our data. We want to know which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. For doing this we need another `geom`, namely `geom_bar()`. 
 
-Let's begin with the most simple one. we need another `geom`, namely
-`geom_bar()`. Actually this can be simply done with this code: 
+Let's begin with the most simple one. Later on we will split the graph so that every EU-country has its own graph.  Actually this can be simply done with this code (we use again the dataframe `eudata` with all data): 
 
 ```{r}
-ggplot(eudata, aes(x=typecountry)) + geom_bar() 
+ggplot(eudata, aes(x = typecountry)) + geom_bar() 
 ```
-![nosé](images/bargraph1.png)
+![plot10](images/plot10.png)
 
-But this is not want we exactly want. Percentages would convey more
-information than raw data. There are several ways for doing this. One
-of them is transforming the data. One way of achieving it, is as
-follows (I do not want to explain this code since this is not a
-tutorial about `dplyr`). What we get is a dataframe with percentages. We can represent it so:
+The syntax is rather simple, but this is not want we exactly want since we see only count data and not percentages which would convey more information. There are several ways for doing this. One of them is transforming the data. One way of achieving it is as follows (I do not want to explain this code since this is not a tutorial about `dplyr`). What we get is a dataframe with percentages. We can represent it so:
 
 ```{r}
 eudata.perc <- eudata %>%
     group_by(typecountry) %>%
-    summarise(total=n()) %>%
-    mutate(freq= total/sum(total))
+    summarise(total = n()) %>%
+    mutate(frequency = total/sum(total))
 
 print(eudata.perc)
 
-ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
-    geom_bar(stat="identity")
+ggplot(eudata.perc, aes(x = typecountry, y = frequency)) +
+    geom_bar(stat = "identity")
 ```
-![bargraph2](images/bargraph2.png)
+![plot11](images/plot11.png)
 
 There is an important difference between the first barplot and this
-one. In the first plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot must use for plotting the bars. In this case, we need to tell ggplot where it can find the value by setting `y=freq` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`.
+one. In the first plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot2 must use for plotting the bars. In this case, we need to tell ggplot2 where it can find the value by setting `y=frequency` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`.
 
 Nevertheless this graph is still not convincing to me. I would like to
 improve it by making the following changes: change the y axis to range
-from 0 to 1 and show a percentage symbol (%) in the y axis. Let's see
-the code and then I will explain it: 
+from 0 to 1 and show a percentage symbol (%) in the y axis. As we are manipulating the way data are represented, we have to use scales. In this case `scale_y_continuous` which controls the representation of a continuous variable (the percentage in this case) on the y-axis.
 
 ```{r}
-p4 <- ggplot(eudata.perc, aes(x=typecountry, y=freq)) +
-    geom_bar(stat="identity") +
-    scale_y_continuous(lim=c(0,1), labels = scales::percent_format())
-
-p4
+ggplot(eudata.perc, aes(x = typecountry, y = frequency)) +
+    geom_bar(stat = "identity") +
+    scale_y_continuous(lim = c(0,1), labels = scales::percent_format())
 ```
+![plot12](images/plot12.png)
 
-![bargraph3](images/bargraph3.png)
-
- As already mentioned, axes are changed using the `scales` functions. I have to admit this is in ggplot a little bit confusing since there are many different `scales` functions [as you can see etc.]. [añadir tal vez lo que dice el manual]
-
-But let us see it with an example: 
-
-Since we want to change the y-axis we use a `scale_y` function and since the y-axis in our plot is a continuous variable we use `scale_y_continuous`. 
-
+As always consult the very rich documentation for the many parameters present in the [continuous scales](http://ggplot2.tidyverse.org/reference/scale_continuous.html).
 
 ## Faceting a graph 
 
-But imagine that we would like to represent the same data, but in separated graphs per country. For doing this ggplot2 has powerful possibilities, which are summarised under the label *facetting*. The most simple facetting function is `facet_wrap()`, but you can also take a look at the richer `facet_grid()` (see [here](http://ggplot2.tidyverse.org/reference/facet_grid.html) the doc).
+But imagine that we would like to represent the same data, but in separated graphs per country. For doing this ggplot2 has powerful possibilities, which are summarised under the label [*facetting*](http://ggplot2.tidyverse.org/reference/index.html#section-facetting). The most simple facetting function is [`facet_wrap()`](http://ggplot2.tidyverse.org/reference/facet_wrap.html), but you can also take a look at the richer [`facet_grid()`](http://ggplot2.tidyverse.org/reference/facet_grid.html).
 
 For doing this, we have to calculate the percentage per country into a new variable (`eudata.perc.country`) and then we create the graph: 
 ```{r}
