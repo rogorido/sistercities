@@ -406,11 +406,11 @@ p2 + scale_colour_gradient(low = "white",
 ```
 ![plot9](images/plot9.png)
 
-The legend is controlled by the parameter `guide`. In this case we tell ggplot2 to use a `guide_colorbar()` with the parameters you can see regarding the title (caption, position, etc.).
+The legend is controlled by the parameter [`guide`](http://ggplot2.tidyverse.org/reference/guides.html). In this case we tell ggplot2 to use a [`guide_colorbar()`](http://ggplot2.tidyverse.org/reference/guide_colourbar.html) with the parameters you can see regarding the title (caption, position, etc.).
 
-## Bar graphs 
+## Bar graphs and faceting
 
-Now we are interested in another aspect of our data. We want to know  which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. And we want to split the graph so that every EU-country has its own graph.
+Let's continue with other aspects of ggplot2. I want to remember that ggplot2 has a lot of different `geom`s to represent data: [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html), [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html), [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html), [density plots](http://ggplot2.tidyverse.org/reference/geom_density.html), [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html), etc. Now we are interested in another aspect of our data. We want to know  which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. And we want to split the graph so that every EU-country has its own graph.
 
 Let's begin with the most simple one. we need another `geom`, namely
 `geom_bar()`. Actually this can be simply done with this code: 
