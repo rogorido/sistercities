@@ -29,18 +29,18 @@ By the end of this lesson you will be able:
 
 # Wikidata: Cities and sister cities in Europe 
 
-The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sister cities around the world. As a historian a lot of relevant questions arise out of this empirical fact. For instance, when did this phenomenon begin (probably in the 19th century)? Why are the reasons behind the whole phenomenon? And more concrete: which are the concrete reasons for a city to seek for such relationships (economic, religious, cultural)? Or even more concrete: are German cities related to French or Polish cities, maybe as a an attempt to overcome deep historical tensions? Have Spanish cities proportionally more relationships to the spanish-speaking American cities? Do small cities (<10000) have also such relationships? Are EU-cities more related to other EU-cities or is this aspect not relevant at all? 
+The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sister cities around the world. As a historian a lot of relevant questions arise out of this empirical fact. For instance, when did this phenomenon begin (probably in the 19th century)? Why are the reasons behind the whole phenomenon? And more concrete: which are the concrete reasons for a city to seek for such relationships (economic, religious, cultural)? Or even more concrete: are German cities related to French or Polish cities, maybe as a an attempt to overcome deep historical tensions? Have Spanish cities proportionally more relationships to the spanish-speaking American cities? Do small cities (<10000) have also such relationships? Are EU-cities more related to other EU-cities or is this aspect not relevant at all? Do cities of former communist countries more relationships with other cities of the present Russia or other former communist countries?
 
 But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option. The question is therefore: how do we get the data of the sistercities of European cities? Wikidata has already this information. We only have to query it. 
  [Programming historian](http://www.programming-historian.org) añadir!! has already two excellent tutorial on wikidata:  for specific issues in wikidata the more general and  friendly [introduction](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL) and for a more [technichal description](https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/queries). 
 
 
-I have prepared some queries using SPARQL in order to get all cities of EU countries and their sister cities. The queries are rather complex. For instance the query to get the Polish cities looks [like this](http://tinyurl.com/ybvzdkke): 
+I have prepared some queries using SPARQL in order to get all cities of EU countries and their sister cities. The queries are rather complex. For instance the query to get the Polish cities looks [like this](http://tinyurl.com/y7g8cpp2): 
 
 ```{sparql}
 SELECT DISTINCT ?origincityLabel ?origincountry ?originlat ?originlong ?originpopulation
                 ?sistercityLabel ?destinationlat ?destinationlong ?destinationpopulation
-                (YEAR(?beginning_year) as ?age) ?destination_countryLabel ?dist ?eu
+                ?destination_countryLabel ?dist ?eu
 WHERE {
 
   # selection of the origincity with coordinates and population in a subquery
@@ -90,6 +90,7 @@ WHERE {
 
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 }
+
 ```
 
 I do not want to explain the query itself, since you have already excellent tutorials on AÑADIR. The queries for all EU countries can be found here. 
