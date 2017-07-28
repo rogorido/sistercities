@@ -1,6 +1,6 @@
 SELECT DISTINCT ?origincityLabel ?origincountry ?originlat ?originlong ?originpopulation
                 ?sistercityLabel ?destinationlat ?destinationlong ?destinationpopulation
-                (YEAR(?beginning_year) as ?age) ?destination_countryLabel ?dist ?eu
+                ?destination_countryLabel ?dist ?eu
 WHERE {
 
   # selection of the origincity with coordinates and population in a subquery
