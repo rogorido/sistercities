@@ -96,7 +96,7 @@ I do not want to explain the query itself, since you have already excellent tuto
 
 Running this query against the [wikidata server](https://query.wikidata.org/) you will get a table with the results, that you can export into different formats. We want to export them as TSV (tab separated values). Since some queries sometimes failed due to the timeout limitations of the wikidata servers, you have the downloaded data and you can find them [here]. 
 
-# Analyzing the data with R
+# Starting with R: getting and preparing the data
 
 Actually there are several ways to get the data into R for further analysis: 
 
@@ -150,7 +150,7 @@ eudata <- eudata %>% dplyr::mutate(typecountry = case_when(samecountry == "same"
 eudata$typecountry <- factor(eudata$typecountry)
 ```
 
-If you do not want to follow these steps, you can download this dataframe from here and load it into R in this way:
+If you do not want to follow these steps, you can download this dataframe [from here] and load it into R in this way:
 
 ```{r}
 load("sistercities.Rdata")
@@ -158,7 +158,7 @@ load("sistercities.Rdata")
 
 # Graphics with ggplot2
 
-There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their/its? graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and finally [ggplot2](http://ggplot2.org/), which is the system we will learn here.
+There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](https://cran.r-project.org/web/packages/lattice/index.html), and finally [ggplot2](http://ggplot2.org/), which is the system we will learn here.
 
 ## ggplot2: General aspects 
 
