@@ -397,12 +397,13 @@ Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradie
 Finally we will slightly modify the legend, which is something (as I have already mentioned) which is controlled by the scales. We want to modify of course the terrible title of the legend and to 
 
 ```{r}
-p2 + scale_colour_gradient(low = "white",
+p2 <- p2 + scale_colour_gradient(low = "white",
                            high = "red3",
                            guide = guide_colorbar(title = "Distance in log(km)",
                                                   direction = "horizontal",
                                                   title.position = "top"))
-
+												  
+p2
 ```
 ![plot9](images/plot9.png)
 
@@ -461,10 +462,12 @@ eudata.perc.country <- eudata %>%
     summarise(total = n()) %>%
     mutate(frequency = total / sum(total))
 
-ggplot(eudata.perc.country, aes(x = typecountry, y = frequency)) +
+p4 <- ggplot(eudata.perc.country, aes(x = typecountry, y = frequency)) +
     geom_bar(stat = "identity") +
     scale_y_continuous(lim = c(0,1), labels = scales::percent_format()) +
     facet_wrap(~origincountry)
+	
+p4
 ```
 ![plot13](images/plot13.png)
 
@@ -503,7 +506,7 @@ But more interesting is of course the possibility to modify yourself some aspect
 1. create your own theme, taking for instance the code of the existing ones and modifying the concrete aspects you are interested in. The definition of the default themes can be found [here](https://github.com/tidyverse/ggplot2/blob/master/R/theme-defaults.r). 
 2. modify concrete aspects of the theme we are using. This is the approach we will follow here. 
 
-Modifying concrete aspects of a theme can be achieved by means of the function `theme()`. Unfortunately it is not possible in such a lesson to get into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and many others. Relevant is however the fact that by using `theme()` actually we are modifying the default theme we are using. That means: we modify some aspects. 
+Modifying concrete aspects of a theme can be achieved by means of the function `theme()`. Unfortunately it is not possible in such a lesson to go into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and many others. Relevant is however the fact that by using `theme()` actually we are modifying the default theme we are using.
 
 For instance, let say we want to put the legend of the previous scatterplot in the bottom of the graph. This can be achieved by means of the following code:
 
@@ -511,11 +514,13 @@ For instance, let say we want to put the legend of the previous scatterplot in t
 p2 + theme(legend.position = "bottom")
 
 ```
+![plot16](images/plot16.png)
 
 We could also for instance remove the lines of the grid in one of the previous bargraphs modifying the white/black-theme (`theme_light()`):
 
 ```{r}
-p5 + theme_light() +
+	
+p4 + theme_light() +
     theme(panel.grid.major.x = element_blank(),
           panel.grid.minor.x = element_blank())
 
