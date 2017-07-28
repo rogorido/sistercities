@@ -106,28 +106,34 @@ Actually there are several ways to get the data into R for further analysis:
 
 In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). But if you want to play with the data of all EU-countries you can find it here. 
 
-Let's get the data into R: 
+For this lesson, I recommend you that you create a directory in your computer for the project and inside it you can create two other directories you will use: `data` and `maps`. Put the `tsv` files into the data directory. Open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R: 
 
 ```{r}
-bulgaria <- read.csv("/home/igor/geschichte/projekte/proghistorian/sparql/data/bulgaria.tsv", header = T, sep = "\t")
-france <- read.csv("/home/igor/geschichte/projekte/proghistorian/sparql/data/france.tsv", header = T, sep = "\t")
-germany <- read.csv("/home/igor/geschichte/projekte/proghistorian/sparql/data/germany.tsv", header = T, sep = "\t")
-hungary <- read.csv("/home/igor/geschichte/projekte/proghistorian/sparql/data/hungary.tsv", header = T, sep = "\t")
-poland <- read.csv("/home/igor/geschichte/projekte/proghistorian/sparql/data/poland.tsv", header = T, sep = "\t")
-portugal <- read.csv("/home/igor/geschichte/projekte/proghistorian/sparql/data/portugal.tsv", header = T, sep = "\t")
+bulgaria <- read.csv("data/bulgaria.tsv", header = T, sep = "\t")
+france <- read.csv("data/france.tsv", header = T, sep = "\t")
+germany <- read.csv("data/germany.tsv", header = T, sep = "\t")
+hungary <- read.csv("data/hungary.tsv", header = T, sep = "\t")
+poland <- read.csv("data/poland.tsv", header = T, sep = "\t")
+portugal <- read.csv("data/portugal.tsv", header = T, sep = "\t")
 
 # we create a dataframe with the countries
 eudata <- rbind(bulgaria, france, germany,
-                  hungary, poland, portugal)
+                hungary, poland, portugal)
 
 # we remove the previous variables
 rm(bulgaria, france, germany,
-     hungary, poland, portugal)
+   hungary, poland, portugal)
 ```
 
-Doing so, we have a dataframe `eudata` with the data of the six countries. There are 13081 rows with 15 variables.
+Doing so, we have a dataframe `eudata` with the data of the six countries. There are 13081 rows with 15 variables (if you have downloaded the data yourself, the number of rows can be different). You can check its structure it using: 
 
-In order to analyze this data, we have to add some information: is the sister city in the same country? And following this: we create a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
+```{r}
+str(eudata)
+```
+
+As you can see we have the following information in the dataframe: the name of the "origin city", that is the city whose sister cities we are looking for (in the column `origincityLabel`), the country (`origincountry`), the coordinates (in `originlat` and `originlong`) and the population (`originpopulation`). The same information ofr the sister city. Moreover we have the column `dist` with the distance between the two cities (in km) and the categorial column `eu` which informs us whether the "destination city" is in the EU or not. 
+
+This data are however not complete and it is a good idea to add some information. We want to add two additional columns. The first one holds the information whether the sister city is in the same country as the origin city (`samecountry`). And we create a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
 
 I will not explain the details of these transformations. 
 If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/), which is included in the metapackage `tidyverse` we have already loaded. You can find a good tutorial to using dplyr written by Nabeel Siddiqui. 
