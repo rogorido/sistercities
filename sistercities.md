@@ -531,16 +531,14 @@ p4 + theme_light() +
 
 ## Extending ggplot2 with other geoms
 
-As already mentioned, one of the strengths of ggplot2 is that is increasingly becoming a standard for plotting in R. For this reason, a lot of [extensions](http://www.ggplot2-exts.org/) are being added to R. You can create with them [network graphs](https://briatte.github.io/ggnetwork/), [radar charts](https://github.com/ricardo-bion/ggradar), [time series graphs](https://github.com/AtherEnergy/ggTimeSeries), and many more. Their use is incredibly easy. Let's see an example. 
+As already mentioned, one of the strengths of ggplot2 is that is increasingly becoming a standard for plotting in R. For this reason, a lot of [extensions](http://www.ggplot2-exts.org/) have been written in the last years. You can create with them [network graphs](https://briatte.github.io/ggnetwork/), [radar charts](https://github.com/ricardo-bion/ggradar), [time series graphs](https://github.com/AtherEnergy/ggTimeSeries), and many more. Their use is incredibly easy. Let's see an example. 
 
-Imagine that we want to plot the number of countries a EU-contry has relationships with. That means: with how many countries do for instance german cities have relationships? Or: which is the EU country with the most (least) connections? 
-We could do this with a barplot, but instead of a barplot we can construct a so called lollipop graph. This can be achieved with the package `ggalt` (see [here](https://github.com/hrbrmstr/ggalt)). 
+Imagine that we want to plot the cities with more relationships among the analysed cities. We could for instance expect that capitals are among them. We could do this with a barplot, but instead of a barplot we can construct a so called lollipop graph. This can be achieved with the package `ggalt` (see [here](https://github.com/hrbrmstr/ggalt)). 
 
 First of all we need to install the package, then we create a dataframe which summarises the information we want to show in the graph and, finally, we plot the graph. This can be done for instance in the following way:
 
 ```{r}
-# if you do not have the package, install it 
-# install.packages("ggalt")
+install.packages("ggalt")
 library(ggalt)
 
 # we summarise the data
@@ -563,7 +561,7 @@ ggplot(eudata.percity.filtered, aes(x = reorder(origincityLabel, total), total))
     
 ```
 
-![graph8](images/graph8.png)
+![plot18](images/plot18.png)
 
 Some aspects are relevant here:
 
@@ -571,6 +569,7 @@ Some aspects are relevant here:
   * we use some arguments in the `geom_lollipop()` such as size, colour, etc. You can get a list by looking at `?geom_lollipop`. 
   * we use a new command: `coord_flip()` with which we can "rotate" the graph. 
   * we use `theme_pander()` (from the package `ggthemes`) and modify some aspects such as the lines of the grid. 
+  * we delete the title of the x and y axes by putting them to `NULL`. 
 
 # Maps 
 
