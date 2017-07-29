@@ -579,8 +579,7 @@ As always in R, there are several ways to create maps. You can use:
 the ggplot2 package which is the method we will learn here. But there are also the very powerful
 package [sp](https://cran.r-project.org/web/packages/sp/index.html). New packages are also
 being developed, such
-as [cartography](https://github.com/Groupe-ElementR/cartography). 
-Honestly speaking, this richness implies also some complications, since every package has its own syntax and its own specifities. In the present lesson we will stick with ggplot2, but I encourage you to make experiments with other packages, such as the very promising new package `cartography`. 
+as [cartography](https://github.com/Groupe-ElementR/cartography) and [tmap](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-nutshell.html) to create thematic. Honestly speaking, this richness implies also some complications, since every package has its own syntax and its own specifities. In the present lesson we will stick with ggplot2, but I encourage you to make experiments with other packages, such as the very promising new package `cartography`. 
 
 Spatial information can be stored in a huge variety of formats ([shapefiles](https://en.wikipedia.org/wiki/Shapefile), [raster data](https://en.wikipedia.org/wiki/Raster_graphics), etc.). In order to deal with spatial data in R, the packages [`rgeos`](https://cran.r-project.org/web/packages/rgeos/index.html) and [`rgdal`](https://cran.r-project.org/web/packages/rgdal/index.html) are very convenient, since they enable us to read a wide range of spatial formats. We install and load them so:
 ```{r}
