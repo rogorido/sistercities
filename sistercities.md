@@ -107,7 +107,7 @@ Actually there are several ways to get the data into R for further analysis:
 
 In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). But if you want to play with the data of all EU-countries you can find it here. 
 
-For this lesson, I recommend you that you create a directory in your computer for the project and inside it you can create two other directories you will use: `data` and `maps`. Put the `tsv` files into the data directory. Open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R: 
+For this lesson, I recommend you that you create a directory in your computer for the project and inside it you can create two other directories you will use: `data` and `maps`. Put the `tsv` files into the data directory. Open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R. All the code we will use can be found [here](code/code.R) for the general code and [here](code/maps.R) for the maps.
 
 ```{r}
 bulgaria <- read.csv("data/bulgaria.tsv", header = T, sep = "\t")
@@ -588,7 +588,7 @@ While the possibilities of presenting spatial information are manifold, we will 
 
 ## Points 
 
-We will begin with a simple map. We want to see a map in which some simple information is conveyed: where are the bulgarian cities which have sister Cities. The most simple way to do this is to show a point for every city. But first we need to get a map to operate with. There are several open sources to get maps. For political or administrative maps of countries you can use [GADM](http://gadm.org/) where you will find maps in different formats for every land of the world. We will [download the map for Bulgaria](http://gadm.org/country) as shapefile (there is also a format for R and its package `sp`, but we will not use it). You get a zip file with the name `BGR_adm_shp.zip`. After unzipping it, you will get a lot of files, but we are interested only in the `BGR_adm1` files (`BGR_adm1_shp`, `BGR_adm1_dbf`, etc.), which represent Bulgaria and its provinces.
+We will begin with a simple map. We want to see a map in which some simple information is conveyed: where are the bulgarian cities which have sister Cities. The most simple way to do this is to show a point for every city. But first we need to get a map to operate with. There are several open sources to get maps. For political or administrative maps of countries you can use [GADM](http://gadm.org/) where you will find maps in different formats for every land of the world. We will [download the map for Bulgaria](http://gadm.org/country) as shapefile (there is also a format for R and its package `sp`, but we will not use it). You get a zip file with the name `BGR_adm_shp.zip`. After unzipping it, you will get a lot of files, but we are interested only in the `BGR_adm1` files (`BGR_adm1_shp`, `BGR_adm1_dbf`, etc.), which represent Bulgaria and its provinces. You also can find the files [here](maps/).
 
 Now we will create the map. First of all, we have to read the spatial data, then we read again the data about the german cities (we could also filter our dataframe `eudata`) and finally we make the plot. 
 ```{r}
