@@ -519,11 +519,9 @@ p2 + theme(legend.position = "bottom")
 We could also for instance remove the lines of the grid in one of the previous bargraphs modifying the white/black-theme (`theme_light()`):
 
 ```{r}
-	
 p4 + theme_light() +
     theme(panel.grid.major.x = element_blank(),
           panel.grid.minor.x = element_blank())
-
 ```
 
 ![plot17](images/plot17.png)
@@ -622,7 +620,7 @@ Following aspects are relevant here:
 
 But I think we could enhance a little bit the graph. Again: what we have already learnt about ggplot2 is still relevant for maps (which is of course very useful). 
 
-Let's say we want to plot some relevant aspects of our data. For instance, it could be interesting to add to the plot information about the of the cities and the number of relationships it has. That is: one could expect that bigger cities has more sister cities (which is not always the case) and it could be interesting to make a plot to see it. 
+Let's say we want to plot some relevant aspects of our data. For instance, it could be interesting to add to the plot information about the population of the cities and the number of relationships it has. That is: one could expect that bigger cities has more sister cities (which is not always the case) and it could be interesting to make a plot to see it. 
 
 First of all we calculate the number of sister cities per bulgarian city: 
 ```{r}
@@ -675,11 +673,14 @@ What we are doing is the following:
 We could even improve more the map by adding the name of the most relevant cities. Let's do it by using one of the new extensions of ggplot2: [`ggrepel`](https://github.com/slowkow/ggrepel). First we install the package, We will label the cities which have more than seven sister cities. We will create a new dataframe with this information. 
 
 ```{r}
+# we install the package ggrepel
 install.packages("ggrepel")
 library(ggrepel)
 
+# we select only cities with more than 7 connections 
 bulgaria.mod2 <- filter(bulgaria.mod, total>7)
 
+# we plot the map
 bp2 <- bp1 +
       geom_text_repel(data  =  bulgaria.mod2,
                       aes(x = originlong, y = originlat, label = origincityLabel),
@@ -690,13 +691,3 @@ bp2
 
 As you can see, we reuse the previous variable `bp1` in which we put our bulgarian graph and add a new layer, the labels, by means of the function `geom_text_repel`. It is also a `geom` and has the usual parameters: `data`, `aes`, etc. What do we need another dataframe for this geom? We could use the `bulgaria.mod`, but in this case `geom_text_repel` will use every city's name as label. `geom_text_repel` has a lot of parameters which control the appearance of the labels. In this case we used `point.padding`, but you can explore [other possibilities](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html) and in the help page (with `?geom_text_repel`). 
 
-
-
-aquí hay una buena expolicación: https://github.com/Robinlovelace/Creating-maps-in-R tal vez coger eso...
-
-
-[comment] # Local Variables:
-[comment] # eval: (auto-fill-mode -1)
-[comment] # eval: (visual-line-mode)
-[comment] # eval: (visual-fill-column-mode)
-[comment] # End:
