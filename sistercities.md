@@ -655,6 +655,8 @@ bp1 <-
 bp1
 ```
 
+![plot20](images/plot20.png)
+
 What we are doing is the following: 
 
   1. we put the graph in a variable, because we will add some elements later on,
@@ -688,6 +690,8 @@ bp2 <- bp1 +
 
 bp2
 ```
+
+![plot21](images/plot21.png)
 
 As you can see, we reuse the previous variable `bp1` in which we put our bulgarian graph and add a new layer, the labels, by means of the function `geom_text_repel`. It is also a `geom` and has the usual parameters: `data`, `aes`, etc. What do we need another dataframe for this geom? We could use the `bulgaria.mod`, but in this case `geom_text_repel` will use every city's name as label. `geom_text_repel` has a lot of parameters which control the appearance of the labels. In this case we used `point.padding`, but you can explore [other possibilities](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html) and in the help page (with `?geom_text_repel`). 
 
