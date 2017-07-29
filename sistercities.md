@@ -93,7 +93,7 @@ WHERE {
 
 ```
 
-I do not want to explain the query itself, since you have already excellent tutorials on AÑADIR. The queries for all EU countries can be found here. 
+I do not want to explain the query itself, since you have already excellent tutorials on [[add the references to the lesssons!]]. The queries for all EU countries can be found [here](sparql/queries). 
 
 Running this query against the [wikidata server](https://query.wikidata.org/) you will get a table with the results, that you can export into different formats. We want to export them as TSV (tab separated values). Since some queries sometimes failed due to the timeout limitations of the wikidata servers, you have the downloaded data and you can find them [here]. 
 
