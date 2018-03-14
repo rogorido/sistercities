@@ -31,71 +31,9 @@ By the end of this lesson you will be able:
 
 The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sister cities around the world. As a historian a lot of relevant questions arise out of this empirical fact. For instance, when did this phenomenon begin (probably in the 19th century)? Why are the reasons behind the whole phenomenon? And more concrete: which are the concrete reasons for a city to seek for such relationships (economic, religious, cultural)? Or even more concrete: are German cities related to French or Polish cities, maybe as a an attempt to overcome deep historical tensions? Have Spanish cities proportionally more relationships to the spanish-speaking American cities? Do small cities (<10000) have also such relationships? Are EU-cities more related to other EU-cities or is this aspect not relevant at all? Do cities of former communist countries more relationships with other cities of the present Russia or other former communist countries?
 
-But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option. The question is therefore: how do we get the data of the sistercities of European cities? Wikidata has already this information. We only have to query it. 
- [Programming historian](http://www.programming-historian.org) añadir!! has already two excellent tutorial on wikidata:  for specific issues in wikidata the more general and  friendly [introduction](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL) and for a more [technichal description](https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/queries). 
+But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option. The question is therefore: how do we get the data of the sistercities of European cities? Wikidata has already this information which can be queried using SPARQL (for specific issues in wikidata the more general and  friendly [introduction](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL)). Using this query language we can extract this data. (If you are interested in the complex queries used for doing it, you can find them here)
 
-
-I have prepared some queries using SPARQL in order to get all cities of EU countries and their sister cities. The queries are rather complex. For instance the query to get the Polish cities looks [like this](http://tinyurl.com/y7g8cpp2): 
-
-```{sparql}
-SELECT DISTINCT ?origincityLabel ?origincountry ?originlat ?originlong ?originpopulation
-                ?sistercityLabel ?destinationlat ?destinationlong ?destinationpopulation
-                ?destination_countryLabel ?dist ?eu
-WHERE {
-
-  # selection of the origincity with coordinates and population in a subquery
-  {
-  SELECT DISTINCT ?origincity (SAMPLE(?lat_o) as ?originlat) (SAMPLE(?lon_o) as ?originlong) ?originpopulation WHERE {
-    ?origincity (wdt:P31/wdt:P279*) wd:Q486972 ; 
-                                    wdt:P17 wd:Q36  .           # ... in Poland
-    
-    # get the coordinates of origincity 
-    ?origincity p:P625 ?statement .                             # is there a coordinate-location statement?
-    ?statement psv:P625 ?origin_coordinate_node .               # ... which are the coordinates?
-    ?origin_coordinate_node wikibase:geoLatitude  ?lat_o .      # ... extract the latitude
-    ?origin_coordinate_node wikibase:geoLongitude ?lon_o .      # ... extract the longitude 
-
-    OPTIONAL { ?origincity wdt:P1082 ?originpopulation. } }     # get the population of origincity if there is any data
-    
-    GROUP BY ?origincity ?originpopulation
-  }
-  
-  # look for infos about sister cities of origincity
-  ?origincity p:P190 ?sistercity_statement .
-  ?sistercity_statement ps:P190 ?sistercity .
-
-  # get the coordinates of sistercity 
-  ?sistercity p:P625 ?destination_coordinate_node_statement .
-  ?destination_coordinate_node_statement psv:P625 ?destination_coordinate_node .
-  ?destination_coordinate_node wikibase:geoLatitude ?destinationlat .
-  ?destination_coordinate_node wikibase:geoLongitude ?destinationlong .
-
-  # get the country of sistercity 
-  ?sistercity wdt:P17 ?destination_country .
-
-  # is the destination_country a EU country?
-  OPTIONAL { ?destination_country p:P31 ?eustatement .
-             ?eustatement ps:P31 wd:Q185441 . }
-  BIND(IF(BOUND(?eustatement), "EU", "Non-EU") as ?eu)
-
-  OPTIONAL { ?sistercity wdt:P1082 ?destinationpopulation. }  # get the population of sistercity if there is any data
-
-  # calculate the distance between the two cities
-  ?sistercity wdt:P625 ?coord_d .
-  ?origincity wdt:P625 ?coord_o .
-  BIND(ROUND(geof:distance(?coord_o, ?coord_d)) as ?dist)
-
-  # not very elegant, but we want to avoid timeouts...
-  BIND("Poland" as ?origincountry)
-
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
-}
-
-```
-
-I do not want to explain the query itself, since you have already excellent tutorials on [[add the references to the lesssons!]]. The queries for all EU countries can be found [here](sparql/queries). 
-
-Running this query against the [wikidata server](https://query.wikidata.org/) you will get a table with the results, that you can export into different formats. We want to export them as TSV (tab separated values). Since some queries sometimes failed due to the timeout limitations of the wikidata servers, you have the downloaded data and you can find them [here]. 
+Running the queries against the [wikidata server](https://query.wikidata.org/) you will get a table with results, that we can export into different formats. 
 
 # Starting with R: getting and preparing the data
 
