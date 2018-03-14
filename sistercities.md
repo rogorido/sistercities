@@ -33,15 +33,9 @@ The analysis behind this tutorial is a very simple one. I was always fascinating
 
 But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option. The question is therefore: how do we get the data of the sistercities of European cities? Wikidata has already this information which can be queried using SPARQL (for specific issues in wikidata the more general and  friendly [introduction](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL)). Using this query language we can extract this data. (If you are interested in the complex queries used for doing it, you can find them here)
 
-Running the queries against the [wikidata server](https://query.wikidata.org/) you will get a table with results, that we can export into different formats. 
+Running the queries against the [wikidata server](https://query.wikidata.org/) you will get a table with results, that we can export into different formats. Exporting the results as CSV/TSV (comma/tab separated values) or JSON is probably one of the most simple solutions to have them ready for further analysis. 
 
 # Starting with R: getting and preparing the data
-
-Actually there are several ways to get the data into R for further analysis: 
-
-1. exporting the results as CSV/TSV (comma/tab separated values) or JSON, which is what I did,
-2. using one of the different R packages which are able to connect to a SPARQL endpoint and get the data (a general package, [SPARQL](https://cran.r-project.org/web/packages/SPARQL/index.html), and a specific one for using with wikidata, [WikidataR](WikidataR)).
-3. downloading the data to your computer with one of the available programs for doing this (I can recommend [wikidata-cli](https://github.com/maxlath/wikidata-cli)).
 
 In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). But if you want to play with the data of all EU-countries you can find it here. 
 
