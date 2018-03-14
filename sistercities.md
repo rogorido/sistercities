@@ -37,9 +37,11 @@ Running the queries against the [wikidata server](https://query.wikidata.org/) y
 
 # Starting with R: getting and preparing the data
 
-In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). But if you want to play with the data of all EU-countries you can find it here. 
+In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). The data for these countries can be downloaded  But if you want to play with the data of all EU-countries you can find it here. 
 
-For this lesson, I recommend you that you create a directory in your computer for the project and inside it two other directories: `data` and `maps`. Put the `tsv` files into the data directory. Open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R. The code we will use can be found [here](code/code.R).
+You also can run the queries again changing, but be aware that the data you will download will not probably be exactly the same that you can find in the providad file, since the data in wikidata are continuously being updated. 
+
+For this lesson, I recommend you that you create a directory in your computer for the project and inside another called: `data`. Put the `tsv` files into the data directory. Open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R. The code we will use can be found [here](code/code.R).
 
 ```{r}
 bulgaria <- read.csv("data/bulgaria.tsv", header = T, sep = "\t")
