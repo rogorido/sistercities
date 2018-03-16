@@ -162,7 +162,7 @@ As for the results, we can see that most of the countries analyzed have strong r
 
 So far we have seen the two most important syntax aspects needed for operate with ggplot2: adding layers and adding parameters to these layers. As I have already mentioned, one of the most important type of layers are the so called `geom`s. Using these layers is pretty straightforward in ggplot2: every plot type has a `geom` which can be added to `ggplot()`. For [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html) we have `geom_histogram()`, for [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html) `geom_boxplot()`, for [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html) `geom_violin()`, for [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html) `geom_dotplot()`, for [scatterplot](http://ggplot2.tidyverse.org/reference/geom_point.html) `geom_point()`, and so on. Every command can have parameters which let us configure aspects of the `geom()` (size of the points, colors, and so on). 
 
-We want now to take a lot at the distribution of the variable `dist` in our data, that is the distribution of the distances in kilometres of the sister cities. Doing so, we can analyze whether the cities with which the origin cities have a relationship are distant or not. We will then compare distributions of distnaces by using a boxplot to see differences between countries. We could so tentatively answer the question whether cities in the six analyzed countries tend to have relations with cities in their proximity or not. 
+We want now to take a lot at the distribution of the variable `dist` in our data, that is the distribution of the distances in kilometres of the sister cities. Doing so, we can analyze whether the cities with which the origin cities have a relationship are distant or not. We will then compare distributions of distances by using a boxplot to see differences between countries. We could so tentatively answer the question whether cities in the six analyzed countries tend to have relations with cities in their proximity or not. 
 
 The distribution of the variable `dist` is very skewed, since some (~900 of 13000) of the cities are very far away. This leads to a histogram which is not very informative. We can either take `log10(dist)` as our variable, that is, using the logarithm of the value, or filter the data to exclude the values above 5000kms. Honestly speaking, none of these methods is really convincing, but as far as we know that we are operating with manipulated data it is not so dangerous. Let's take a look at the simple code: 
 
@@ -177,13 +177,13 @@ ggplot(eudata.filtered, aes(x=dist)) + geom_histogram()
 
 As you see, we have just to add the layer `geom_histogram()` and ggplot2 plots what we want. However, making a good histogram is not an easy issue. ggplot2 gives us a warning that it has used internally the parameter `bins=30` and recommends us to pick a better value with `binwidth`. I recommend you to take a look at the help page of [geom_histogram()](http://ggplot2.tidyverse.org/reference/geom_histogram.html) for the many possibilities of configuration.
 
-The plot shows us that most of the sister cities are in a radius of c.1000kms. But maybe this is a distortion caused by our manipulation of the data. A cumulative distribution function (ECDF) provides a visualisation of this issue. In ggplot2 we can achieve it with this simple command: 
+But, what about the data? The plot shows us that most of the sister cities are in a radius of c.1000kms. But maybe this is a distortion caused by our manipulation of the data. A cumulative distribution function (ECDF) provides a visualisation of this issue. In ggplot2 we can achieve it with this simple command: 
 ```{r}
 ggplot(eudata, aes(x=dist)) + stat_ecdf()
 ```
 ![plot22](images/plot22.png)
 
-We use here again our non-filtered data (the dataframe `eudata`) and we confirm our previous observation, since more or less 75% of the cities are in a radius of c.1000kms.
+We use here again our non-filtered data (the dataframe `eudata`) and we confirm our previous observation, since more or less 75% of the cities are in a radius of c.1000kms. Even more: ~50% seem to be related to cities which are not further than 500kms away. 
 
 Finally we can use a boxplot to see whether there are differences among countries. In other words, whether the cities of some countries tend to establish relationships with distant or close cities. Again doing this in ggplot2 is pretty easy: 
 ```{r}
@@ -232,7 +232,7 @@ ggplot(data = eudata.sample,
 
 As you can see, this can easily be done: every function can get arguments which influence how the function makes its job. In this case, we pass to the function `geom_point()` different arguments (`size` and `color` or `colour`) which are straightforward. To find out which arguments are avalaible you can visit the help page of `geom_point()` by typing `?geom_point` in R or here [online](http://ggplot2.tidyverse.org/reference/geom_point.html).
 
-The plot looks now a bit better, but there are still a lot of things to improve. For instance, we want to add titles to the axes. Manipulating axes (and legends) is done by using the corresponding `scales` functions which we will cover later on. But since changing the titles is a very common action, ggplot has a shorter command to achieve it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (*labs* stands for *labels*):
+The plot looks now a bit better, but there are still a lot of things to improve. For instance, we want to add titles to the axes. Manipulating axes (and legends) is done by using the corresponding `scales` functions which we will cover later on. But since changing the titles is a very common action, ggplot has a shorter command to achieve it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (which stands for *labels*):
 
 ```{r}
 ggplot(data = eudata.sample,
@@ -277,7 +277,7 @@ Three aspects are here relevant:
   * since there are too many points I haved added the parameter `alpha` to make the points a little bit transparent,
   * ggplot2 has made some decisions for us: it selects colors on its own and it adds automatically a legend to the graph. 
 
-## Scales
+## Scales: colors, legends, axes
 
 But: how can we modify colors and legend? The so-called `scales` are your friend. Citing the ggplot2 book: "scales control the mapping from data to aesthetics. They take your data and turn it into something that you can see, like size, colour, position or shape". And at the same time, scales provide the tools that let you read the plot: the axes and legends. There are [many different scales](http://ggplot2.tidyverse.org/reference/#section-scales) you can use.
 
@@ -315,18 +315,12 @@ p1 + scale_colour_manual(values = c("red", "blue", "green"))
 ```
 ![plot05](images/plot05.png)
 
-In this way we can create graphs with our preferred colors. But often it is more recommendable to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot2 has already these palettes [integrated](http://ggplot2.tidyverse.org/reference/scale_brewer.html) and a specific `scale` for using them. For instance: 
+In this way we can create graphs with our preferred colors. But often it is more recommendable to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot2 has already these palettes [integrated](http://ggplot2.tidyverse.org/reference/scale_brewer.html) and a specific `scale` for using them (`scale_colour_brewer()`):
 
 ```{r}
-p1 + scale_colour_brewer(palette = "Dark2")
+p1 + scale_colour_brewer(palette = "Dark2") # you can try others such as "Set1", "Accent", etc.
 ```
 ![plot06](images/plot06.png)
-
-You could also try other palettes for qualitative colors: 
-```{r}
-p1 + scale_colour_brewer(palette = "Set1")
-p1 + scale_colour_brewer(palette = "Accent")
-```
 
 But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with a red scale the distance between the cities (we use again the log of the distance because of the skewness). 
 
