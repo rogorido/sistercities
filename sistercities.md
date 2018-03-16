@@ -9,7 +9,7 @@ layout: default
 difficulty: 2
 ---
 
-# Introduction and lesson goals 
+# Introduction, lesson goals and data
 
 Getting data and analyzing them is one of the most important tasks a historian has to face. Once you have your data, you have to analyze it. For this purpose plots are always an important instrument. Using R and the powerful package [ggplot2](http://ggplot2.tidyverse.org/) you can create useful, as well as beautiful plots to look inside your data and to publish in your work.
 
@@ -21,13 +21,13 @@ By the end of this lesson you will be able to do the following things with ggplo
 4. to create grids of plots to compare data
 6. to create new types of plots with ggplot2 extensions.
 
-# Cities and their sister cities in Europe 
+## Cities and their sister cities in Europe 
 
 The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sister cities around the world. As a historian a lot of relevant questions arise out of this empirical fact. For instance, when did this phenomenon begin (probably in the 19th century)? Why are the reasons behind the whole phenomenon? And more concrete: which are the concrete reasons for a city to seek for such relationships (economic, religious, cultural)? Or even more concrete: are German cities related to French or Polish cities, maybe as a an attempt to overcome deep historical tensions? Have Spanish cities proportionally more relationships to the spanish-speaking American cities? Do small cities (<10000) have also such relationships? Are EU-cities more related to other EU-cities or is this aspect not relevant at all? Do cities of former communist countries have more relationships with other cities of the present Russia or other former communist countries? Many other questions could also be asked.
 
 But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option, since it  has already this information which can be queried using [SPARQL](https://en.wikipedia.org/wiki/SPARQL) (a general and friendly introduction can be found [here](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL)). If you are interested in the complex queries used for doing it, you can find them [here](https://github.com/rogorido/sistercities/tree/master/sparql/queries). Exporting the results as CSV/TSV (comma/tab separated values) or JSON is the most simple solution to have them ready for further analysis in R. 
 
-# Starting with R: getting and preparing the data
+## Starting with R: getting and preparing the data
 
 In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). The data for these countries can be downloaded here (if you want to play with the raw data of all EU-countries you can find it here). 
 
