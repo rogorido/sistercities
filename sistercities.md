@@ -314,7 +314,7 @@ Now we can add manually the colors using `scale_colour_manual()`. In this case w
 ```{r}
 p1 + scale_colour_manual(values = c("red", "blue", "green"))
 ```
-![plot05](images/plot045.png)
+![plot05](images/plot05.png)
 
 In this way we can create graphs with our preferred colors. But often it is more recommendable to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot2 has already these palettes [integrated](http://ggplot2.tidyverse.org/reference/scale_brewer.html) and a specific `scale` for using them. For instance: 
 
@@ -345,17 +345,22 @@ p2 <- ggplot(data = eudata.sample,
 p2
 ```
 
-![plot7](images/plot7.png)
+![plot07](images/plot07.png)
 
-As you can see, there are two problems with this graph: blue is the used color and not red; the scala is not convincing since smaller distances are represented by the more dark blue. Again we need to use scales, but in this case another function. ggplot2 does not use in this case discrete colors (that is, one color for every distinct value of the qualitative variable), but only one color which is graduated. For this reason the scale we have to use is one which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
+As you can see, there are two problems with this graph: 
+
+1. blue is the used color and not red,
+2. the scala is not convincing since smaller distances are represented by the more dark blue. 
+
+Again we need to use scales, but in this case another function. ggplot2 does not use in this case discrete colors (that is, one color for every distinct value of the qualitative variable), but only one color which is graduated. For this reason the scale we have to use is one which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
 
 ```{r}
 p2 + scale_colour_gradient(low = "white", high = "red3")
 ```
 
-![plot8](images/plot8.png)
+![plot08](images/plot08.png)
 
-Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradientn`) have other possibilities. I encourage you to explore them looking at the [documentation page](http://ggplot2.tidyverse.org/reference/scale_gradient.html). As you can see from the plot, small cities tend to establish relationships with cities sc are not so distant.
+Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradientn`) have other possibilities. I encourage you to explore them looking at the [documentation page](http://ggplot2.tidyverse.org/reference/scale_gradient.html). By the way: as you can see from the plot, small cities tend to establish relationships with cities which  are not so distant.
 
 Finally we will slightly modify the legend, which is something (as I have already mentioned) which is controlled by the scales. We want to modify of course the terrible title of the legend and to 
 
@@ -368,7 +373,7 @@ p2 <- p2 + scale_colour_gradient(low = "white",
 												  
 p2
 ```
-![plot9](images/plot9.png)
+![plot09](images/plot09.png)
 
 The legend is controlled by the parameter [`guide`](http://ggplot2.tidyverse.org/reference/guides.html). In this case we tell ggplot2 to use a [`guide_colorbar()`](http://ggplot2.tidyverse.org/reference/guide_colourbar.html) with the parameters you can see regarding the title (caption, position, etc.).
 
