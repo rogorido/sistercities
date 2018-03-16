@@ -194,7 +194,7 @@ ggplot(eudata, aes(x = origincountry, y = dist)) + geom_boxplot()
 
 The plot shows that above all German cities have a tendency to look for sister cities in their proximity. If you do an ANOVA test you will see that the differences among the countries are statistically significant. It is up to you to think about hypotheses which could explain this fact. 
 
-## Adding information to graphs (colors, shapes, etc.). The use of `scales`
+## Adding information to graphs (colors, shapes, etc.).
 
 Til now we have played with different `geom`s, but we did not change the default aesthetic decisions that ggplot2 made for us. It's time to take a look at the important function `scales`. Let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We can do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data:
 
@@ -279,9 +279,9 @@ Two aspects are here relevant:
 
 ## Scales
 
-But: how can we modify colors and legend? The so-called `scales` are your friend. Citing the ggplot2 book: "scales control the mapping from data to aesthetics. They take your data and turn it into something that you can see, like size, colour, position or shape". And at the same time, scales provide the tools that let you read the plot: the axes and legends. Actually ggplot2 is always using per default scales when you create a graph.
+But: how can we modify colors and legend? The so-called `scales` are your friend. Citing the ggplot2 book: "scales control the mapping from data to aesthetics. They take your data and turn it into something that you can see, like size, colour, position or shape". And at the same time, scales provide the tools that let you read the plot: the axes and legends. Admittedly, scales are maybe the least intuitive element in ggplot2. There are [many different scales](http://ggplot2.tidyverse.org/reference/#section-scales) you can use.
 
-Nevertheless, I have to admit that scales are maybe the least intuitive element in ggplot2. There are [many different scales](http://ggplot2.tidyverse.org/reference/#section-scales) you can use. Noteworthing is the fact that the naming scheme for scales is made up of three pieces separated by “_“:
+Noteworthing is the fact that the naming scheme for scales is made up of three pieces separated by “_“:
 
   1. scale,
   2. The name of the aesthetic (e.g., colour, shape or x),
