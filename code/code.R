@@ -62,7 +62,7 @@ ggplot(data = eudata.sample,
            y = log(destinationpopulation))) +
        geom_point(size = 3, color = "red")
 
-we add titles, caption, etc.
+# we add titles, caption, etc.
 ggplot(data = eudata.sample,
        aes(x = log(originpopulation),
            y = log(destinationpopulation))) +
@@ -121,7 +121,7 @@ p2 <- ggplot(data = eudata.sample,
            y = log(destinationpopulation))) +
     geom_point(size = 3, aes( color = log(dist) )) +
     labs(title = "Population data of origin and destination city",
-         subtitle = "Colored by distance between the cities",
+         subtitle = "Colored by distance between cities",
          caption = "Data: www.wikidata.org",
          x = "Population of origin city (log)",
          y = "Population of destination city (log)")
