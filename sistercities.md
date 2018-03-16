@@ -394,20 +394,20 @@ We have only added the function `facet_wrap(~origincountry)` to the previous com
 
 ## Themes: changing static elements of the graphs
 
-Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes` which control things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built-in themes. The most important are `theme_grey()` (the default on), `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover the most important point is that you can easily create you own themes and use them in your plots. 
+Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes` which control things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built-in themes. The most important are `theme_grey()` (the default on), `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover you can easily create you own themes and use them in your plots. 
 
 ggplot2 uses per default `theme_grey()`.  It is very easy to use another theme. Using the last graph: 
 
 ```{r}
-p3 <- ggplot(eudata.perc.country, aes(x = typecountry, y = frequency)) +
+p3 <- ggplot(eudata.perc.country, aes(x = typecountry, y = perc)) +
     geom_bar(stat = "identity") +
-    scale_y_continuous(lim = c(0,1), labels = scales::percent_format()) +
     facet_wrap(~origincountry)
 
 p3 + theme_bw()
 ```
-
 ![plot14](images/plot14.png)
+
+As always, we add by using `+` a theme to our plot. 
 
 Even more: several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance using this last theme: 
 
@@ -417,34 +417,12 @@ library(ggthemes)
 
 p3 + theme_wsj()
 ```
-
 ![plot15](images/plot15.png)
 
 But more interesting is of course the possibility to modify yourself some aspects of the graph. There are two main possibilities: 
 
 1. create your own theme, taking for instance the code of the existing ones and modifying the concrete aspects you are interested in. The definition of the default themes can be found [here](https://github.com/tidyverse/ggplot2/blob/master/R/theme-defaults.r). 
-2. modify concrete aspects of the theme we are using. This is the approach we will follow here. 
-
-Modifying concrete aspects of a theme can be achieved by means of the function `theme()`. Unfortunately it is not possible in such a lesson to go into every single aspect which can be manipulated by using `theme()`. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and many others. Relevant is however the fact that by using `theme()` actually we are modifying the default theme we are using.
-
-For instance, let say we want to put the legend of the previous scatterplot in the bottom of the graph. This can be achieved by means of the following code:
-
-```{r}
-p2 + theme(legend.position = "bottom")
-
-```
-![plot16](images/plot16.png)
-
-We could also for instance remove the lines of the grid in one of the previous bargraphs modifying the white/black-theme (`theme_light()`):
-
-```{r}
-p4 + theme_light() +
-    theme(panel.grid.major.x = element_blank(),
-          panel.grid.minor.x = element_blank())
-```
-
-![plot17](images/plot17.png)
-
+2. modify concrete aspects of the theme we are using. Unfortunately it is not possible in such a lesson to go into every single aspect which can be manipulated. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and many others. 
 
 ## Extending ggplot2 with other geoms
 
