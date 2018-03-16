@@ -25,7 +25,7 @@ By the end of this lesson you will be able to do the following things with ggplo
 
 The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sister cities around the world. As a historian a lot of relevant questions arise out of this empirical fact. For instance, when did this phenomenon begin (probably in the 19th century)? Why are the reasons behind the whole phenomenon? And more concrete: which are the concrete reasons for a city to seek for such relationships (economic, religious, cultural)? Or even more concrete: are German cities related to French or Polish cities, maybe as a an attempt to overcome deep historical tensions? Have Spanish cities proportionally more relationships to the spanish-speaking American cities? Do small cities (<10000) have also such relationships? Are EU-cities more related to other EU-cities or is this aspect not relevant at all? Do cities of former communist countries have more relationships with other cities of the present Russia or other former communist countries? Many other questions could also be asked.
 
-But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option, since it  has already this information which can be queried using [SPARQL](https://en.wikipedia.org/wiki/SPARQL) (for specific issues in wikidata the more general and  friendly [introduction](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL)). If you are interested in the complex queries used for doing it, you can find them [here](https://github.com/rogorido/sistercities/tree/master/sparql/queries). Exporting the results as CSV/TSV (comma/tab separated values) or JSON is the most simple solution to have them ready for further analysis in R. 
+But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option, since it  has already this information which can be queried using [SPARQL](https://en.wikipedia.org/wiki/SPARQL) (a general and friendly introduction can be found [here](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL)). If you are interested in the complex queries used for doing it, you can find them [here](https://github.com/rogorido/sistercities/tree/master/sparql/queries). Exporting the results as CSV/TSV (comma/tab separated values) or JSON is the most simple solution to have them ready for further analysis in R. 
 
 # Starting with R: getting and preparing the data
 
@@ -33,10 +33,13 @@ In the present tutorial we will use only the data of six EU-countries: Germany, 
 
 You also can run the queries again changing, but be aware that the data you will download will not probably be exactly the same that you can find in the providad file, since the data in wikidata are continuously being updated. 
 
-For this lesson, I recommend you that you create a directory in your computer for the project and inside another called: `data`. Put the `tsv` file into this data directory. Open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R. The code we will use can be found [here](code/code.R).
+For this lesson, I recommend you that you create a directory in your computer for the project and inside another one called: `data`. Put the `tsv` file into this data directory, open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R. The code we will use can be found [here](code/code.R).
 
 ```{r}
+# we load the data into a variable 
 eudata <- read.csv("data/sistercities.tsv", header = T, sep = "\t")
+
+# we inspect the data
 str(eudata)
 ```
 
