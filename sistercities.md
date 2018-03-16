@@ -302,26 +302,26 @@ First of all we store our graph in a varible to use it several times, changing o
 p1 <- ggplot(data = eudata.sample,
        aes(x = log(originpopulation),
            y = log(destinationpopulation))) +
-    geom_point(size = 3, aes( color = typecountry )) +
+    geom_point(size = 3, alpha = 0.7, aes( color = typecountry )) +
     labs(title = "Population data of origin and destination city",
          caption = "Data: www.wikidata.org",
          x = "Population of origin city (log)",
          y = "Population of destination city (log)")
 ```
 
-Now we can add manually the colors using `scale_colour_manual()`. In this case we using colors which are [already defined in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf), but we could also use hexadecimal codes for specific colors. As you see, [`scale_colour_manual()`](http://ggplot2.tidyverse.org/reference/scale_manual.html) takes a compulsory argument (`values =`), namely a vector with the names of colors. 
+Now we can add manually the colors using `scale_colour_manual()`. In this case we use colors which are [already defined in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf), but we could also use hexadecimal codes for specific colors. As you see, [`scale_colour_manual()`](http://ggplot2.tidyverse.org/reference/scale_manual.html) takes a compulsory argument (`values =`), namely a vector with the names of colors. 
 
 ```{r}
 p1 + scale_colour_manual(values = c("red", "blue", "green"))
 ```
-![plot5](images/plot5.png)
+![plot05](images/plot045.png)
 
 In this way we can create graphs with our preferred colors. But often it is more recommendable to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot2 has already these palettes [integrated](http://ggplot2.tidyverse.org/reference/scale_brewer.html) and a specific `scale` for using them. For instance: 
 
 ```{r}
 p1 + scale_colour_brewer(palette = "Dark2")
 ```
-![plot6](images/plot6.png)
+![plot06](images/plot06.png)
 
 You could also try other palettes for qualitative colors: 
 ```{r}
