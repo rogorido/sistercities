@@ -232,6 +232,6 @@ ggplot(eudata, aes(x=log(originpopulation), y = origincountry)) +
     theme_ridges() +
     labs(title = "Population (log) of the origin cities",
          caption = "Data: www.wikidata.org",
-         x = "Population of destination city (log)",
+         x = "Population (log)",
          y = "Country")
 
