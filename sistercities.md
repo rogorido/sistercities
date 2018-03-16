@@ -207,54 +207,31 @@ ggplot(eudata, aes(x=dist)) + stat_ecdf()
 
 We use here again our non-filtered data (the dataframe `eudata`) and we confirm our previous observation, since more or less 75% of the cities are in a radius of c.1000kms.
 
-
-
-
-## se ha quedado colgado...
-
-We could improve it a lot, either changing the axes labels, the background, etc.  I would like to improve it by making the following changes: change the y axis to range
-from 0 to 1 and show a percentage symbol (%) in the y axis. As we are manipulating the way data are represented, we have to use scales. In this case `scale_y_continuous` which controls the representation of a continuous variable (the percentage in this case) on the y-axis.
-
+Finally we can use a boxplot to see whether there are differences among countries. In other words, whether the cities of some countries tend to establish relationships with distant or close cities. Again doing this in ggplot2 is pretty easy: 
 ```{r}
-ggplot(eudata.perc, aes(x = typecountry, y = frequency)) +
-    geom_bar(stat = "identity") +
-    scale_y_continuous(lim = c(0,1), labels = scales::percent_format())
+ggplot(eudata, aes(x = origincountry, y = dist)) + geom_boxplot()
 ```
-![plot12](images/plot12.png)
+![plot24](images/plot24.png)
 
-As always consult the very rich documentation for the many parameters present in the [continuous scales](http://ggplot2.tidyverse.org/reference/scale_continuous.html).
+The plot shows that above all German cities have a tendency to look for sister cities in their proximity. If you do an ANOVA test you will see that the differences among the countries are statistically significant. It is up to you to think about hypotheses which could explain this fact. 
 
+## Adding information to graphs (colors, shapes, etc.). The use of `scales`
 
-
-
-## A first example: a scatterplot of population data
-
-But, let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We can do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot2 this coud be done using the following code. 
+Til now we have played with different `geom`s, but we did not change the default aesthetic decision ggplot2 made for us. It's time to take a look at the important function `scales`. Let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We can do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot2 this coud be done using the following code. 
 
 ```{r}
-library(ggplot2)
-
 # we extract a random sample of 15% of the cities
 eudata.sample <- sample_frac(eudata, 0.15)
 
 # we create the plot
 ggplot(data = eudata.sample,
        aes(x = log(originpopulation),
-           y = log(destinationpopulation)))
-```
-
-Two notes before continuing: since the dataframe `eudata` has many points, this leads to an so-called overplotting (too many points). Therefore we select a random sample of 15% of the cities in our dataframe with the function [`sample_frac()`](http://dplyr.tidyverse.org/reference/sample.html) (in package `dplyr` ). Moreover we use the natural log of the population data to overcome the skewness of the data.
-
-
-```{r}
-ggplot(data = eudata.sample,
-       aes(x = log(originpopulation),
            y = log(destinationpopulation))) +
        geom_point()
 ```
-
 ![plot1](images/plot1.png)
 
+Two notes before continuing: since the dataframe `eudata` has many points, this leads to a so called overplotting (too many points). Therefore we select a random sample of 15% of the cities in our dataframe with the function [`sample_frac()`](http://dplyr.tidyverse.org/reference/sample.html) (in package `dplyr` ). Moreover we use the natural log of the population data to overcome the skewness of the data.
 
 There are three different elements which are worth looking at:
 
@@ -304,7 +281,7 @@ This will create a [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics
 
 Let us try change some aspects of the graph.
 
-## Adding information to graphs (colors, shapes, etc.). The use of `scales`
+
 
 In many cases we want to add information to the graph using different colors (or shapes) for every group. For instance we could color the points of our previous scatterplot using colors for the different types of cities (in the same country, in a EU-country or in a non-EU-country). Let's  create a first version of this new graph using the previous code: 
 
@@ -572,4 +549,20 @@ ggplot(eudata, aes(x = originpopulation)) + geom_histogram()
 ```
 
 As you can see, the syntax for creating the histogramm is simple: we tell ggplot2 which variable should be 'mapped' to the x axes (`òriginpopulation`) and that the `geom` specific for histograms (`geom_histogram()`) should be used. Admittedly, the plot is not very appealing. 
+
+
+
+## se ha quedado colgado...
+
+We could improve it a lot, either changing the axes labels, the background, etc.  I would like to improve it by making the following changes: change the y axis to range
+from 0 to 1 and show a percentage symbol (%) in the y axis. As we are manipulating the way data are represented, we have to use scales. In this case `scale_y_continuous` which controls the representation of a continuous variable (the percentage in this case) on the y-axis.
+
+```{r}
+ggplot(eudata.perc, aes(x = typecountry, y = frequency)) +
+    geom_bar(stat = "identity") +
+    scale_y_continuous(lim = c(0,1), labels = scales::percent_format())
+```
+![plot12](images/plot12.png)
+
+As always consult the very rich documentation for the many parameters present in the [continuous scales](http://ggplot2.tidyverse.org/reference/scale_continuous.html).
 
