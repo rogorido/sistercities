@@ -195,14 +195,9 @@ eudata.filtered <- filter(eudata, dist < 5000)
 
 ggplot(eudata.filtered, aes(x=dist)) + geom_histogram()
 ```
-As you see, we have just to add the layer `geom_histogram()` and ggplot2 plots what we want. However, making a good histogram is not an easy issue. ggplot2 gives us a warning that it has used internally the parameter `bins=30` and recommends us to pick a better value with `binwidth`. 
-```{r}
-# we filter the data. Remember that you have to
-# load tidyverse or dplyr, otherwise filter will be give an error
-eudata.filtered <- filter(eudata, dist < 5000)
+![plot23](images/plot23.png)
 
-ggplot(eudata.filtered, aes(x=dist)) + geom_histogram()
-```
+As you see, we have just to add the layer `geom_histogram()` and ggplot2 plots what we want. However, making a good histogram is not an easy issue. ggplot2 gives us a warning that it has used internally the parameter `bins=30` and recommends us to pick a better value with `binwidth`. I recommend you to take a look at the help page of [geom_histogram()](http://ggplot2.tidyverse.org/reference/geom_histogram.html) for the many possibilities of configuration.
 
 The plot shows us that most of the sister are in a radius of c.1000kms. But maybe this is a distortion caused by our manipulation of the data. A cumulative distribution function (ECDF) provides a visualisation of this issue. In ggplot2 we can achieve it with this simple command: 
 ```{r}
