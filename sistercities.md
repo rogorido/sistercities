@@ -362,7 +362,7 @@ p2 + scale_colour_gradient(low = "white", high = "red3")
 
 Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradientn`) have other possibilities. I encourage you to explore them looking at the [documentation page](http://ggplot2.tidyverse.org/reference/scale_gradient.html). By the way: as you can see from the plot, small cities tend to establish relationships with cities which  are not so distant.
 
-Finally we will slightly modify the legend, which is something (as I have already mentioned) which is controlled by the scales. We want to modify of course the terrible title of the legend and to 
+Finally we will slightly modify the legend, which is something (as I have already mentioned) which is controlled by the scales. We want to modify of course the terrible title of the legend and some of its parameters:
 
 ```{r}
 p2 <- p2 + scale_colour_gradient(low = "white",
@@ -375,26 +375,18 @@ p2
 ```
 ![plot09](images/plot09.png)
 
-The legend is controlled by the parameter [`guide`](http://ggplot2.tidyverse.org/reference/guides.html). In this case we tell ggplot2 to use a [`guide_colorbar()`](http://ggplot2.tidyverse.org/reference/guide_colourbar.html) with the parameters you can see regarding the title (caption, position, etc.).
+The legend is controlled by the parameter [`guide`](http://ggplot2.tidyverse.org/reference/guides.html). In this case we tell ggplot2 to use a [`guide_colorbar()`](http://ggplot2.tidyverse.org/reference/guide_colourbar.html) with the parameters you can see regarding the title (caption, position, etc.). 
 
 
 ## Faceting a graph 
 
-But imagine that we would like to represent the same data, but in separated graphs per country. For doing this ggplot2 has powerful possibilities, which are summarised under the label [*facetting*](http://ggplot2.tidyverse.org/reference/index.html#section-facetting). The most simple facetting function is [`facet_wrap()`](http://ggplot2.tidyverse.org/reference/facet_wrap.html), but you can also take a look at the richer [`facet_grid()`](http://ggplot2.tidyverse.org/reference/facet_grid.html).
+Previously we create a plot which compared cities and their relationships with cities in EU countries, non-EU countries using different colors for each country. Nevertheless, ggplot2 provides also a very effective way to make plots which can include information splitted by categories (space, time, and so). We can so represent the same data, but in separated graphs per country. For doing this ggplot2 has powerful possibilities, which are summarised under the label [*facetting*](http://ggplot2.tidyverse.org/reference/index.html#section-facetting). The most simple facetting function is [`facet_wrap()`](http://ggplot2.tidyverse.org/reference/facet_wrap.html), but you can also take a look at the richer [`facet_grid()`](http://ggplot2.tidyverse.org/reference/facet_grid.html).
 
 For getting the graph we are aiming at, we have to calculate the percentage per country into a new variable (`eudata.perc.country`) and then we create the graph: 
 ```{r}
-eudata.perc.country <- eudata %>%
-    group_by(origincountry, typecountry) %>%
-    summarise(total = n()) %>%
-    mutate(frequency = total / sum(total))
-
-p4 <- ggplot(eudata.perc.country, aes(x = typecountry, y = frequency)) +
+ggplot(eudata.perc.country, aes(x = typecountry, y = perc)) +
     geom_bar(stat = "identity") +
-    scale_y_continuous(lim = c(0,1), labels = scales::percent_format()) +
     facet_wrap(~origincountry)
-	
-p4
 ```
 ![plot13](images/plot13.png)
 
