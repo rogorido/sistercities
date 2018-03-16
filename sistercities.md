@@ -231,9 +231,9 @@ ggplot(data = eudata.sample,
 
 ![plot2](images/plot2.png)
 
-As you can see, this can easily be done: every function can get arguments which influence how the function makes its job. In this case, we pass to the function `geom_point()` different arguments (`size` and `color` or `colour`) which are straightforward. To find out which arguments are avalaible you can visit the help page of `geom_point()` by typing `?geom_point` in R or here [online](http://ggplot2.tidyverse.org/reference/geom_point.html). As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
+As you can see, this can easily be done: every function can get arguments which influence how the function makes its job. In this case, we pass to the function `geom_point()` different arguments (`size` and `color` or `colour`) which are straightforward. To find out which arguments are avalaible you can visit the help page of `geom_point()` by typing `?geom_point` in R or here [online](http://ggplot2.tidyverse.org/reference/geom_point.html).
 
-The plot looks a bit better, but there are still a lot of things to improve. For instance, we want to add titles to the axes. Manipulating axes (and legends) is done by using the corresponding `scales` functions. We will see it later on. But since changing the titles is a very common action, ggplot has a shorter command to achieve it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (*labs* stands for *labels*):
+The plot looks now a bit better, but there are still a lot of things to improve. For instance, we want to add titles to the axes. Manipulating axes (and legends) is done by using the corresponding `scales` functions which we will cover later on. But since changing the titles is a very common action, ggplot has a shorter command to achieve it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (*labs* stands for *labels*):
 
 ```{r}
 ggplot(data = eudata.sample,
@@ -274,21 +274,8 @@ ggplot(data = eudata.sample,
 
 Two aspects are here relevant:
 
-  * we modify `geom_point()` adding an argument: `aes(color = typecountry)`. Why do we use `aes()` and not just `color = typecountry` without putting it inside of `aes()`? You can try it on your own (you will get an error). The reason is very easy: using `aes()` we are telling ggplot2 that it has to map the argument `color` to the variable `typecountry`. In other words: we are telling ggplot that `typecountry` is a variable of the data we are using.
+  * we modify `geom_point()` adding an argument: `aes(color = typecountry)`. The tricky question is here: why do we use `aes()` and not just `color = typecountry` without putting it inside of `aes()`? You can try it on your own (you will get an error). The reason is very easy: using `aes()` we are telling ggplot2 that it has to map the argument `color` to the variable `typecountry`. In other words: we are telling ggplot2 that `typecountry` is a variable of the data we are using. Inside `aes()` we could have chosen another aspect, for instance the shape and relate it to a variable  with `aes(shape = typecountry)` (the plot does not look very good, so that I will not put it here),
   * ggplot2 has made some decisions for us: it selects colors on its own and it adds automatically a legend to the graph. 
-
-Let's say you want to use different shapes for the country's types. You could try this code (it is not really beautiful and I will not show here the plot it creates):
-
-```{r}
-ggplot(data = eudata.sample,
-       aes(x = log(originpopulation),
-           y = log(destinationpopulation))) +
-    geom_point(size = 3, aes( shape = typecountry )) +
-    labs(title = "Population data of origin and destination city",
-         caption = "Data: www.wikidata.org",
-         x = "Population of origin city (log)",
-         y = "Population of destination city (log)")
-```
 
 ## Scales
 
