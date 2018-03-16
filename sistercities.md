@@ -21,7 +21,7 @@ By the end of this lesson you will be able to do the following things with ggplo
 5. to manipulate different options of your polots 
 6. to create other types of new plots with ggplot2 extensions.
 
-# Wikidata: Cities and sister cities in Europe 
+# Cities and their sister cities in Europe 
 
 The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sister cities around the world. As a historian a lot of relevant questions arise out of this empirical fact. For instance, when did this phenomenon begin (probably in the 19th century)? Why are the reasons behind the whole phenomenon? And more concrete: which are the concrete reasons for a city to seek for such relationships (economic, religious, cultural)? Or even more concrete: are German cities related to French or Polish cities, maybe as a an attempt to overcome deep historical tensions? Have Spanish cities proportionally more relationships to the spanish-speaking American cities? Do small cities (<10000) have also such relationships? Are EU-cities more related to other EU-cities or is this aspect not relevant at all? Do cities of former communist countries have more relationships with other cities of the present Russia or other former communist countries?
 
@@ -39,27 +39,21 @@ For this lesson, I recommend you that you create a directory in your computer fo
 
 ```{r}
 eudata <- read.csv("data/sistercities.tsv", header = T, sep = "\t")
-```
-
-Doing so, we have a dataframe `eudata` with the data of the six countries. There are 13081 rows with 15 variables (if you have downloaded the data yourself, the number of rows can be different). You can check its structure by using: 
-
-```{r}
 str(eudata)
 ```
 
-As you can see, the following information is present in the dataframe: the name of the "origin city", that is the city whose sister cities we are looking for (in the column `origincityLabel`), the country (`origincountry`), the coordinates (in `originlat` and `originlong`) and the population (`originpopulation`). The same information is present for the sister city. Moreover we have two other columns: column `dist` indicates the distance between the two cities (in km) and the categorial column `eu` informs us whether the "destination city" is in the EU or not. 
+As you can see, we have a dataframe `eudata` with the data of the six countries. There are 13081 rows with 15 variables (if you have downloaded the data yourself, the number of rows can be different). The following information is present in the dataframe: the name of the "origin city", that is the city whose sister cities we are looking for (in the column `origincityLabel`), the country (`origincountry`), the coordinates (in `originlat` and `originlong`) and the population (`originpopulation`). The same information is present for the sister city. Moreover we have two other columns: column `dist` indicates the distance between the two cities (in km) and the categorial column `eu` informs us whether the "destination city" is in the EU or not. 
 
 This data are however not complete and it is a good idea to add some information. We want to add two additional columns. The first one holds the information whether the sister city is in the same country as the origin city (`samecountry`). Additionally, we will create a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
 
-I will not explain the details of these transformations. 
-If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/) (the author of ggplot2), which is included in the metapackage `tidyverse`. You can find a [good tutorial](http://programminghistorian.github.io/ph-submissions/lessons/data_wrangling_and_management_in_R) to using dplyr written by Nabeel Siddiqui. 
+I will not explain the details of these transformations. If you want to know how to manipulate data in R, we can combine native functions of R (such as `ifelse()`) with the functions provided by the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/) (the author of ggplot2), which is included in the metapackage `tidyverse`. You can find a [good tutorial](https://programminghistorian.org/lessons/data_wrangling_and_management_in_R) to using dplyr written by Nabeel Siddiqui. 
 
 ```{r}
 install.packages("tidyverse")
 library(tidyverse)
 
 # we check whether the cities are in the same country and store the info
-# into a new column and then we convert the column to a factor 
+# in a new column which is then converted into a factor 
 eudata$samecountry <- ifelse(as.character(eudata$origincountry) ==
                              as.character(eudata$destination_countryLabel), "same", "different")
 eudata$samecountry <- as.factor(eudata$samecountry)
