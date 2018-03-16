@@ -264,17 +264,18 @@ But let us make other changes. In many cases we want to add information to the g
 ggplot(data = eudata.sample,
        aes(x = log(originpopulation),
            y = log(destinationpopulation))) +
-    geom_point(size = 3, aes( color = typecountry )) +
+    geom_point(size = 3, alpha = 0.7, aes( color = typecountry )) +
     labs(title = "Population data of origin and destination city",
          caption = "Data: www.wikidata.org",
          x = "Population of origin city (log)",
          y = "Population of destination city (log)")
 ```
-![plot4](images/plot4.png)
+![plot04](images/plot04.png)
 
-Two aspects are here relevant:
+Three aspects are here relevant:
 
   * we modify `geom_point()` adding an argument: `aes(color = typecountry)`. The tricky question is here: why do we use `aes()` and not just `color = typecountry` without putting it inside of `aes()`? You can try it on your own (you will get an error). The reason is very easy: using `aes()` we are telling ggplot2 that it has to map the argument `color` to the variable `typecountry`. In other words: we are telling ggplot2 that `typecountry` is a variable of the data we are using. Inside `aes()` we could have chosen another aspect, for instance the shape and relate it to a variable  with `aes(shape = typecountry)` (the plot does not look very good, so that I will not put it here),
+  * since there are too many points I haved added the parameter `alpha` to make the points a little bit transparent,
   * ggplot2 has made some decisions for us: it selects colors on its own and it adds automatically a legend to the graph. 
 
 ## Scales
