@@ -162,7 +162,25 @@ ggplot(data = eudata.perc, aes(x = typecountry, y = perc)) +
 
 There is an important difference between the first barplot and this one. In our previous plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot2 must use for plotting the bars. Therefore we have to provide to ggplot2 the information where it can find this value. This information is in the column `perc`, so we add  `y=perc` as a parameter of `aes()`. But this is not enough. The tricky point is that per default `geom_bar()` uses internally the parameter `stat="count"`. This means that, as already mentioned, it will count how many times a value appears (in other words: it aggregates the data for you). Therefore we tell ggplot2 that the values are already there by passing the parameter `stat="identity"`. 
 
-Nevertheless this graph is still not convincing to me. I would like to improve it by making the following changes: change the y axis to range
+Nevertheless this graph is still not convincing to me. There are two dimensions which are worth improving. First, the aesthetical aspect of background, labels, etc. Second, the fact that we can not compare countries. This could be achieved by two means: either by using a bar for every country or by making a graph for each country (`facetting` in ggplot2 parlance). We will see later on how to manipulate the aesthetic aspects of our plot. Let see now how to create a plot which splits the information per country
+
+```{r}
+eudata.perc.country <- eudata %>%
+    group_by(origincountry, typecountry) %>%
+    summarise(total = n()) %>%
+    mutate(perc = total/sum(total))
+
+ggplot(data = eudata.perc.country, aes(x = typecountry, y = perc, fill = origincountry)) +
+    geom_bar(stat = "identity", position="dodge")
+```
+
+Again, we have to manipulate the data to get it/them in the form we need, aggregating per country and per type of country (EU, non-EU, etc). But let's take a look at the command for the plot. We passed a new parameter to the `ggplot()` command, namely `fill` indicating the column we want to use for the different bars. And we add the parameter `position` to `geom_bar()`, to achieve that the bar do not get stacked (which is the default), but put side by side. 
+
+As for the results, we can see that most of the countries analyzed have strong relationships with other EU countries with around 70-80% (Germany, France, Hungary,...). However, two others, Bulgaria and Portugal, have so many relationships with EU as with non-EU countries, which is maybe related to the eastern (communist) past (in the case of Bulgaria), or to the colonial past (Portugal). This will need of course further investigations. 
+
+
+
+We could improve it a lot, either changing the axes labels, the background, etc.  I would like to improve it by making the following changes: change the y axis to range
 from 0 to 1 and show a percentage symbol (%) in the y axis. As we are manipulating the way data are represented, we have to use scales. In this case `scale_y_continuous` which controls the representation of a continuous variable (the percentage in this case) on the y-axis.
 
 ```{r}
