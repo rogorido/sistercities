@@ -163,13 +163,13 @@ As for the results, we can see that most of the countries analyzed have strong r
 
 So far we have seen the two most important syntax aspects needed for operate with ggplot2: adding layers and adding parameters to these layers. As I have already mentioned, one of the most important type of layers are the so called `geom`s. Using these layers is pretty straightforward in ggplot2: every plot type has a `geom` which can be added to `ggplot()`. For [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html) we have `geom_histogram()`, for [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html) `geom_boxplot()`, for [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html) `geom_violin()`, for [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html) `geom_dotplot()`, for [scatterplot](http://ggplot2.tidyverse.org/reference/geom_point.html) `geom_point()`, and so on. Every command can have parameters which let us configure aspects of the `geom()` (size of the points, colors, and so on). 
 
-We want now to take a lot at the distribution of the variable `dist` in our data, that is the distribution of the distances in kilometres of the sister cities. Doing so, we can analyze whether the cities with which the origin cities have a relationship are far away or more or less nearby. We will then compare distributions of distnaces by using a boxplot to see differences between countries. We could so tentatively answer the question whether cities in the six analyzed countries tend to have relations with cities in their proximity or not. 
+We want now to take a lot at the distribution of the variable `dist` in our data, that is the distribution of the distances in kilometres of the sister cities. Doing so, we can analyze whether the cities with which the origin cities have a relationship are distant or not. We will then compare distributions of distnaces by using a boxplot to see differences between countries. We could so tentatively answer the question whether cities in the six analyzed countries tend to have relations with cities in their proximity or not. 
 
 The distribution of the variable `dist` is very skewed, since some (~900 of 13000) of the cities are very far away. This leads to a histogram which is not very informative. We can either take `log10(dist)` as our variable, that is, using the logarithm of the value, or filter the data to exclude the values above 5000kms. Honestly speaking, none of these methods is really convincing, but as far as we know that we are operating with manipulated data it is not so dangerous. Let's take a look at the simple code: 
 
 ```{r}
 # we filter the data. Remember that you have to
-# load tidyverse or dplyr, otherwise filter will be give an error
+# load tidyverse or dplyr, otherwise filter will throw an error
 eudata.filtered <- filter(eudata, dist < 5000)
 
 ggplot(eudata.filtered, aes(x=dist)) + geom_histogram()
@@ -178,7 +178,7 @@ ggplot(eudata.filtered, aes(x=dist)) + geom_histogram()
 
 As you see, we have just to add the layer `geom_histogram()` and ggplot2 plots what we want. However, making a good histogram is not an easy issue. ggplot2 gives us a warning that it has used internally the parameter `bins=30` and recommends us to pick a better value with `binwidth`. I recommend you to take a look at the help page of [geom_histogram()](http://ggplot2.tidyverse.org/reference/geom_histogram.html) for the many possibilities of configuration.
 
-The plot shows us that most of the sister are in a radius of c.1000kms. But maybe this is a distortion caused by our manipulation of the data. A cumulative distribution function (ECDF) provides a visualisation of this issue. In ggplot2 we can achieve it with this simple command: 
+The plot shows us that most of the sister cities are in a radius of c.1000kms. But maybe this is a distortion caused by our manipulation of the data. A cumulative distribution function (ECDF) provides a visualisation of this issue. In ggplot2 we can achieve it with this simple command: 
 ```{r}
 ggplot(eudata, aes(x=dist)) + stat_ecdf()
 ```
@@ -196,7 +196,7 @@ The plot shows that above all German cities have a tendency to look for sister c
 
 ## Adding information to graphs (colors, shapes, etc.). The use of `scales`
 
-Til now we have played with different `geom`s, but we did not change the default aesthetic decision ggplot2 made for us. It's time to take a look at the important function `scales`. Let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We can do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data. In ggplot2 this coud be done using the following code. 
+Til now we have played with different `geom`s, but we did not change the default aesthetic decisions that ggplot2 made for us. It's time to take a look at the important function `scales`. Let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We can do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data:
 
 ```{r}
 # we extract a random sample of 15% of the cities
@@ -504,11 +504,3 @@ Some aspects are relevant here:
   * we delete the title of the x and y axes by putting them to `NULL`. 
 
 
-
-There are three different elements which are worth looking at:
-
-1. every ggplot2 function (eg. `geom_point()`) can take arguments to modify concrete  aspects, 
-2. `scales` control the way variables are mapped from the data to the
-   plot. This affects axes, legends, etc.
-3. `themes` refer to the 'static' elements of the plot: the
-   background's elements (color, lines, etc.), the fontsize, etc. 
