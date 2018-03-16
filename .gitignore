@@ -21,3 +21,4 @@ gitHeadInfo.gin
 *.org
 datos/
 *.html
+*.Rhistory
