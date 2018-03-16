@@ -47,7 +47,7 @@ As you can see, we have a dataframe `eudata` with the data of the six countries.
 
 This data are however not complete and it is a good idea to add some information. We want to add two additional columns. The first one holds the information whether the sister city is in the same country as the origin city (`samecountry`). Additionally, we will create a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
 
-I will not explain the details of these transformations. If you want to know how to manipulate data in R, we can combine native functions of R (such as `ifelse()`) with the functions provided by the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/) (the author of ggplot2), which is included in the metapackage `tidyverse`. You can find a [good tutorial](https://programminghistorian.org/lessons/data_wrangling_and_management_in_R) to using dplyr written by Nabeel Siddiqui. 
+I will not explain the details of these transformations. In order to manipulate data in R, we can use native functions of R (such as `ifelse()`) with functions provided by the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/) (the author of ggplot2), which is included in the metapackage `tidyverse`. You can find a [good tutorial](https://programminghistorian.org/lessons/data_wrangling_and_management_in_R) about `dplyr` written by Nabeel Siddiqui. 
 
 ```{r}
 install.packages("tidyverse")
@@ -60,8 +60,8 @@ eudata$samecountry <- ifelse(as.character(eudata$origincountry) ==
 eudata$samecountry <- as.factor(eudata$samecountry)
 
 # we check whether both countries are in the EU and store the info 
-# into a new column and then we convert the column to a factor 
-# Note: you need at least dplyr version > 0.7 for this code!
+# in a new column and then we convert the column into a factor 
+# Note: you need at least dplyr version > 0.7 for this code to work!
 eudata <- eudata %>% dplyr::mutate(typecountry = case_when(samecountry == "same" & eu == "EU" ~ "same",
                                              samecountry == "different" & eu == "EU" ~ "EU",
                                              samecountry == "different" & eu == "Non-EU" ~ "Non-EU"))
