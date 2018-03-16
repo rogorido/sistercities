@@ -178,7 +178,44 @@ Again, we have to manipulate the data to get it/them in the form we need, aggreg
 
 As for the results, we can see that most of the countries analyzed have strong relationships with other EU countries with around 70-80% (Germany, France, Hungary,...). However, two others, Bulgaria and Portugal, have so many relationships with EU as with non-EU countries, which is maybe related to the eastern (communist) past (in the case of Bulgaria), or to the colonial past (Portugal). This will need of course further investigations. 
 
+## Other `geom`s: histograms, distribution plots and boxplots
 
+So far we have seen the two most important syntax aspects needed for operate with ggplot2: adding layers and adding parameters to these layers. As I have already mentioned, one of the most important type of layers are the so called `geom`s: : [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html), [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html), [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html), [density plots](http://ggplot2.tidyverse.org/reference/geom_density.html), [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html), and many more.
+
+Using these layers is pretty straightforward in ggplot2: every plot type has a `geom` which can be added to `ggplot()`. For histograms we have `geom_histogram()`, for boxplots `geom_boxplot()`, for violin plot `geom_violin()`, for dotplots `geom_dotplot()`, for scatterplot `geom_points()`, and so on. Every command can have parameters which let us configure aspects of the `geom()` (size of the points, colors, and so on). 
+
+We want now to take a lot at the distribution of the variable `dist` in our data, that is the distribution of the distances in kilometres of the sister cities. Doing so, we can analyze whether the cities with which the origin cities have a relationship are far away or more or less nearby. We will then compare distributions of distnaces by using a boxplot to see differences between countries. We could so tentatively answer the question whether cities in the six analyzed countries tend to have relations with cities in their proximity or not. 
+
+The distribution of the variable `dist` is very skewed, since some (~900 of 13000) of the cities are very far away. This leads to a histogram which is not very informative. We can either take `log10(dist)` as our variable, that is, using the logarithm of the value, or filter the data to exclude the values above 5000kms. Honestly speaking, none of these methods is really convincing, but as far as we know that we are operating with manipulated data it is not so dangerous. Let's take a look at the simple code: 
+
+```{r}
+# we filter the data. Remember that you have to
+# load tidyverse or dplyr, otherwise filter will be give an error
+eudata.filtered <- filter(eudata, dist < 5000)
+
+ggplot(eudata.filtered, aes(x=dist)) + geom_histogram()
+```
+As you see, we have just to add the layer `geom_histogram()` and ggplot2 plots what we want. However, making a good histogram is not an easy issue. ggplot2 gives us a warning that it has used internally the parameter `bins=30` and recommends us to pick a better value with `binwidth`. 
+```{r}
+# we filter the data. Remember that you have to
+# load tidyverse or dplyr, otherwise filter will be give an error
+eudata.filtered <- filter(eudata, dist < 5000)
+
+ggplot(eudata.filtered, aes(x=dist)) + geom_histogram()
+```
+
+The plot shows us that most of the sister are in a radius of c.1000kms. But maybe this is a distortion caused by our manipulation of the data. A cumulative distribution function (ECDF) provides a visualisation of this issue. In ggplot2 we can achieve it with this simple command: 
+```{r}
+ggplot(eudata, aes(x=dist)) + stat_ecdf()
+```
+![plot22](images/plot22.png)
+
+We use here again our non-filtered data (the dataframe `eudata`) and we confirm our previous observation, since more or less 75% of the cities are in a radius of c.1000kms.
+
+
+
+
+## se ha quedado colgado...
 
 We could improve it a lot, either changing the axes labels, the background, etc.  I would like to improve it by making the following changes: change the y axis to range
 from 0 to 1 and show a percentage symbol (%) in the y axis. As we are manipulating the way data are represented, we have to use scales. In this case `scale_y_continuous` which controls the representation of a continuous variable (the percentage in this case) on the y-axis.
@@ -193,10 +230,6 @@ ggplot(eudata.perc, aes(x = typecountry, y = frequency)) +
 As always consult the very rich documentation for the many parameters present in the [continuous scales](http://ggplot2.tidyverse.org/reference/scale_continuous.html).
 
 
-
-Let's continue with other aspects of ggplot2. I want to remember that ggplot2 has a lot of different `geom`s to represent data: [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html), [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html), [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html), [density plots](http://ggplot2.tidyverse.org/reference/geom_density.html), [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html), and many more.
-
-Let's begin with the most simple one. Later on we will split the graph so that every EU-country has its own graph.  Actually this can be simply done with this code (we use again the dataframe `eudata` with all data): 
 
 
 ## A first example: a scatterplot of population data
