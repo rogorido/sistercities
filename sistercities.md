@@ -375,7 +375,7 @@ The legend is controlled by the parameter [`guide`](http://ggplot2.tidyverse.org
 
 Previously we create a plot which compared cities and their relationships with cities in EU countries, non-EU countries using different colors for each country. Nevertheless, ggplot2 provides also a very effective way to make plots which can include information splitted by categories (space, time, and so). We can so represent the same data, but in separated graphs per country. For doing this ggplot2 has powerful possibilities, which are summarised under the label [*facetting*](http://ggplot2.tidyverse.org/reference/index.html#section-facetting). The most simple facetting function is [`facet_wrap()`](http://ggplot2.tidyverse.org/reference/facet_wrap.html), but you can also take a look at the richer [`facet_grid()`](http://ggplot2.tidyverse.org/reference/facet_grid.html).
 
-For getting the graph we are aiming at, we have to calculate the percentage per country into a new variable (`eudata.perc.country`) and then we create the graph: 
+Using our previous dataframe `eudata.perc.country` we can add a new layer in the following way:
 ```{r}
 ggplot(eudata.perc.country, aes(x = typecountry, y = perc)) +
     geom_bar(stat = "identity") +
@@ -383,13 +383,13 @@ ggplot(eudata.perc.country, aes(x = typecountry, y = perc)) +
 ```
 ![plot13](images/plot13.png)
 
-We have only added the function `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae.
+We have only added the layer `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae. We can control for the number of rows and columns in the grid. As already mentioned, take a look at the rich documentation.
 
 ## Themes: changing static elements of the graphs
 
-Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes` which control things like fonts, ticks, panel strips, and backgrounds. ggplot2 comes with a number of built-in themes. The most important are `theme_grey()` (the default on), `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Moreover you can easily create you own themes and use them in your plots. 
+Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes` which control things like fonts, ticks, panel strips, and backgrounds. `themes` are one of the most powerful and rich features of ggplot2, which makes it impossible to treat here every aspect.I will only mention two aspects. First, the fact that ggplot2 comes with a number of [built-in themes](http://ggplot2.tidyverse.org/reference/ggtheme.html). The most important are `theme_grey()` (the default on), `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Second, that you can easily create you own themes and use them in your plots. 
 
-ggplot2 uses per default `theme_grey()`.  It is very easy to use another theme. Using the last graph: 
+Using another theme diffent from the default one is again a very simple thing. We apply it as a new layer using `+`: 
 
 ```{r}
 p3 <- ggplot(eudata.perc.country, aes(x = typecountry, y = perc)) +
@@ -400,9 +400,7 @@ p3 + theme_bw()
 ```
 ![plot14](images/plot14.png)
 
-As always, we add the new element by using `+` a theme to our plot. 
-
-Even more: several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) or [`ggtech`](https://github.com/ricardo-bion/ggtech) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance to use this last theme we just need to do the following: 
+Several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) or [`ggtech`](https://github.com/ricardo-bion/ggtech) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance to use this last theme we just need to do the following: 
 
 ```{r}
 install.packages("ggthemes")
