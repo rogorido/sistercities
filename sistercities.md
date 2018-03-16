@@ -23,8 +23,10 @@ By the end of this lesson you will be able:
 
 1. to extract data from wikidata using the query language SPARQL,
 2. to import the extracted data into R,
-3. to plot the data using the package ggplot2,
-4. to plot the data in maps with ggplot2.
+3. to create barplots using the powerful graphics package ggplot2,
+4. to create histograms with ggplot2,
+5. to create scatterplots with ggplot2,
+6. to create other types of new plots with ggplot2 extensions.
 
 
 # Wikidata: Cities and sister cities in Europe 
@@ -37,38 +39,25 @@ Running the queries against the [wikidata server](https://query.wikidata.org/) y
 
 # Starting with R: getting and preparing the data
 
-In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). The data for these countries can be downloaded  But if you want to play with the data of all EU-countries you can find it here. 
+In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). The data for these countries can be downloaded here (if you want to play with the raw data of all EU-countries you can find it here). 
 
 You also can run the queries again changing, but be aware that the data you will download will not probably be exactly the same that you can find in the providad file, since the data in wikidata are continuously being updated. 
 
-For this lesson, I recommend you that you create a directory in your computer for the project and inside another called: `data`. Put the `tsv` files into the data directory. Open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R. The code we will use can be found [here](code/code.R).
+For this lesson, I recommend you that you create a directory in your computer for the project and inside another called: `data`. Put the `tsv` file into this data directory. Open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R. The code we will use can be found [here](code/code.R).
 
 ```{r}
-bulgaria <- read.csv("data/bulgaria.tsv", header = T, sep = "\t")
-france <- read.csv("data/france.tsv", header = T, sep = "\t")
-germany <- read.csv("data/germany.tsv", header = T, sep = "\t")
-hungary <- read.csv("data/hungary.tsv", header = T, sep = "\t")
-poland <- read.csv("data/poland.tsv", header = T, sep = "\t")
-portugal <- read.csv("data/portugal.tsv", header = T, sep = "\t")
-
-# we create a dataframe with the countries
-eudata <- rbind(bulgaria, france, germany,
-                hungary, poland, portugal)
-
-# we remove the previous variables
-rm(bulgaria, france, germany,
-   hungary, poland, portugal)
+eudata <- read.csv("data/sistercities.tsv", header = T, sep = "\t")
 ```
 
-Doing so, we have a dataframe `eudata` with the data of the six countries. There are 13081 rows with 15 variables (if you have downloaded the data yourself, the number of rows can be different). You can check its structure it using: 
+Doing so, we have a dataframe `eudata` with the data of the six countries. There are 13081 rows with 15 variables (if you have downloaded the data yourself, the number of rows can be different). You can check its structure by using: 
 
 ```{r}
 str(eudata)
 ```
 
-As you can see we have the following information in the dataframe: the name of the "origin city", that is the city whose sister cities we are looking for (in the column `origincityLabel`), the country (`origincountry`), the coordinates (in `originlat` and `originlong`) and the population (`originpopulation`). The same information ofr the sister city. Moreover we have the column `dist` with the distance between the two cities (in km) and the categorial column `eu` which informs us whether the "destination city" is in the EU or not. 
+As you can see, the following information is present in the dataframe: the name of the "origin city", that is the city whose sister cities we are looking for (in the column `origincityLabel`), the country (`origincountry`), the coordinates (in `originlat` and `originlong`) and the population (`originpopulation`). The same information is present for the sister city. Moreover we have two other columns: column `dist` indicates the distance between the two cities (in km) and the categorial column `eu` informs us whether the "destination city" is in the EU or not. 
 
-This data are however not complete and it is a good idea to add some information. We want to add two additional columns. The first one holds the information whether the sister city is in the same country as the origin city (`samecountry`). We create moreover a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
+This data are however not complete and it is a good idea to add some information. We want to add two additional columns. The first one holds the information whether the sister city is in the same country as the origin city (`samecountry`). Additionally, we will create a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
 
 I will not explain the details of these transformations. 
 If you want to know how to manipulate data in R, the best option nowadays is to use the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/) (the author of ggplot2), which is included in the metapackage `tidyverse`. You can find a [good tutorial](http://programminghistorian.github.io/ph-submissions/lessons/data_wrangling_and_management_in_R) to using dplyr written by Nabeel Siddiqui. 
@@ -77,11 +66,15 @@ If you want to know how to manipulate data in R, the best option nowadays is to 
 install.packages("tidyverse")
 library(tidyverse)
 
+# we check whether the cities are in the same country and store the info
+# into a new column and then we convert the column to a factor 
 eudata$samecountry <- ifelse(as.character(eudata$origincountry) ==
                              as.character(eudata$destination_countryLabel), "same", "different")
 eudata$samecountry <- as.factor(eudata$samecountry)
 
-# you need at least dplyr version > 0.7 for this code!
+# we check whether both countries are in the EU and store the info 
+# into a new column and then we convert the column to a factor 
+# Note: you need at least dplyr version > 0.7 for this code!
 eudata <- eudata %>% dplyr::mutate(typecountry = case_when(samecountry == "same" & eu == "EU" ~ "same",
                                              samecountry == "different" & eu == "EU" ~ "EU",
                                              samecountry == "different" & eu == "Non-EU" ~ "Non-EU"))
@@ -104,7 +97,7 @@ But why should you use ggplot2 at all? If you plan to work with R, ggplot2 has m
 
 1. it is very powerful, but at the same time relatively simple, 
 2. it creates beautiful publication-ready graphs,
-3. it has a lot of [extensions](http://www.ggplot2-exts.org/) which are increasingly being developed by the community. They enhance the possibilities of ggplot2 adding new functions, new types of graphs, new themes, etc.
+3. it has a lot of [extensions](http://www.ggplot2-exts.org/) which are increasingly being developed by the community. They enhance the possibilities of ggplot2 by adding new functions, new types of graphs, new themes, etc.
 4. it also has the possibility to create maps.
 
 Creating good graphics is a complicated issue, because you have to take into account many different aspects: the information you want to convey, the many possibilities of showing this information (scatterplots, boxplots, histogramms, and so on), the many aspects of a plot which can be adapted (axes, transformation of variables, legends, etc.), and so on. For this reason, ggplot2 is based on a theoretical book which proposes a so-called [*grammar of graphics*](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448/ref=as_li_ss_tl?ie=UTF8&qid=1477928463&sr=8-1&keywords=the+grammar+of+graphics&linkCode=sl1&tag=ggplot2-20&linkId=f0130e557161b83fbe97ba0e9175c431) (hence the *gg* in the name ggplot2) written by [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson). But, don't panic: you don't have to know anything about grammar. The main idea is that a plot is made up of a set of independent components that can be composed in many different ways. In brief we will see how to do it.
@@ -115,13 +108,78 @@ There is plenty of information about ggplot2 on the web, but I recommend you:
 2. for a general overview of the package you can visit the [documentation](http://docs.ggplot2.org/current/) of the package,
 3. very useful are also the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/) (based on the book [*R Graphics Cookbook. Practical Recipes for Visualizing Data*](http://shop.oreilly.com/product/0636920023135.do) by Winston Chang) and the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
 
-But, first of all, in order to use ggplot we have of course to install it. Actually I recommend to install the already mentioned metapackage [`tidyverse`](http://tidyverse.org/) which is a collection of packages written mainly by Wickham for doing most of the most useful operations with dataframes ([`dplyr`](http://dplyr.tidyverse.org/), [`readr`](http://readr.tidyverse.org/), [`tidyr`](http://tidyr.tidyverse.org/), [`forcats`](http://forcats.tidyverse.org/), etc.). ggplot2 is among these packages.
+But, first of all, in order to use ggplot we have of course to install it. Actually I recommend to install the already mentioned metapackage [`tidyverse`](http://tidyverse.org/) which is a collection of packages written mainly by Hadley Wickham for doing most of the most operations with dataframes you will ever need ([`dplyr`](http://dplyr.tidyverse.org/), [`readr`](http://readr.tidyverse.org/), [`tidyr`](http://tidyr.tidyverse.org/), [`forcats`](http://forcats.tidyverse.org/), etc.). `ggplot2`is also included in the metapackage `tidyverse`.
 
 ```{r}
 install.packages("tidyverse")
 # or only ggplot2
 # install.packages("ggplot2")
 ```
+
+## A first example: a bar graph
+
+But, let's begin with a small example which we will slowly modify. An interesting aspect in our data relates to the question whether european cities have more profound relationships with cities in their same country, in other EU countries other elsewhere in the world.  Graphically we can inspect this aspect by plotting a bar graph to know which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. In ggplot2 we could begin with the following code. 
+
+```{r}
+ggplot(data = eudata, aes(x = typecountry))
+```
+
+Let's take a look at the most important command in our example: `ggplot()` and its syntax which can be at the beginning a little strange.
+
+A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. In our example we are telling R the following: "create a ggplot graph using the data in `eudata` and map the variable `typecountry` to x". As you can see, the structure is very straightforward, except for the use of [`aes()`](http://ggplot2.tidyverse.org/reference/aes.html), which means in ggplot parlance *aesthetics*. It is not maybe a very telling expression, but the idea is very simple: we tell R that it has to map variables in the data to visual properties (aesthetics) of geoms in the graph. Do not panic if you do not understand it completely by now. We will go into depth in brief.
+
+If you press return now, you will be surprised: you will get an empty plot! Axes and plot area are there, but the data are not represented. This is however the expected behaviour. We have to tell ggplot2 which type of plot we want to create. That means: we need to add a layer to our plot. Adding different layers is the way to construct plots with ggplot2. 
+
+In ggplot2 there are different types of layers. One crucial type of them is the so-called  `geom()` (from *geometries*) layer which tells ggplot2 which type of graph we actually want to produce.  As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). In our case since we want to create a scatterplot, we need the `geom_bar()` layer. Adding layers is a simple operation which is achieving by using the command `+`:
+
+```{r}
+ggplot(eudata, aes(x = typecountry)) + geom_bar() 
+```
+![plot10](images/plot10.png)
+
+Now we have our first plot with ggplot2. As you can see, ggplot2 has taken some decisions on its own: background color, fontsize of the labels, etc. I think you would like to improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, and so on. Every single plot's aspect can be manipulated.
+
+There are three different elements which are worth looking at:
+
+1. every ggplot2 function (eg. `geom_point()`) can take arguments to modify concrete  aspects, 
+2. `scales` control the way variables are mapped from the data to the
+   plot. This affects axes, legends, etc.
+3. `themes` refer to the 'static' elements of the plot: the
+   background's elements (color, lines, etc.), the fontsize, etc. 
+
+However, this plot does not convey the information we wanted, since it represents raw count data and not percentages. There are several ways for doing this. One of them is transforming the data. Using the following code we create a new dataframe which aggregates the data per type of country and adds a new column named `perc` with the percentage values (I do not want to explain this code since this is not a tutorial about `dplyr`):
+
+```{r}
+eudata.perc <- eudata %>%
+    group_by(typecountry) %>%
+    summarise(total = n()) %>%
+    mutate(perc = total/sum(total))
+
+ggplot(data = eudata.perc, aes(x = typecountry, y = perc)) +
+    geom_bar(stat = "identity")
+```
+![plot11](images/plot11.png)
+
+There is an important difference between the first barplot and this one. In our previous plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot2 must use for plotting the bars. Therefore we have to provide to ggplot2 the information where it can find this value. This information is in the column `perc`, so we add  `y=perc` as a parameter of `aes()`. But this is not enough. The tricky point is that per default `geom_bar()` uses internally the parameter `stat="count"`. This means that, as already mentioned, it will count how many times a value appears (in other words: it aggregates the data for you). Therefore we tell ggplot2 that the values are already there by passing the parameter `stat="identity"`. 
+
+Nevertheless this graph is still not convincing to me. I would like to improve it by making the following changes: change the y axis to range
+from 0 to 1 and show a percentage symbol (%) in the y axis. As we are manipulating the way data are represented, we have to use scales. In this case `scale_y_continuous` which controls the representation of a continuous variable (the percentage in this case) on the y-axis.
+
+```{r}
+ggplot(eudata.perc, aes(x = typecountry, y = frequency)) +
+    geom_bar(stat = "identity") +
+    scale_y_continuous(lim = c(0,1), labels = scales::percent_format())
+```
+![plot12](images/plot12.png)
+
+As always consult the very rich documentation for the many parameters present in the [continuous scales](http://ggplot2.tidyverse.org/reference/scale_continuous.html).
+
+
+
+Let's continue with other aspects of ggplot2. I want to remember that ggplot2 has a lot of different `geom`s to represent data: [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html), [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html), [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html), [density plots](http://ggplot2.tidyverse.org/reference/geom_density.html), [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html), and many more.
+
+Let's begin with the most simple one. Later on we will split the graph so that every EU-country has its own graph.  Actually this can be simply done with this code (we use again the dataframe `eudata` with all data): 
+
 
 ## A first example: a scatterplot of population data
 
@@ -133,21 +191,14 @@ library(ggplot2)
 # we extract a random sample of 15% of the cities
 eudata.sample <- sample_frac(eudata, 0.15)
 
+# we create the plot
 ggplot(data = eudata.sample,
        aes(x = log(originpopulation),
            y = log(destinationpopulation)))
 ```
 
-Two notes before continuing: since the dataframe `eudata` has many points, this leads to an overplotting (too many points). Therefore we select a random sample of 15% of the cities in our dataframe with the function [`sample_frac()`](http://dplyr.tidyverse.org/reference/sample.html) (in package `dplyr` ). Moreover we use the natural log of the population data to overcome the skewness of the data.
+Two notes before continuing: since the dataframe `eudata` has many points, this leads to an so-called overplotting (too many points). Therefore we select a random sample of 15% of the cities in our dataframe with the function [`sample_frac()`](http://dplyr.tidyverse.org/reference/sample.html) (in package `dplyr` ). Moreover we use the natural log of the population data to overcome the skewness of the data.
 
-And now let's take a look to the important command: `ggplot()`. 
-A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. In our example we are telling R the following: "create a ggplot graph using the data in `eudata.sample` and map the variable `originpopulation` to x and `destinationpopulation` to y". As you can see, the
-structure is very straightforward, except for the use of [`aes()`](http://ggplot2.tidyverse.org/reference/aes.html), which means in ggplot parlance *aesthetics*. It is maybe a not very telling expression, but the idea is very simple: we tell R that it has to map variables in the data to visual properties (aesthetics) of geoms in the graph.
-
-If you press return now, you will be surprised: you will get an empty
-plot! Axes and plot area are there, but the data are not represented. This is however the expected behaviour. We have to tell ggplot2 which type of plot we want to create. That means: we need to add a layer to our plot. Adding different layers is the way to construct plots with ggplot2. 
-
-In ggplot2 there are different types of layers. One crucial type of them is the so-called  `geom()` (from *geometries*) layer. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). In our case since we want to create a scatterplot, we need the `geom_point()` layer. Therefore we add a layer to our plot using the command `+`:
 
 ```{r}
 ggplot(data = eudata.sample,
@@ -158,8 +209,6 @@ ggplot(data = eudata.sample,
 
 ![plot1](images/plot1.png)
 
-Now we have a scatterplot relating both variables. As you can see, it seems to be a clear lineal relationships between both variables. The more population a city has, the bigger its sistercities.  As for the aspects relevant here, we see that ggplot2 has made some decisions on its own: background color, fontsize, etc. I think you would like to improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, the size of the points, and so on. 
-Every single plot's aspect can be manipulated.
 
 There are three different elements which are worth looking at:
 
@@ -182,7 +231,7 @@ ggplot(data = eudata.sample,
 
 As you can see, this can easily be done: every function can get arguments which influence how the function makes its job. In this case, we pass to the function `geom_point()` different arguments (`size` and `color` or `colour`) which are straightforward. To find out which arguments are avalaible you can visit the help page of `geom_point()` by typing `?geom_point` in R or here [online](http://ggplot2.tidyverse.org/reference/geom_point.html). As expected, you can manipulated things like the color, the size, the shape, etc. of the points by using the corresponding argument. 
 
-The plot looks a bit better, but there are still a lot of things to improve. For instance, we want to add titles to the axes. Manipulating axes (and legends) is done by using the corresponding `scales` functions. We will see it later on. But since changing the titles is a very common action, ggplot has a shorter command to achieve it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (*labs* stands for *label*):
+The plot looks a bit better, but there are still a lot of things to improve. For instance, we want to add titles to the axes. Manipulating axes (and legends) is done by using the corresponding `scales` functions. We will see it later on. But since changing the titles is a very common action, ggplot has a shorter command to achieve it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (*labs* stands for *labels*):
 
 ```{r}
 ggplot(data = eudata.sample,
@@ -197,8 +246,7 @@ ggplot(data = eudata.sample,
 
 ![plot3](images/plot3.png)
 
-For the time being, we will let our graph such it is, without making
-any other changes. Useful is the possibility to save the graph. This can be done very in the following way: 
+For the time being, we will let our graph such it is, without making any other changes. Useful is the possibility to save the graph. This can be done very in the following way: 
 
 ```{r}
 ggsave("eudata.png")
@@ -343,47 +391,6 @@ p2
 
 The legend is controlled by the parameter [`guide`](http://ggplot2.tidyverse.org/reference/guides.html). In this case we tell ggplot2 to use a [`guide_colorbar()`](http://ggplot2.tidyverse.org/reference/guide_colourbar.html) with the parameters you can see regarding the title (caption, position, etc.).
 
-## Bar graphs and faceting
-
-Let's continue with other aspects of ggplot2. I want to remember that ggplot2 has a lot of different `geom`s to represent data: [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html), [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html), [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html), [density plots](http://ggplot2.tidyverse.org/reference/geom_density.html), [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html), and many more. Now we are interested in another aspect of our data. We want to know which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. For doing this we need another `geom`, namely `geom_bar()`. 
-
-Let's begin with the most simple one. Later on we will split the graph so that every EU-country has its own graph.  Actually this can be simply done with this code (we use again the dataframe `eudata` with all data): 
-
-```{r}
-ggplot(eudata, aes(x = typecountry)) + geom_bar() 
-```
-![plot10](images/plot10.png)
-
-The syntax is rather simple, but this is not want we exactly want since we see only count data and not percentages which would convey more information. There are several ways for doing this. One of them is transforming the data. One way of achieving it is as follows (I do not want to explain this code since this is not a tutorial about `dplyr`). What we get is a dataframe with percentages. We can represent it so:
-
-```{r}
-eudata.perc <- eudata %>%
-    group_by(typecountry) %>%
-    summarise(total = n()) %>%
-    mutate(frequency = total/sum(total))
-
-print(eudata.perc)
-
-ggplot(eudata.perc, aes(x = typecountry, y = frequency)) +
-    geom_bar(stat = "identity")
-```
-![plot11](images/plot11.png)
-
-There is an important difference between the first barplot and this
-one. In the first plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot2 must use for plotting the bars. In this case, we need to tell ggplot2 where it can find the value by setting `y=frequency` and (this is the tricky point) by using the `stat` argument of `geom_bar()`: per default `geom_bar()` uses internally `stat="count"`, which means, that it counts the number of ocurrences. But now we tell it that it has to use the number found in `y`.
-
-Nevertheless this graph is still not convincing to me. I would like to
-improve it by making the following changes: change the y axis to range
-from 0 to 1 and show a percentage symbol (%) in the y axis. As we are manipulating the way data are represented, we have to use scales. In this case `scale_y_continuous` which controls the representation of a continuous variable (the percentage in this case) on the y-axis.
-
-```{r}
-ggplot(eudata.perc, aes(x = typecountry, y = frequency)) +
-    geom_bar(stat = "identity") +
-    scale_y_continuous(lim = c(0,1), labels = scales::percent_format())
-```
-![plot12](images/plot12.png)
-
-As always consult the very rich documentation for the many parameters present in the [continuous scales](http://ggplot2.tidyverse.org/reference/scale_continuous.html).
 
 ## Faceting a graph 
 
@@ -463,7 +470,7 @@ p4 + theme_light() +
 
 ## Extending ggplot2 with other geoms
 
-As already mentioned, one of the strengths of ggplot2 is that is increasingly becoming a standard for plotting in R. For this reason, a lot of [extensions](http://www.ggplot2-exts.org/) have been written in the last years. You can create with them [network graphs](https://briatte.github.io/ggnetwork/), [radar charts](https://github.com/ricardo-bion/ggradar), [time series graphs](https://github.com/AtherEnergy/ggTimeSeries), and many more. Their use is incredibly easy. Let's see an example. 
+As already mentioned, one of the strengths of ggplot2 is that is increasingly becoming a standard for plotting in R. For this reason, a lot of [extensions](http://www.ggplot2-exts.org/) have been written in the last years. You can create with them [network graphs](https://briatte.github.io/ggnetwork/), [radar charts](https://github.com/ricardo-bion/ggradar), [time series graphs](https://github.com/AtherEnergy/ggTimeSeries), so called [ridgeline plots](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html) and many more. Their use is incredibly easy. Let's see an example. 
 
 Imagine that we want to plot the cities with more relationships among the analysed cities. We could for instance expect that capitals are among them. We could do this with a barplot, but instead of a barplot we can construct a so called lollipop graph. This can be achieved with the package `ggalt` (see [here](https://github.com/hrbrmstr/ggalt)). 
 
@@ -502,4 +509,21 @@ Some aspects are relevant here:
   * we use a new command: `coord_flip()` with which we can "rotate" the graph. 
   * we use `theme_pander()` (from the package `ggthemes`) and modify some aspects such as the lines of the grid. 
   * we delete the title of the x and y axes by putting them to `NULL`. 
+
+
+## Histograms: seeing distributions?
+
+[Histograms](https://en.wikipedia.org/wiki/Histogram) are among the simplest and most useful plots, since they enable us to see the distribution of a numerical variable. With the knowledge you already have, creating a histogramm in ggplot2 is straightforward. Let's imagine we want to plot the distribution of the origin cities we are analyzing. We can have a first impression by inspeting with `summary()` the five 'magic' numbers, that is, mean, median, 1st and 3rd quartil?? as well as the maximum and mininum. 
+
+```{r}
+summary(eudata$originpopulation)
+```
+
+The data are very skewed (the mean is even greater than the 3rd quartil), since many cities have less than ~71000 inhabitants, whereas some of them have more than half a million. The most simple histogramm created by ggplot2 will also reflect this fact: 
+
+```{r}
+ggplot(eudata, aes(x = originpopulation)) + geom_histogram()
+```
+
+As you can see, the syntax for creating the histogramm is simple: we tell ggplot2 which variable should be 'mapped' to the x axes (`òriginpopulation`) and that the `geom` specific for histograms (`geom_histogram()`) should be used. Admittedly, the plot is not very appealing. 
 
