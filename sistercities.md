@@ -280,18 +280,18 @@ Three aspects are here relevant:
 
 ## Scales
 
-But: how can we modify colors and legend? The so-called `scales` are your friend. Citing the ggplot2 book: "scales control the mapping from data to aesthetics. They take your data and turn it into something that you can see, like size, colour, position or shape". And at the same time, scales provide the tools that let you read the plot: the axes and legends. Admittedly, scales are maybe the least intuitive element in ggplot2. There are [many different scales](http://ggplot2.tidyverse.org/reference/#section-scales) you can use.
+But: how can we modify colors and legend? The so-called `scales` are your friend. Citing the ggplot2 book: "scales control the mapping from data to aesthetics. They take your data and turn it into something that you can see, like size, colour, position or shape". And at the same time, scales provide the tools that let you read the plot: the axes and legends. There are [many different scales](http://ggplot2.tidyverse.org/reference/#section-scales) you can use.
 
-Noteworthing is the fact that the naming scheme for scales is made up of three pieces separated by “_“:
+Admittedly, scales are maybe the least intuitive element in ggplot2. Noteworthing is the fact that the naming scheme for scales is made up of three pieces separated by “_“:
 
-  1. scale,
+  1. scales,
   2. The name of the aesthetic (e.g., colour, shape or x),
   3. The name of the scale (e.g., continuous, discrete, brewer).
 
 But let's take a look at it with our previous graph. In our last graph we can control 3 different scales: 
 
-1. `scales_x_continuous()` which controls the data of the x-axis,
-2. `scales_y_continuous()` which controls the data of y-axis,
+1. `scales_x_continuous()` which controls the data of the x-axis (when `x` is continuous),
+2. `scales_y_continuous()` which controls the data of y-axis (when `y` is continuous),
 3. `scales_colour`: which controls the color(s) used. 
 
 We will take a look at the possibilities of changing colors. (Nevertheless I have to warn you: the selection of colors for graphs is by no means an easy task; there is a lot of theoretical work done on this). We could do several things: manually passing some colors or  using a predefined color scala.
@@ -302,8 +302,8 @@ First of all we store our graph in a varible to use it several times, changing o
 p1 <- ggplot(data = eudata.sample,
        aes(x = log(originpopulation),
            y = log(destinationpopulation))) +
-    geom_point(size = 3, alpha = 0.7, aes( color = typecountry )) +
-    labs(title = "Population data of origin and destination city",
+       geom_point(size = 3, alpha = 0.7, aes( color = typecountry )) +
+       labs(title = "Population data of origin and destination city",
          caption = "Data: www.wikidata.org",
          x = "Population of origin city (log)",
          y = "Population of destination city (log)")
@@ -335,8 +335,8 @@ But let's look at another slightly different example. In the last graph we used 
 p2 <- ggplot(data = eudata.sample,
        aes(x = log(originpopulation),
            y = log(destinationpopulation))) +
-    geom_point(size = 3, aes( color = log(dist) )) +
-    labs(title = "Population data of origin and destination city",
+       geom_point(size = 3, aes( color = log(dist) )) +
+       labs(title = "Population data of origin and destination city",
          subtitle = "Colored by distance between cities",
          caption = "Data: www.wikidata.org",
          x = "Population of origin city (log)",
@@ -366,8 +366,8 @@ Finally we will slightly modify the legend, which is something (as I have alread
 
 ```{r}
 p2 <- p2 + scale_colour_gradient(low = "white",
-                           high = "red3",
-                           guide = guide_colorbar(title = "Distance in log(km)",
+                                 high = "red3",
+                                 guide = guide_colorbar(title = "Distance in log(km)",
                                                   direction = "horizontal",
                                                   title.position = "top"))
 												  
