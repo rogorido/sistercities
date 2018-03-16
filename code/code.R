@@ -1,18 +1,5 @@
 # we read the data from the CSV files
-bulgaria <- read.csv("data/bulgaria.tsv", header = T, sep = "\t")
-france <- read.csv("data/france.tsv", header = T, sep = "\t")
-germany <- read.csv("data/germany.tsv", header = T, sep = "\t")
-hungary <- read.csv("data/hungary.tsv", header = T, sep = "\t")
-poland <- read.csv("data/poland.tsv", header = T, sep = "\t")
-portugal <- read.csv("data/portugal.tsv", header = T, sep = "\t")
-
-# we create a dataframe with the countries
-eudata <- rbind(bulgaria, france, germany,
-                hungary, poland, portugal)
-
-# we remove the previous variables
-rm(bulgaria, france, germany,
-   hungary, poland, portugal)
+eudata <- read.csv("data/sistercities.tsv", header = T, sep = "\t")
 
 # let's look at the structure of the dataframe 
 str(eudata)
@@ -35,6 +22,25 @@ eudata$typecountry <- factor(eudata$typecountry)
 
 # we load ggplot2
 library(ggplot2)
+
+# we add a column with percentages per type of country
+eudata.perc <- eudata %>%
+    group_by(typecountry) %>%
+    summarise(total = n()) %>%
+    mutate(perc = total/sum(total))
+
+ggplot(data = eudata.perc, aes(x = typecountry, y = perc)) +
+    geom_bar(stat = "identity")
+
+# we add a column with percentages per country  and per type of country
+eudata.perc.country <- eudata %>%
+    group_by(origincountry, typecountry) %>%
+    summarise(total = n()) %>%
+    mutate(perc = total/sum(total))
+
+ggplot(data = eudata.perc.country, aes(x = typecountry, y = perc, fill = origincountry)) +
+    geom_bar(stat = "identity", position="dodge")
+
 
 # we extract a random sample of the data (15% of the total)
 eudata.sample <- sample_frac(eudata, 0.15)
