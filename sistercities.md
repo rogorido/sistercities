@@ -21,6 +21,8 @@ By the end of this lesson you will be able to do the following things with ggplo
 4. to create grids of plots to compare data
 6. to create new types of plots with ggplot2 extensions.
 
+In order to follow this follow, you are supposed to have knowledge about R. PH has several lessons covering different topics [add refs!].
+
 ## Cities and their sister cities in Europe 
 
 The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sister cities around the world. As a historian a lot of relevant questions arise out of this empirical fact. For instance, when did this phenomenon begin (probably in the 19th century)? Why are the reasons behind the whole phenomenon? And more concrete: which are the concrete reasons for a city to seek for such relationships (economic, religious, cultural)? Or even more concrete: are German cities related to French or Polish cities, maybe as a an attempt to overcome deep historical tensions? Have Spanish cities proportionally more relationships to the spanish-speaking American cities? Do small cities (<10000) have also such relationships? Are EU-cities more related to other EU-cities or is this aspect not relevant at all? Do cities of former communist countries have more relationships with other cities of the present Russia or other former communist countries? Many other questions could also be asked.
@@ -105,7 +107,7 @@ install.packages("tidyverse")
 
 ## A first example: a bar graph
 
-Let's begin with a small example. An interesting aspect in our data relates to the question whether european cities have more profound relationships with cities in their same country, in other EU countries other elsewhere in the world.  Graphically we can inspect this aspect by plotting a bar graph to know which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. In ggplot2 we could begin with the following code. 
+Let's begin with a small example. An interesting aspect in our data relates to the question whether european cities have more profound relationships with cities in their same country, in other EU countries other elsewhere in the world.  Graphically we can inspect this aspect by plotting a bar graph to know which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. In ggplot2 we could begin with the following code:
 
 ```{r}
 ggplot(data = eudata, aes(x = typecountry))
