@@ -75,7 +75,7 @@ load("sistercities.Rdata")
 
 # Graphics with ggplot2
 
-There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](http://lattice.r-forge.r-project.org/), and finally [ggplot2](http://ggplot2.tidyverse.org/), created by [Hadley Wickham ](http://hadley.nz/) and which is the system we will learn here.
+There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](http://lattice.r-forge.r-project.org/), and finally [ggplot2](http://ggplot2.tidyverse.org/), created by [Hadley Wickham ](http://hadley.nz/).
 
 ## ggplot2: General aspects 
 
@@ -86,7 +86,7 @@ But why should you use ggplot2 at all? If you plan to work with R, ggplot2 has m
 3. it has a lot of [extensions](http://www.ggplot2-exts.org/) which are increasingly being developed by the community. They enhance the possibilities of ggplot2 by adding new functions, new types of graphs, new themes, etc.
 4. it also has the possibility to create maps.
 
-Creating good graphics is a complicated issue, because you have to take into account many different aspects: the information you want to convey, the many possibilities of showing this information (scatterplots, boxplots, histogramms, and so on), the many aspects of a plot which can be adapted (axes, transformation of variables, legends, etc.), and so on. For this reason, ggplot2 is based on a theoretical book which proposes a so-called [*grammar of graphics*](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448/ref=as_li_ss_tl?ie=UTF8&qid=1477928463&sr=8-1&keywords=the+grammar+of+graphics&linkCode=sl1&tag=ggplot2-20&linkId=f0130e557161b83fbe97ba0e9175c431) (hence the *gg* in the name ggplot2) written by [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson). But, don't panic: you don't have to know anything about grammar. The main idea is that a plot is made up of a set of independent components that can be composed in many different ways. In brief we will see how to do it.
+Creating good graphics is a complicated issue. You have to take into account many different aspects: the information you want to convey, the many possibilities of showing this information (scatterplots, boxplots, histogramms, and so on), the many aspects of a plot which can be adapted (axes, transformation of variables, legends, etc.), and so on. For this reason, ggplot2 is based on a theoretical book which proposes a so-called [*grammar of graphics*](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448/ref=as_li_ss_tl?ie=UTF8&qid=1477928463&sr=8-1&keywords=the+grammar+of+graphics&linkCode=sl1&tag=ggplot2-20&linkId=f0130e557161b83fbe97ba0e9175c431) (hence the *gg* in the name ggplot2) written by [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson). But, don't panic: you don't have to know anything about grammar. The main idea is that a plot is made up of a set of independent components that can be composed in many different ways. In brief we will see how to do it.
 
 There is plenty of information about ggplot2 on the web, but I recommend you:
 
@@ -104,7 +104,7 @@ install.packages("tidyverse")
 
 ## A first example: a bar graph
 
-But, let's begin with a small example which we will slowly modify. An interesting aspect in our data relates to the question whether european cities have more profound relationships with cities in their same country, in other EU countries other elsewhere in the world.  Graphically we can inspect this aspect by plotting a bar graph to know which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. In ggplot2 we could begin with the following code. 
+Let's begin with a small example. An interesting aspect in our data relates to the question whether european cities have more profound relationships with cities in their same country, in other EU countries other elsewhere in the world.  Graphically we can inspect this aspect by plotting a bar graph to know which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. In ggplot2 we could begin with the following code. 
 
 ```{r}
 ggplot(data = eudata, aes(x = typecountry))
@@ -116,24 +116,16 @@ A small trick to learn ggplot2 is to think about the creation of plots like the 
 
 If you press return now, you will be surprised: you will get an empty plot! Axes and plot area are there, but the data are not represented. This is however the expected behaviour. We have to tell ggplot2 which type of plot we want to create. That means: we need to add a layer to our plot. Adding different layers is the way to construct plots with ggplot2. 
 
-In ggplot2 there are different types of layers. One crucial type of them is the so-called  `geom()` (from *geometries*) layer which tells ggplot2 which type of graph we actually want to produce.  As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). In our case since we want to create a scatterplot, we need the `geom_bar()` layer. Adding layers is a simple operation which is achieving by using the command `+`:
+In ggplot2 there are different types of layers. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). One crucial type is the so-called  `geom()` (from *geometries*) layer which tells ggplot2 which type of graph we actually want to produce. In our case since we want to create a scatterplot, we need the `geom_bar()` layer. Adding layers is a simple operation which is achieving by using the command `+`:
 
 ```{r}
 ggplot(eudata, aes(x = typecountry)) + geom_bar() 
 ```
 ![plot10](images/plot10.png)
 
-Now we have our first plot with ggplot2. As you can see, ggplot2 has taken some decisions on its own: background color, fontsize of the labels, etc. I think you would like to improve the quality and appearance of the plot, since some aspects are not very convincing: the labels of the axes, the plot's background, and so on. Every single plot's aspect can be manipulated.
+Now we have our first plot with ggplot2. As you can see, ggplot2 has taken some decisions on its own: background color, fontsize of the labels, etc. I think you would like to improve the quality and appearance of the plot and later on in this tutorial we will see how to do it.
 
-There are three different elements which are worth looking at:
-
-1. every ggplot2 function (eg. `geom_point()`) can take arguments to modify concrete  aspects, 
-2. `scales` control the way variables are mapped from the data to the
-   plot. This affects axes, legends, etc.
-3. `themes` refer to the 'static' elements of the plot: the
-   background's elements (color, lines, etc.), the fontsize, etc. 
-
-However, this plot does not convey the information we wanted, since it represents raw count data and not percentages. There are several ways for doing this. One of them is transforming the data. Using the following code we create a new dataframe which aggregates the data per type of country and adds a new column named `perc` with the percentage values (I do not want to explain this code since this is not a tutorial about `dplyr`):
+However, this plot does not convey the information we wanted, since it represents raw count data and not percentages. There are several ways to achieve it. One of them is transforming the data. Using the following code we create a new dataframe which aggregates the data per type of country and adds a new column named `perc` with the percentage values (again: see the [tutorial](https://programminghistorian.org/lessons/data_wrangling_and_management_in_R) about `dplyr` for details):
 
 ```{r}
 eudata.perc <- eudata %>%
@@ -510,3 +502,12 @@ Some aspects are relevant here:
   * we use `theme_pander()` (from the package `ggthemes`) and modify some aspects such as the lines of the grid. 
   * we delete the title of the x and y axes by putting them to `NULL`. 
 
+
+
+There are three different elements which are worth looking at:
+
+1. every ggplot2 function (eg. `geom_point()`) can take arguments to modify concrete  aspects, 
+2. `scales` control the way variables are mapped from the data to the
+   plot. This affects axes, legends, etc.
+3. `themes` refer to the 'static' elements of the plot: the
+   background's elements (color, lines, etc.), the fontsize, etc. 
