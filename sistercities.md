@@ -15,11 +15,11 @@ Getting data and analyzing them is one of the most important tasks a historian h
 
 By the end of this lesson you will be able to do the following things with ggplot2: 
 
-1. to create barplots
-2. to create histograms
-3. to create boxplots
-5. to manipulate different options of your polots 
-6. to create other types of new plots with ggplot2 extensions.
+1. to create different types of plots: barplots, histograms, boxplots, scatterplots, etc.
+2. to manipulate different options of your plots, such as colors or sizes 
+3. to add meaningful labels to your plots 
+4. to create grids of plots to compare data
+6. to create new types of plots with ggplot2 extensions.
 
 # Cities and their sister cities in Europe 
 
@@ -322,7 +322,7 @@ p1 + scale_colour_brewer(palette = "Dark2") # you can try others such as "Set1",
 ```
 ![plot06](images/plot06.png)
 
-But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to represent with a red scale the distance between the cities (we use again the log of the distance because of the skewness). 
+But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to add more information to our plot including the distance between the cities (we use again the log of the distance because of the skewness). We want to do it using the red color to signalise the distance. Its intensity should represent the distance. We could try the following code:
 
 ```{r}
 p2 <- ggplot(data = eudata.sample,
@@ -345,7 +345,7 @@ As you can see, there are two problems with this graph:
 1. blue is the used color and not red,
 2. the scala is not convincing since smaller distances are represented by the more dark blue. 
 
-Again we need to use scales, but in this case another function. ggplot2 does not use in this case discrete colors (that is, one color for every distinct value of the qualitative variable), but only one color which is graduated. For this reason the scale we have to use is one which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient. For instance: 
+Again we need to use scales, but in this case another function. ggplot2 does not use in this case discrete colors (that is, one color for every distinct value of the qualitative variable), but only one color which is graduated. For this reason the scale we have to use is one which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient: 
 
 ```{r}
 p2 + scale_colour_gradient(low = "white", high = "red3")
