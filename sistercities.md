@@ -138,9 +138,9 @@ ggplot(data = eudata.perc, aes(x = typecountry, y = perc)) +
 ```
 ![plot11](images/plot11.png)
 
-There is an important difference between the first barplot and this one. In our previous plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot2 must use for plotting the bars. Therefore we have to provide to ggplot2 the information where it can find this value. This information is in the column `perc`, so we add  `y=perc` as a parameter of `aes()`. But this is not enough. The tricky point is that per default `geom_bar()` uses internally the parameter `stat="count"`. This means that, as already mentioned, it will count how many times a value appears (in other words: it aggregates the data for you). Therefore we tell ggplot2 that the values are already there by passing the parameter `stat="identity"`. 
+There is an important difference between the first barplot and this one. In our previous plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot2 must use for plotting the bars. Therefore we have to provide to ggplot2 the information where it can find this value. This information is in the column `perc`, so we add  `y=perc` as a parameter of `aes()`. But this is not enough. The tricky point is that per default `geom_bar()` uses internally the parameter `stat="count"`. This means that, as already mentioned, it will count how many times a value appears (in other words: it aggregates the data for you). Having the data already aggregated, we have just to inform ggplot2 that the values are already there by passing the parameter `stat="identity"`. 
 
-Nevertheless this graph is still not convincing to me. There are two dimensions which are worth improving. First, the aesthetical aspect of background, labels, etc. Second, the fact that we can not compare countries. This could be achieved by two means: either by using a bar for every country or by making a graph for each country (`facetting` in ggplot2 parlance). We will see later on how to manipulate the aesthetic aspects of our plot. Let see now how to create a plot which splits the information per country
+Nevertheless this graph is still not convincing to me: we can not compare countries. This could be achieved by two means: either by using a bar for every country or by making a graph for each country (`facetting` in ggplot2 parlance). Let see now how to create a plot which splits the information per country
 
 ```{r}
 eudata.perc.country <- eudata %>%
@@ -151,6 +151,7 @@ eudata.perc.country <- eudata %>%
 ggplot(data = eudata.perc.country, aes(x = typecountry, y = perc, fill = origincountry)) +
     geom_bar(stat = "identity", position="dodge")
 ```
+![plot25](images/plot25.png)
 
 Again, we have to manipulate the data to get it/them in the form we need, aggregating per country and per type of country (EU, non-EU, etc). But let's take a look at the command for the plot. We passed a new parameter to the `ggplot()` command, namely `fill` indicating the column we want to use for the different bars. And we add the parameter `position` to `geom_bar()`, to achieve that the bar do not get stacked (which is the default), but put side by side. 
 
