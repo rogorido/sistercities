@@ -377,7 +377,6 @@ Silistra	Bulgaria	44.118611111111	27.260277777778	35230	Kikinda	45.824444444444	
 Sofia	Bulgaria	42.7	23.333333333333	1286383	Sidon	33.560555555556	35.398055555556		Lebanon	1462	Non-EU
 Kazanlak	Bulgaria	42.616666666667	25.4	50000	Luxor	25.696944444444	32.642222222222	202232	Egypt	1994	Non-EU
 Lovech	Bulgaria	43.134166666667	24.717222222222	39316	Lotoshino	56.23	35.636666666667		Russia	1650	Non-EU
-origincityLabel	origincountry	originlat	originlong	originpopulation	sistercityLabel	destinationlat	destinationlong	destinationpopulation	destination_countryLabel	dist	eu
 Gordes	France	43.911111111111	5.2002777777778	1946	Bornem	51.0986	4.2358		Belgium	802	EU
 Saulxures-sur-Moselotte	France	47.949444444444	6.7691666666667	2721	Hamoir	50.433333333333	5.5333333333333		Belgium	290	EU
 Athis-Mons	France	48.708611111111	2.3891666666667	30094	Ballina	54.1167	-9.1667		Ireland	1000	EU
@@ -4247,7 +4246,6 @@ Strasbourg	France	48.573333333333	7.7522222222222	275718	Vologda	59.216666666667
 Arles	France	43.676944444444	4.6286111111111	53660	Pskov	57.816666666667	28.333333333333	208145	Russia	2270	Non-EU
 Jonzac	France	45.446666666667	-0.43361111111111	3465	Grindavík	63.841283333333	-22.437105555556		Iceland	2460	Non-EU
 La Roche-sur-Yon	France	46.669722222222	-1.4277777777778	52732	Makhachkala	42.983333333333	47.483333333333	587876	Russia	3816	Non-EU
-origincityLabel	origincountry	originlat	originlong	originpopulation	sistercityLabel	destinationlat	destinationlong	destinationpopulation	destination_countryLabel	dist	eu
 Rotenburg an der Wümme	Germany	53.106944444444	9.3969444444444		Aalter	51.083333333333	3.45		Belgium	464	EU
 Lüdenscheid	Germany	51.216666666667	7.6333333333333		Leuven	50.866666666667	4.7	98292	Belgium	209	EU
 Bad Zwischenahn	Germany	53.183611111111	8.0097222222222	27965	Izegem	50.9172	3.215		Belgium	413	EU
@@ -9929,7 +9927,6 @@ Osnabrück	Germany	52.278888888889	8.0430555555556	156315	Tver	56.857827777778	3
 Weilburg	Germany	50.483333333333	8.25	13337	Reykjavík	64.15	-21.883333333333	121490	Iceland	2324	Non-EU
 Borna	Germany	51.116666666667	12.5	19424	Irpin	50.516666666667	30.25		Ukraine	1246	Non-EU
 Minden	Germany	52.283333333333	8.9166666666667	81598	Grodno	53.666666666667	23.816666666667	361352	Belarus	1007	Non-EU
-origincityLabel	origincountry	originlat	originlong	originpopulation	sistercityLabel	destinationlat	destinationlong	destinationpopulation	destination_countryLabel	dist	eu
 Tapolca	Hungary	46.882777777778	17.441111111111	15582	Lempäälä	61.313888888889	23.752777777778	22536	Finland	1655	EU
 Villány	Hungary	45.869444444444	18.455555555556	2539	Zamárdi	46.884338888889	17.950511111111	2424	Hungary	119	EU
 Gödöllő	Hungary	47.6	19.366666666667	32720	Forssa	60.816666666667	23.616666666667	17422	Finland	1495	EU
@@ -11031,7 +11028,6 @@ Orosháza	Hungary	46.567777777778	20.642777777778	28356	Panjin	41.11983	122.0633
 Harkány	Hungary	45.8475	18.236666666667	4219	Kurchatov	51.666666666667	35.65		Russia	1426	Non-EU
 Nyírbátor	Hungary	47.835277777778	22.13	12259	Vynohradiv	48.139722222222	23.033055555556		Ukraine	75	Non-EU
 Tapolca	Hungary	46.882777777778	17.441111111111	15582	Solotvyno	47.959722222222	23.866944444444		Ukraine	498	Non-EU
-origincityLabel	origincountry	originlat	originlong	originpopulation	sistercityLabel	destinationlat	destinationlong	destinationpopulation	destination_countryLabel	dist	eu
 Bełchatów	Poland	51.366666666667	19.366666666667	59025	Csongrád	46.711111111111	20.140277777778	16564	Hungary	521	EU
 Sosnowiec	Poland	50.3	19.166666666667	214488	Komárom	47.735833333333	18.156388888889	18957	Hungary	294	EU
 Opole Lubelskie	Poland	51.15	21.966666666667		Sátoraljaújhely	48.393888888889	21.656111111111	14956	Hungary	307	EU
@@ -12567,7 +12563,6 @@ Bytów	Poland	54.133333333333	17.5		Zalishchyky	48.639241488656	25.737360606667	
 Racibórz	Poland	50.083333333333	18.233333333333		Tysmenytsia	48.900833333333	24.849166666667		Ukraine	495	Non-EU
 Kostrzyn nad Odrą	Poland	52.588333333333	14.666666666667		Sambir	49.516666666667	23.2	35026	Ukraine	687	Non-EU
 Zgorzelec	Poland	51.152777777778	15	31359	Myrhorod	49.963979122963	33.612380907578		Ukraine	1318	Non-EU
-origincityLabel	origincountry	originlat	originlong	originpopulation	sistercityLabel	destinationlat	destinationlong	destinationpopulation	destination_countryLabel	dist	eu
 Setúbal	Portugal	38.524305555556	-8.8926111111111		Udine	46.066666666667	13.233333333333	99094	Italy	1995	EU
 Faro	Portugal	37.016666666667	-7.9333333333333		Málaga	36.716666666667	-4.4166666666667	569009	Spain	315	EU
 Coimbra	Portugal	40.201272222222	-8.4077388888889	143396	Padua	45.406388888889	11.877777777778	211560	Italy	1747	EU
