@@ -224,3 +224,14 @@ ggplot(eudata.percity.filtered, aes(x = reorder(origincityLabel, total), total))
     labs(x = NULL, y = NULL,
          title = "Cities with most relationships",
          caption = "Data: wikidata.org")
+
+# ggrides
+
+ggplot(eudata, aes(x=log(originpopulation), y = origincountry)) +
+    geom_density_ridges() +
+    theme_ridges() +
+    labs(title = "Population (log) of the origin cities",
+         caption = "Data: www.wikidata.org",
+         x = "Population of destination city (log)",
+         y = "Country")
+

@@ -409,7 +409,7 @@ p3 + theme_bw()
 
 As always, we add the new element by using `+` a theme to our plot. 
 
-Even more: several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance to use this last theme we just need to do the following: 
+Even more: several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) or [`ggtech`](https://github.com/ricardo-bion/ggtech) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance to use this last theme we just need to do the following: 
 
 ```{r}
 install.packages("ggthemes")
@@ -424,8 +424,24 @@ But more interesting is of course the possibility to modify yourself some aspect
 1. create your own theme, taking for instance the code of the existing ones and modifying the concrete aspects you are interested in. The definition of the default themes can be found [here](https://github.com/tidyverse/ggplot2/blob/master/R/theme-defaults.r). 
 2. modify concrete aspects of the theme we are using. Unfortunately it is not possible in such a lesson to go into every single aspect which can be manipulated. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and many others. 
 
-## Extending ggplot2 with other geoms
+## Extending ggplot2 with other packages
 
 As already mentioned, one of the strengths of ggplot2 is that is increasingly becoming a standard for plotting in R. For this reason, a lot of [extensions](http://www.ggplot2-exts.org/) have been written in the last years. You can create with them [network graphs](https://briatte.github.io/ggnetwork/), [radar charts](https://github.com/ricardo-bion/ggradar), [time series graphs](https://github.com/AtherEnergy/ggTimeSeries), so called [ridgeline plots](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html) and many more. Their use is incredibly easy. Let's see an example. 
 
+We will make a so called ridgeline plot which create the impression of a mountain range. They can be quite useful for visualizing changes in distributions over time or space, if I may cite the webpage of the project. We will visualize the population data of the origin cities. This simple code is enough (we use a log-transformation of the data because of its skewness):
 
+```{r}
+install.packages("ggridges")
+library(ggridges)
+
+ggplot(eudata, aes(x=log(originpopulation), y = origincountry)) +
+    geom_density_ridges() +
+    theme_ridges() +
+    labs(title = "Population (log) of the origin cities",
+         caption = "Data: www.wikidata.org",
+         x = "Population of destination city (log)",
+         y = "Country")
+```
+![plot26](images/plot26.png)
+
+The library `ggridges` adds a new layer `geom_density_ridges()` and a new theme `theme_ridges()` which easily expand the possibilities of plotting data in R. 
