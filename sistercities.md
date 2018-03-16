@@ -393,8 +393,8 @@ Using another theme diffent from the default one is again a very simple thing. W
 
 ```{r}
 p3 <- ggplot(eudata.perc.country, aes(x = typecountry, y = perc)) +
-	geom_bar(stat = "identity") +
-    facet_wrap(~origincountry)
+     	geom_bar(stat = "identity") +
+        facet_wrap(~origincountry)
 
 p3 + theme_bw()
 ```
@@ -413,13 +413,13 @@ p3 + theme_wsj()
 But more interesting is of course the possibility to modify yourself some aspects of the graph. There are two main possibilities: 
 
 1. create your own theme, taking for instance the code of the existing ones and modifying the concrete aspects you are interested in. The definition of the default themes can be found [here](https://github.com/tidyverse/ggplot2/blob/master/R/theme-defaults.r). 
-2. modify concrete aspects of the theme we are using. Unfortunately it is not possible in such a lesson to go into every single aspect which can be manipulated. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): panel.grid.major, panel.grid.minor, plot.background, legend.background, legend.margin, and many others. 
+2. modify concrete aspects of the theme we are using. Unfortunately it is not possible in such a lesson to go into every single aspect which can be manipulated. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): `panel.grid.major`, `panel.grid.minor`, `plot.background`, `legend.background`, `legend.margin`, and many others. 
 
 ## Extending ggplot2 with other packages
 
-As already mentioned, one of the strengths of ggplot2 is that is increasingly becoming a standard for plotting in R. For this reason, a lot of [extensions](http://www.ggplot2-exts.org/) have been written in the last years. You can create with them [network graphs](https://briatte.github.io/ggnetwork/), [radar charts](https://github.com/ricardo-bion/ggradar), [time series graphs](https://github.com/AtherEnergy/ggTimeSeries), so called [ridgeline plots](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html) and many more. Their use is incredibly easy. Let's see an example. 
+As already mentioned, one of the strengths of ggplot2 is the fact that a lot of [extensions](http://www.ggplot2-exts.org/) have been written in the last years. You can create with them [network graphs](https://briatte.github.io/ggnetwork/), [radar charts](https://github.com/ricardo-bion/ggradar), [time series graphs](https://github.com/AtherEnergy/ggTimeSeries), so called [ridgeline plots](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html) and many more. Their use is incredibly easy. Let's see an example. 
 
-We will make a so called ridgeline plot which create the impression of a mountain range. They can be quite useful for visualizing changes in distributions over time or space, if I may cite the webpage of the project. We will visualize the population data of the origin cities. This simple code is enough (we use a log-transformation of the data because of its skewness):
+We will make a so called ridgeline plot which create the impression of a mountain range. They can be quite useful for visualizing changes in distributions over time or space, if I may cite from the webpage of the project. We will visualize the population data of the origin cities. This simple code is enough (we use a log-transformation because of the skewness of the data):
 
 ```{r}
 install.packages("ggridges")
