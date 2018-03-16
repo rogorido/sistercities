@@ -95,7 +95,7 @@ There is plenty of information about ggplot2 on the web, but I recommend you:
 2. for a general overview of the package you can visit the [documentation](http://docs.ggplot2.org/current/) of the package,
 3. very useful are also the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/) (based on the book [*R Graphics Cookbook. Practical Recipes for Visualizing Data*](http://shop.oreilly.com/product/0636920023135.do) by Winston Chang) and the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
 
-But, first of all, in order to use ggplot we have of course to install it. Actually I recommend to install the already mentioned metapackage [`tidyverse`](http://tidyverse.org/) which is a collection of packages written mainly by Hadley Wickham for doing most of the most operations with dataframes you will ever need ([`dplyr`](http://dplyr.tidyverse.org/), [`readr`](http://readr.tidyverse.org/), [`tidyr`](http://tidyr.tidyverse.org/), [`forcats`](http://forcats.tidyverse.org/), etc.). `ggplot2`is also included in the metapackage `tidyverse`.
+But, first of all, in order to use ggplot2 we have of course to install it. Actually I recommend to install the already mentioned metapackage [`tidyverse`](http://tidyverse.org/) which is a collection of packages written mainly by Hadley Wickham for doing most of the most operations with dataframes you will ever need ([`dplyr`](http://dplyr.tidyverse.org/), [`readr`](http://readr.tidyverse.org/), [`tidyr`](http://tidyr.tidyverse.org/), [`forcats`](http://forcats.tidyverse.org/), etc.). `ggplot2`is also included in the metapackage `tidyverse`.
 
 ```{r}
 install.packages("tidyverse")
@@ -111,18 +111,16 @@ Let's begin with a small example. An interesting aspect in our data relates to t
 ggplot(data = eudata, aes(x = typecountry))
 ```
 
-Let's take a look at the most important command in our example: `ggplot()` and its syntax which can be at the beginning a little strange.
-
-A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. In our example we are telling R the following: "create a ggplot graph using the data in `eudata` and map the variable `typecountry` to x". As you can see, the structure is very straightforward, except for the use of [`aes()`](http://ggplot2.tidyverse.org/reference/aes.html), which means in ggplot parlance *aesthetics*. It is not maybe a very telling expression, but the idea is very simple: we tell R that it has to map variables in the data to visual properties (aesthetics) of geoms in the graph. Do not panic if you do not understand it completely by now. We will go into depth in brief.
-
-If you press return now, you will be surprised: you will get an empty plot! Axes and plot area are there, but the data are not represented. This is however the expected behaviour. We have to tell ggplot2 which type of plot we want to create. That means: we need to add a layer to our plot. Adding different layers is the way to construct plots with ggplot2. 
-
-In ggplot2 there are different types of layers. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). One crucial type is the so-called  `geom()` (from *geometries*) layer which tells ggplot2 which type of graph we actually want to produce. In our case since we want to create a scatterplot, we need the `geom_bar()` layer. Adding layers is a simple operation which is achieving by using the command `+`:
+If you press return now, you will be surprised: you will get an empty plot! Axes and plot area are there, but the data are not represented. This is however the expected behaviour. We have to tell ggplot2 which type of plot we want to create. That means: we need to add a layer to our plot. Adding different layers is the way to construct plots with ggplot2. In ggplot2 there are different types of layers. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). One crucial type is the so-called  `geom()` (from *geometries*) layer which tells ggplot2 which type of graph we actually want to produce. In our case since we want to create a barplot, we need the `geom_bar()` layer. Adding layers is a simple operation which is achieving by using the command `+`:
 
 ```{r}
 ggplot(eudata, aes(x = typecountry)) + geom_bar() 
 ```
 ![plot10](images/plot10.png)
+
+Let's take a look at the most important command in our example: `ggplot()` and its syntax which can be at the beginning a little strange.
+
+A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. In our example we are telling R the following: "create a ggplot graph using the data in `eudata` and map the variable `typecountry` to x and add a layer of `geom_bar()` ". As you can see, the structure is very straightforward, except for the use of [`aes()`](http://ggplot2.tidyverse.org/reference/aes.html), which means in ggplot parlance *aesthetics*. It is not maybe a very telling expression, but the idea is very simple: we tell R that it has to map variables in the data to visual properties (aesthetics) of geoms in the graph. Do not panic if you do not understand it completely by now. We will go into depth in brief.
 
 Now we have our first plot with ggplot2. As you can see, ggplot2 has taken some decisions on its own: background color, fontsize of the labels, etc. I think you would like to improve the quality and appearance of the plot and later on in this tutorial we will see how to do it.
 
@@ -140,9 +138,9 @@ ggplot(data = eudata.perc, aes(x = typecountry, y = perc)) +
 ```
 ![plot11](images/plot11.png)
 
-There is an important difference between the first barplot and this one. In our previous plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot2 must use for plotting the bars. Therefore we have to provide to ggplot2 the information where it can find this value. This information is in the column `perc`, so we add  `y=perc` as a parameter of `aes()`. But this is not enough. The tricky point is that per default `geom_bar()` uses internally the parameter `stat="count"`. This means that, as already mentioned, it will count how many times a value appears (in other words: it aggregates the data for you). Having the data already aggregated, we have just to inform ggplot2 that the values are already there by passing the parameter `stat="identity"`. 
+There is an important difference between the first barplot and this one. In our previous plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot2 must use for plotting the bars. Therefore we have to provide ggplot2 with the information where it can find this value. This information is in the column `perc`, so we add  `y = perc` as a parameter of `aes()`. But this is not enough. The tricky point is that per default `geom_bar()` uses internally the parameter `stat = "count"`. This means that, as already mentioned, it will count how many times a value appears (in other words: it aggregates the data for you). Having the data already aggregated, we have just to inform ggplot2 that the values are already there by passing the parameter `stat = "identity"`. 
 
-Nevertheless this graph is still not convincing to me: we can not compare countries. This could be achieved by two means: either by using a bar for every country or by making a graph for each country (`facetting` in ggplot2 parlance). Let see now how to create a plot which splits the information per country
+Nevertheless, with this graph we can not compare countries. This could be achieved by two means: either by using a bar for every country or by making a graph for each country (`facetting` in ggplot2 parlance). Let see now how to create a plot which splits the information per country
 
 ```{r}
 # we aggregate the data per country and type of country and add a new column with percentages
@@ -158,7 +156,7 @@ ggplot(data = eudata.perc.country, aes(x = typecountry, y = perc, fill = originc
 
 Again, we have to manipulate the data to get it/them in the form we need, aggregating per country and per type of country (EU, non-EU, etc). But let's take a look at the command for the plot. We passed a new parameter to the `ggplot()` command, namely `fill` indicating the column we want to use for the different bars. And we add the parameter `position` to `geom_bar()`, to achieve that the bar do not get stacked (which is the default), but put side by side. By using `fill` ggplot2 has chosen some colors for use and has colorized the columns of the graph according to the countries. 
 
-As for the results, we can see that most of the countries analyzed have strong relationships with other EU countries with around 70-80% (Germany, France, Hungary,...). However, two others, Bulgaria and Portugal, have so many relationships with EU as with non-EU countries, which is maybe related to the eastern (communist) past (in the case of Bulgaria), or to the colonial past (in the case of Portugal). This will need of course further investigations. 
+As for the results, we can see that most of the countries analyzed have strong relationships with other EU countries with around 70-80% (Germany, France, Hungary,...). However, two others, Bulgaria and Portugal, have so many relationships with EU as with non-EU countries, which is maybe related to the colonial past (in the case of Portugal). This will need of course further investigations. 
 
 ## Other `geom`s: histograms, distribution plots and boxplots
 
