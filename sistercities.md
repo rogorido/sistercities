@@ -128,6 +128,7 @@ Now we have our first plot with ggplot2. As you can see, ggplot2 has taken some 
 However, this plot does not convey the information we wanted, since it represents raw count data and not percentages. There are several ways to achieve it. One of them is transforming the data. Using the following code we create a new dataframe which aggregates the data per type of country and adds a new column named `perc` with the percentage values (again: see the [tutorial](https://programminghistorian.org/lessons/data_wrangling_and_management_in_R) about `dplyr` for details):
 
 ```{r}
+# we aggregate the data per type of country and add a new column with percentages
 eudata.perc <- eudata %>%
     group_by(typecountry) %>%
     summarise(total = n()) %>%
@@ -143,6 +144,7 @@ There is an important difference between the first barplot and this one. In our 
 Nevertheless this graph is still not convincing to me: we can not compare countries. This could be achieved by two means: either by using a bar for every country or by making a graph for each country (`facetting` in ggplot2 parlance). Let see now how to create a plot which splits the information per country
 
 ```{r}
+# we aggregate the data per country and type of country and add a new column with percentages
 eudata.perc.country <- eudata %>%
     group_by(origincountry, typecountry) %>%
     summarise(total = n()) %>%
@@ -153,15 +155,13 @@ ggplot(data = eudata.perc.country, aes(x = typecountry, y = perc, fill = originc
 ```
 ![plot25](images/plot25.png)
 
-Again, we have to manipulate the data to get it/them in the form we need, aggregating per country and per type of country (EU, non-EU, etc). But let's take a look at the command for the plot. We passed a new parameter to the `ggplot()` command, namely `fill` indicating the column we want to use for the different bars. And we add the parameter `position` to `geom_bar()`, to achieve that the bar do not get stacked (which is the default), but put side by side. 
+Again, we have to manipulate the data to get it/them in the form we need, aggregating per country and per type of country (EU, non-EU, etc). But let's take a look at the command for the plot. We passed a new parameter to the `ggplot()` command, namely `fill` indicating the column we want to use for the different bars. And we add the parameter `position` to `geom_bar()`, to achieve that the bar do not get stacked (which is the default), but put side by side. By using `fill` ggplot2 has chosen some colors for use and has colorized the columns of the graph according to the countries. 
 
-As for the results, we can see that most of the countries analyzed have strong relationships with other EU countries with around 70-80% (Germany, France, Hungary,...). However, two others, Bulgaria and Portugal, have so many relationships with EU as with non-EU countries, which is maybe related to the eastern (communist) past (in the case of Bulgaria), or to the colonial past (Portugal). This will need of course further investigations. 
+As for the results, we can see that most of the countries analyzed have strong relationships with other EU countries with around 70-80% (Germany, France, Hungary,...). However, two others, Bulgaria and Portugal, have so many relationships with EU as with non-EU countries, which is maybe related to the eastern (communist) past (in the case of Bulgaria), or to the colonial past (in the case of Portugal). This will need of course further investigations. 
 
 ## Other `geom`s: histograms, distribution plots and boxplots
 
-So far we have seen the two most important syntax aspects needed for operate with ggplot2: adding layers and adding parameters to these layers. As I have already mentioned, one of the most important type of layers are the so called `geom`s: : [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html), [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html), [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html), [density plots](http://ggplot2.tidyverse.org/reference/geom_density.html), [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html), and many more.
-
-Using these layers is pretty straightforward in ggplot2: every plot type has a `geom` which can be added to `ggplot()`. For histograms we have `geom_histogram()`, for boxplots `geom_boxplot()`, for violin plot `geom_violin()`, for dotplots `geom_dotplot()`, for scatterplot `geom_points()`, and so on. Every command can have parameters which let us configure aspects of the `geom()` (size of the points, colors, and so on). 
+So far we have seen the two most important syntax aspects needed for operate with ggplot2: adding layers and adding parameters to these layers. As I have already mentioned, one of the most important type of layers are the so called `geom`s. Using these layers is pretty straightforward in ggplot2: every plot type has a `geom` which can be added to `ggplot()`. For [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html) we have `geom_histogram()`, for [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html) `geom_boxplot()`, for [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html) `geom_violin()`, for [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html) `geom_dotplot()`, for [scatterplot](http://ggplot2.tidyverse.org/reference/geom_point.html) `geom_point()`, and so on. Every command can have parameters which let us configure aspects of the `geom()` (size of the points, colors, and so on). 
 
 We want now to take a lot at the distribution of the variable `dist` in our data, that is the distribution of the distances in kilometres of the sister cities. Doing so, we can analyze whether the cities with which the origin cities have a relationship are far away or more or less nearby. We will then compare distributions of distnaces by using a boxplot to see differences between countries. We could so tentatively answer the question whether cities in the six analyzed countries tend to have relations with cities in their proximity or not. 
 
