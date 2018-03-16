@@ -525,35 +525,4 @@ Some aspects are relevant here:
   * we delete the title of the x and y axes by putting them to `NULL`. 
 
 
-## Histograms: seeing distributions?
-
-[Histograms](https://en.wikipedia.org/wiki/Histogram) are among the simplest and most useful plots, since they enable us to see the distribution of a numerical variable. With the knowledge you already have, creating a histogramm in ggplot2 is straightforward. Let's imagine we want to plot the distribution of the origin cities we are analyzing. We can have a first impression by inspeting with `summary()` the five 'magic' numbers, that is, mean, median, 1st and 3rd quartil?? as well as the maximum and mininum. 
-
-```{r}
-summary(eudata$originpopulation)
-```
-
-The data are very skewed (the mean is even greater than the 3rd quartil), since many cities have less than ~71000 inhabitants, whereas some of them have more than half a million. The most simple histogramm created by ggplot2 will also reflect this fact: 
-
-```{r}
-ggplot(eudata, aes(x = originpopulation)) + geom_histogram()
-```
-
-As you can see, the syntax for creating the histogramm is simple: we tell ggplot2 which variable should be 'mapped' to the x axes (`òriginpopulation`) and that the `geom` specific for histograms (`geom_histogram()`) should be used. Admittedly, the plot is not very appealing. 
-
-
-
-## se ha quedado colgado...
-
-We could improve it a lot, either changing the axes labels, the background, etc.  I would like to improve it by making the following changes: change the y axis to range
-from 0 to 1 and show a percentage symbol (%) in the y axis. As we are manipulating the way data are represented, we have to use scales. In this case `scale_y_continuous` which controls the representation of a continuous variable (the percentage in this case) on the y-axis.
-
-```{r}
-ggplot(eudata.perc, aes(x = typecountry, y = frequency)) +
-    geom_bar(stat = "identity") +
-    scale_y_continuous(lim = c(0,1), labels = scales::percent_format())
-```
-![plot12](images/plot12.png)
-
-As always consult the very rich documentation for the many parameters present in the [continuous scales](http://ggplot2.tidyverse.org/reference/scale_continuous.html).
 
