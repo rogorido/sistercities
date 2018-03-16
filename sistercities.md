@@ -11,23 +11,15 @@ difficulty: 2
 
 # Introduction and lesson goals 
 
-Getting data and analyzing them is one of the most important tasks a historian has to face. Data are nowadays becoming omnipresent, but it
-is not always easy to know how to extract them from the different
-places we can find them on/in the web. In the last years the so-called
-*semantic web* has been developped. The idea behind it is to
-categorise concepts and data and, above all, put all them in
-relationship. Once you have the data you can analyze them and plot
-them with R. 
+Getting data and analyzing them is one of the most important tasks a historian has to face. Once you have your data, you have to analyze it. For this purpose plots are always an important instrument. Using R and the powerful package [ggplot2](http://ggplot2.tidyverse.org/) you can create useful, as well as beautiful plots to look inside your data and to publish in your work.
 
-By the end of this lesson you will be able:
+By the end of this lesson you will be able to do the following things with ggplot2: 
 
-1. to extract data from wikidata using the query language SPARQL,
-2. to import the extracted data into R,
-3. to create barplots using the powerful graphics package ggplot2,
-4. to create histograms with ggplot2,
-5. to create scatterplots with ggplot2,
+1. to create barplots
+2. to create histograms
+3. to create boxplots
+5. to manipulate different options of your polots 
 6. to create other types of new plots with ggplot2 extensions.
-
 
 # Wikidata: Cities and sister cities in Europe 
 
@@ -523,6 +515,4 @@ Some aspects are relevant here:
   * we use a new command: `coord_flip()` with which we can "rotate" the graph. 
   * we use `theme_pander()` (from the package `ggthemes`) and modify some aspects such as the lines of the grid. 
   * we delete the title of the x and y axes by putting them to `NULL`. 
-
-
 
