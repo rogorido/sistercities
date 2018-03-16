@@ -400,16 +400,16 @@ ggplot2 uses per default `theme_grey()`.  It is very easy to use another theme. 
 
 ```{r}
 p3 <- ggplot(eudata.perc.country, aes(x = typecountry, y = perc)) +
-    geom_bar(stat = "identity") +
+	geom_bar(stat = "identity") +
     facet_wrap(~origincountry)
 
 p3 + theme_bw()
 ```
 ![plot14](images/plot14.png)
 
-As always, we add by using `+` a theme to our plot. 
+As always, we add the new element by using `+` a theme to our plot. 
 
-Even more: several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance using this last theme: 
+Even more: several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance to use this last theme we just need to do the following: 
 
 ```{r}
 install.packages("ggthemes")
@@ -427,43 +427,5 @@ But more interesting is of course the possibility to modify yourself some aspect
 ## Extending ggplot2 with other geoms
 
 As already mentioned, one of the strengths of ggplot2 is that is increasingly becoming a standard for plotting in R. For this reason, a lot of [extensions](http://www.ggplot2-exts.org/) have been written in the last years. You can create with them [network graphs](https://briatte.github.io/ggnetwork/), [radar charts](https://github.com/ricardo-bion/ggradar), [time series graphs](https://github.com/AtherEnergy/ggTimeSeries), so called [ridgeline plots](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html) and many more. Their use is incredibly easy. Let's see an example. 
-
-Imagine that we want to plot the cities with more relationships among the analysed cities. We could for instance expect that capitals are among them. We could do this with a barplot, but instead of a barplot we can construct a so called lollipop graph. This can be achieved with the package `ggalt` (see [here](https://github.com/hrbrmstr/ggalt)). 
-
-First of all we need to install the package, then we create a dataframe which summarises the information we want to show in the graph and, finally, we plot the graph. This can be done for instance in the following way:
-
-```{r}
-install.packages("ggalt")
-library(ggalt)
-
-# we summarise the data
-eudata.percity <- group_by(eudata, origincityLabel) %>%
-    summarise(total = n()) %>%
-    arrange(-total)
-
-# we filter the first 25 Cities
-eudata.percity.filtered <- slice(eudata.percity, 1:25)
-
-# we plot the data 
-ggplot(eudata.percity.filtered, aes(x = reorder(origincityLabel, total), total)) +
-    geom_lollipop(point.colour = "red", point.size = 2.75) +
-    coord_flip() +
-    theme_pander() +   # you need library(ggthemes)
-    theme(panel.grid.major.x = element_line(color = "black")) +
-    labs(x = NULL, y = NULL,
-         title = "Cities with most relationships",
-         caption = "Data: wikidata.org")
-    
-```
-
-![plot18](images/plot18.png)
-
-Some aspects are relevant here:
-
-  * we have to order the data using the function `reorder` to get a descendent order of the Cities,
-  * we use some arguments in the `geom_lollipop()` such as size, colour, etc. You can get a list by looking at `?geom_lollipop`. 
-  * we use a new command: `coord_flip()` with which we can "rotate" the graph. 
-  * we use `theme_pander()` (from the package `ggthemes`) and modify some aspects such as the lines of the grid. 
-  * we delete the title of the x and y axes by putting them to `NULL`. 
 
 
