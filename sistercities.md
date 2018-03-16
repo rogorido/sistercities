@@ -1,12 +1,12 @@
 ---
-title: Analyzing data with R and ggplot2
+title: Visualizing data with R and ggplot2
 authors:
 - Igor Sosa Mayor 
-date: 2018-03-15
+date: 2018-03-16
 reviewers:
 - 
 layout: default
-difficulty: 2
+difficulty: 4
 ---
 
 # Introduction, lesson goals and data
