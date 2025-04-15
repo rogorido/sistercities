@@ -22,3 +22,8 @@ gitHeadInfo.gin
 datos/
 *.html
 *.Rhistory
+
+*.png
+*.xcf
+*.yml
+*.csv
