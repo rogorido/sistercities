@@ -1,0 +1,66 @@
+Plot1: 
+Number of destination cities per country type.
+
+Plot2:
+Percentage of destination cities per country type. 
+
+Plot3:
+Percentage of destination cities per country type and country. 
+
+Plot4: 
+Distribution (in log) of the distance in km between sister cities.
+
+Plot5:
+Cumulative Distribution Function Plot of the distance in kms between
+sister cities.
+
+Plot6:
+Boxplots comparing difference in distances in kms among countries.
+
+Plot7:
+Scatterplot of population relationships between sister cities (in log).
+
+Plot8:
+Scatterplot of population relationships between sister cities (in log)
+using a color. 
+
+Plot9:
+Scatterplot of population relationships between sister cities (in log)
+using lab() for improving titles and labels.
+
+Plot10:
+Scatterplot of population relationships between sister cities (in log)
+grouped by types of countries.
+
+Plot11:
+Scatterplot of population relationships between sister cities (in log)
+using scale_colour_manual().
+
+Plot12:
+Scatterplot of population relationships between sister cities (in log)
+using scale_colour_brewer().
+
+Plot13:
+Scatterplot of population relationships between sister cities (in log)
+using a qualitative variable.
+
+Plot14:
+Scatterplot of population relationships between sister cities (in log)
+using scale_colour_gradient().
+
+Plot15:
+Scatterplot of population relationships between sister cities (in log)
+with modified legend. 
+
+Plot16:
+Facetting graphs with facet_wrap().
+
+Plot17: 
+Changing the theme used in our graph.
+
+Plot18:
+Using a theme based on the theme The Wall Street Journal.
+
+Plot19:
+Ridgeline plot using the package ggridges.
+
