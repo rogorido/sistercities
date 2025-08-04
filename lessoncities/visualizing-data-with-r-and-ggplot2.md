@@ -1,440 +1,507 @@
 ---
-title: Visualizing data with R and ggplot2
+title: "Visualizing Urban and Demographic Data in R with ggplot2"
+slug: urban-demographic-data-r-ggplot2
+layout: lesson
+collection: lessons
+date: 2025-03-27
 authors:
-- Igor Sosa Mayor 
-date: 2018-03-16
+- Igor Sosa Mayor
+- Nabeel Siddiqui
 reviewers:
-- 
-layout: default
-difficulty: 4
+- Justin Wigard
+- Amanda Regan
+editors:
+- Giulia Osti
+review-ticket: https://github.com/programminghistorian/ph-submissions/issues/606
+difficulty: 2
+activity: presenting
+topics: [r, data-visualization]
+abstract: This lesson demonstrates how to use R's ggplot2 package to create sophisticated data visualizations through a 'grammar of graphics' framework. Using historical data about European sister-city relationships in the post-second world war period, including partnerships, population sizes, and geographic distances, the lesson guides readers through the process of creating various plots while exploring urban and demographic patterns.
+avatar_alt: Crop of hand-drawn nautical chart showing two cities in Spain
+doi: 10.46430/phen0123
 ---
 
-# Introduction, lesson goals and data
+{% include toc.html %}
 
-Getting data and analyzing them is one of the most important tasks a historian has to face. Once you have your data, you have to analyze it. For this purpose plots are always an important instrument. Using R and the powerful package [ggplot2](http://ggplot2.tidyverse.org/) you can create useful, as well as beautiful plots to look inside your data and to publish in your work.
+## Introduction
 
-By the end of this lesson you will be able to do the following things with ggplot2: 
+After [World War II](https://perma.cc/89BN-3NCG), European cities faced a monumental task: rebuilding not just their physical infrastructure but also their international relationships. One fascinating lens through which to examine this post-war reconstruction is [sister cities](https://perma.cc/H2ER-XTRS). These formal partnerships were developed between cities in the post-war period to foster cross-border cooperation and understanding. 
 
-1. to create different types of plots: barplots, histograms, boxplots, scatterplots, etc.
-2. to manipulate different options of your plots, such as colors or sizes 
-3. to add meaningful labels to your plots 
-4. to create grids of plots to compare data
-6. to create new types of plots with ggplot2 extensions.
+Sister-city relationships present historians with both an opportunity and a challenge. The opportunity lies in their potential to reveal patterns of post-war reconciliation and diplomacy. The challenge comes from their scale and complexity: there are many hundreds of European cities to analyze, and each one might have formed dozens of partnerships across multiple decades. By converting these complex networks of sister-city relationships into visual patterns, we can explore questions that are difficult to answer through traditional methods alone. For example, did cities of [West Germany](https://perma.cc/ALL6-TWXA) preferentially form partnerships with French cities immediately after the war? Did the [Iron Curtain](https://perma.cc/XH8M-XCJ9) create distinct patterns of sister-city relationships between Eastern and Western Europe? How did city size and geographic distance influence diplomatic connections? This case is a good example of how useful data visualization can be for historical research.
 
-In order to follow this follow, you are supposed to have knowledge about R. PH has several lessons covering different topics [add refs!].
+The R package [ggplot2](http://ggplot2.tidyverse.org) provides powerful tools for investigating such questions through data visualization. While spreadsheets and basic charts can obscure patterns, ggplot2's sophisticated visualization capabilities allow historians to uncover hidden relationships in data. For example, [scatter plots](https://perma.cc/47QY-KL2V) can reveal correlations between numerical variables like population sizes and geographic distances, [bar charts](https://perma.cc/H58M-6UDU) can show the distribution of partnerships across different categories of cities, and [histograms](https://perma.cc/W7TW-9V52) can expose patterns in demographic data that might otherwise remain invisible.
 
-## Cities and their sister cities in Europe 
+This lesson differs from standard ggplot2 guides by focusing specifically on the needs of urban historians. Rather than using generic datasets, we'll work with historical data about sister-city relationships to demonstrate how visualization techniques can illuminate historical patterns and processes. Through this approach, you'll learn to create visualizations that reveal complex partnerships and make historical findings more accessible to a broader audience.
 
-The analysis behind this tutorial is a very simple one. I was always fascinating by the fact that many cities have sister cities around the world. As a historian a lot of relevant questions arise out of this empirical fact. For instance, when did this phenomenon begin (probably in the 19th century)? Why are the reasons behind the whole phenomenon? And more concrete: which are the concrete reasons for a city to seek for such relationships (economic, religious, cultural)? Or even more concrete: are German cities related to French or Polish cities, maybe as a an attempt to overcome deep historical tensions? Have Spanish cities proportionally more relationships to the spanish-speaking American cities? Do small cities (<10000) have also such relationships? Are EU-cities more related to other EU-cities or is this aspect not relevant at all? Do cities of former communist countries have more relationships with other cities of the present Russia or other former communist countries? Many other questions could also be asked.
+## Lesson Goals
 
-But: where do to get such data? [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), the free and open knowledge base, is of course the best option, since it  has already this information which can be queried using [SPARQL](https://en.wikipedia.org/wiki/SPARQL) (a general and friendly introduction can be found [here](https://www.wikidata.org/wiki/Wikidata:A_beginner-friendly_course_for_SPARQL)). If you are interested in the complex queries used for doing it, you can find them [here](https://github.com/rogorido/sistercities/tree/master/sparql/queries). Exporting the results as CSV/TSV (comma/tab separated values) or JSON is the most simple solution to have them ready for further analysis in R. 
+By the end of this lesson, you should be able to do the following with the ggplot2 package:
 
-## Starting with R: getting and preparing the data
+- Create different types of plots to visualize urban and demographic data, including bar charts to show relationships between cities and scatter plots to explore relationships between different variables.
+- Manipulate the appearance of plots, such as their color or size.
+- Add meaningful labels to plots.
+- Compare data across grids of plots.
+- Enhance your plots with ggplot2 extensions.
 
-In the present tutorial we will use only the data of six EU-countries: Germany, France, Poland, Hungary, Portugal, Bulgaria (three of so-called Western Europe and three of so-called Eastern Europe). The data for these countries can be downloaded here (if you want to play with the raw data of all EU-countries you can find it here). 
+This lesson assumes you have a rudimentary knowledge of R. We recommend familiarizing yourself with the *Programming Historian* lessons [R Basics with Tabular Data](/en/lessons/r-basics-with-tabular-data) and [Data Wrangling and Management in R](/en/lessons/data-wrangling-and-management-in-r) if you do not have this background.
 
-You also can run the queries again changing, but be aware that the data you will download will not probably be exactly the same that you can find in the providad file, since the data in wikidata are continuously being updated. 
+## Our Data: Sister Cities in the European Union
 
-For this lesson, I recommend you that you create a directory in your computer for the project and inside another one called: `data`. Put the `tsv` file into this data directory, open R or Rstudio, make the project directory your working directory (with `setwd`) and then load the data into R. The code we will use can be found [here](code/code.R).
+Urban and demographic data are fundamental to understanding the developments of human societies. Urban data allows us to reconstruct the complex network of relationships between cities. This encompasses everything from formal administrative connections, such as trade partnerships or political alliances, to informal relationships built through cultural exchange and population movement. Cities might be linked through trade routes, shared governance structures, or cultural institutions. The physical characteristics of cities also form an important part of urban data: their geographic location, proximity to other urban centers, and position within transportation networks influence how cities interact with one another.
 
-```{r}
-# we load the data into a variable 
-eudata <- read.csv("data/sistercities.tsv", header = T, sep = "\t")
+Urban data also helps us understand the different roles that cities play within broader social and economic systems. Some cities serve as administrative capitals, others as major ports facilitating international trade, and still others as industrial centers driving economic growth. These roles often shift over time as cities adapt to changing political, economic, and technological circumstances. 
 
-# we inspect the data
-str(eudata)
+Demographic data complements this urban analysis by revealing the human dimension of change. At its most basic level, demographic data tells us about population sizes and their fluctuations, but its true value lies in helping us understand the complex patterns of movement and settlement. Changes in population density reflect urbanization processes, economic opportunities, or responses to environmental challenges. Migration patterns can illuminate economic relationships between regions, as well as the impact of political policies. The social and economic characteristics of populations — their age distributions, occupational patterns, and social structures — also provide a crucial context for understanding urban development.
+
+Historians can combine these data types to investigate urban development and population dynamics. As mentioned above, we will be analyzing [sister cities](https://perma.cc/H2ER-XTRS) – pairs of cities who have partnered to promote cultural and commercial ties. The modern concept of sister cities was conceived after World War II to foster friendship and understanding between different cultures and to promote trade and tourism. These partnerships often involve student exchanges, business relationships, and cultural events. By examining these partnerships, we can assess whether geographic proximity, shared language, or similar population size play a role in two cities establishing a relationship. We can also explore whether historical tensions or alliances (such as those between Germany, France, and Poland) or shared linguistic heritage (for example between Spanish-speaking cities in the Americas) shape these partnerships. In recent years, historians have started to [investigate these kinds of interactions](https://perma.cc/8KW3-GKPR) more closely.
+
+The first question that arises is where to get data about sister cities. One possibility is to draw from one of the biggest repositories of data in the world: [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page). On Wikidata, every single town in the world has been assigned a unique identifier and its own page, containing a certain amount of information. For example, the page devoted to [London](https://perma.cc/3DES-EQWV) shows, among other data, a list of its 'twinned administrative bodies' (in other words, its sister cities). Using the [SPARQL Protocol And RDF Query Language,](https://perma.cc/FHK3-CTEY) we can query this data and extract information about the towns associated with London. As always in historical research, it's important to consider the accuracy of the data, an issue which has been [analyzed several times](https://perma.cc/6AS3-LFFU) in the case of Wikidata.
+
+For the purposes of this lesson, we created different queries to extract data about towns in the [European Union (EU)](https://perma.cc/R3PG-AJLC) and their sister cities. Using this, we put together a dataset containing the following data: the name, country, population size, and geographical coordinates of both the 'origin city' and the 'destination city'. We also calculated the distance between the two cities, and added a [Boolean](https://perma.cc/33ZU-KCXP) column indicating whether the destination city is in the EU or not (all origin cities are in the EU). You can [download this dataset from _Programming Historian_'s repository](/assets/urban-demographic-data-r-ggplot2/sistercities.csv).
+
+Our approach will be largely [exploratory](https://perma.cc/SB6Z-22NT), aiming to identify patterns, trends, and relationships in the data. We hope that we can uncover new insights and generate hypotheses for further research by doing so. 
+
+## The Advantages of ggplot2
+
+We have many reasons for chosing to use ggplot2 for this analysis. The package has a great number of advantages when compared to other options:
+
+- It relies on a theoretical framework (detailed below) that ensures your graphs meaningfully convey information, which is particularly important when working with complex urban and demographic datasets.
+- It is relatively simple to use while remaining powerful.
+- It creates publication-ready graphs.
+- It comes with community-developed [extensions](http://www.ggplot2-exts.org/) which further enhance its capabilities, such as additional functions, graphs, and themes.
+- It is versatile, as it can handle various data structures, including:
+   * Numerical data (continuous and discrete)
+   * Categorical data (factors and character strings)
+   * Date and time data
+   * Geographic coordinates
+   * Text data
+
+Creating graphics is a complicated issue, since it prompts us to consider various aspects of our data: the information we want to convey, the graph type we want to use to convey that information (scatter plot, box plot, histogram, and so on), the elements of the graph we wish to tweak (axes, variables, legends), and more. Based on a theoretical framework known as the [grammar of graphics](https://perma.cc/WA6W-R28Y) (hence the 'gg' in the name ggplot2) detailed by [Leland Wilkinson](https://perma.cc/2J35-L783), ggplot2 is a helpful tool for streamlining these choices.  If all this sounds complicated at first, don't panic! You only need to know a little bit about the grammar to make your first graph.
+
+In the grammar of graphics, all plots are composed of a series of seven interrelated layers:
+
+1. Data: the material you will analyze in your visualization.
+2. [Aesthetics](https://perma.cc/DTP2-8JFS): the ways in which visual properties map onto so-called 'geoms' (see Geometric Objects below). In most cases, this determines how you want to display your data (position, color, shape, fill, size).
+3. [Scales](https://perma.cc/KVN7-M2LQ): the mapping and normalization of data for visualization.
+4. [Geometric Objects](https://perma.cc/U24P-LYHG) (or 'geoms' in ggplot2 jargon): how you want to represent your data. In most cases, this determines the type of graph you use, such as a bar chart, line graph, or histogram.
+5. [Statistics](https://perma.cc/J4HW-MXLK): calculations you may want to run on your data before visualizing it.
+6. [Facets](https://perma.cc/K8M5-7NKV): the ability to categorize and divide data into multiple sub-graphs.
+7. [Coordinate Systems](https://perma.cc/H335-PJMH): how ggplot2 positions different geoms on the plot. The most common coordinate system is the [Cartesian coordinate system](https://perma.cc/5HNS-XBMJ), but ggplot2 can also plot [polar coordinates](https://perma.cc/XBN8-QJ9Q) and [stereographic projections](https://perma.cc/T3LU-4NVA).
+
+To begin using ggplot2, you need to install and load it. We recommend installing the [tidyverse](https://www.tidyverse.org), a collection of R packages including ggplot2 which work together to provide a consistent and efficient workflow for data manipulation, exploration, and visualization. At the core of the tidyverse philosophy is the concept of ['tidy data'](https://perma.cc/XGM5-7SYY), a standardized way of structuring data to make it easier to work with. In tidy data, each variable is a column, each observation is a row, and each type of observational unit is a table. This structure allows for a consistent and predictable way of working with data across different packages and functions within the tidyverse. For more details, see the book [_R for Data Science. Import, Tidy, Transform, Visualize and Model Data_](https://perma.cc/W8CR-JW2L) written by Hadley Wickam et al.
+
 ```
-
-As you can see, we have a dataframe `eudata` with the data of the six countries. There are 13081 rows with 15 variables (if you have downloaded the data yourself, the number of rows can be different). The following information is present in the dataframe: the name of the "origin city", that is the city whose sister cities we are looking for (in the column `origincityLabel`), the country (`origincountry`), the coordinates (in `originlat` and `originlong`) and the population (`originpopulation`). The same information is present for the sister city. Moreover we have two other columns: column `dist` indicates the distance between the two cities (in km) and the categorial column `eu` informs us whether the "destination city" is in the EU or not. 
-
-This data are however not complete and it is a good idea to add some information. We want to add two additional columns. The first one holds the information whether the sister city is in the same country as the origin city (`samecountry`). Additionally, we will create a column (`typecountry`) with a categorical variable with three values according to the fact of the sister city is in the same country, in a EU-country or in a non-EU-country.
-
-I will not explain the details of these transformations. In order to manipulate data in R, we can use native functions of R (such as `ifelse()`) with functions provided by the package [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) created by [Hadley Wickham ](http://hadley.nz/) (the author of ggplot2), which is included in the metapackage `tidyverse`. You can find a [good tutorial](https://programminghistorian.org/lessons/data_wrangling_and_management_in_R) about `dplyr` written by Nabeel Siddiqui. 
-
-```{r}
 install.packages("tidyverse")
-library(tidyverse)
-
-# we check whether the cities are in the same country and store the info
-# in a new column which is then converted into a factor 
-eudata$samecountry <- ifelse(as.character(eudata$origincountry) ==
-                             as.character(eudata$destination_countryLabel), "same", "different")
-eudata$samecountry <- as.factor(eudata$samecountry)
-
-# we check whether both countries are in the EU and store the info 
-# in a new column and then we convert the column into a factor 
-# Note: you need at least dplyr version > 0.7 for this code to work!
-eudata <- eudata %>% dplyr::mutate(typecountry = case_when(samecountry == "same" & eu == "EU" ~ "same",
-                                             samecountry == "different" & eu == "EU" ~ "EU",
-                                             samecountry == "different" & eu == "Non-EU" ~ "Non-EU"))
-eudata$typecountry <- factor(eudata$typecountry)
+library("tidyverse")
 ```
 
-If you do not want to follow these steps, you can download this dataframe [from here] and load it into R in this way:
+### Loading Data with readr
 
-```{r}
-load("sistercities.Rdata")
+Before importing data, it is important to understand how it should be formatted. Common spreadsheet applications, such as Microsoft Excel or Apple Numbers, place data in a proprietary format. While there are packages that can read in Excel data, such as [readxl](https://readxl.tidyverse.org/), it is recommended to use open formats instead, such as `.csv` (comma-separated values) or `.tsv` (tab-separated values), as they are compatible with a wider range of software tools and more likely to remain readable in the future.
+
+R has built-in commands for reading in these files, but we will use the package [readr](https://readr.tidyverse.org/) from the tidyverse ecosystem, which can read most common formats. For our analysis, we will be reading in a `.csv` file. Go ahead and [download the dataset](/assets/urban-demographic-data-r-ggplot2/sistercities.csv) and place it in your project's current working directory. Next, you can use [`read_csv()`](https://perma.cc/ED9L-9V98) with the file path. (If you chose not to install the tidyverse earlier, you will need to manually load the readr library first.)
+
+```
+eudata<-read_csv("sistercities.csv")
 ```
 
-# Graphics with ggplot2
+Now, bring up the data as a tibble (13,081 x 15):
 
-There are several ways to analyze the data we have prepared, but in this tutorial we will concentrate on their graphical representation. In R there are three main possibilities to create graphs: the [plotting functions](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.html) provided by the standard installation of R, the package [lattice](http://lattice.r-forge.r-project.org/), and finally [ggplot2](http://ggplot2.tidyverse.org/), created by [Hadley Wickham ](http://hadley.nz/).
-
-## ggplot2: General aspects 
-
-But why should you use ggplot2 at all? If you plan to work with R, ggplot2 has many advantages:
-
-1. it is very powerful, but at the same time relatively simple, 
-2. it creates beautiful publication-ready graphs,
-3. it has a lot of [extensions](http://www.ggplot2-exts.org/) which are increasingly being developed by the community. They enhance the possibilities of ggplot2 by adding new functions, new types of graphs, new themes, etc.
-4. it also has the possibility to create maps.
-
-Creating good graphics is a complicated issue. You have to take into account many different aspects: the information you want to convey, the many possibilities of showing this information (scatterplots, boxplots, histogramms, and so on), the many aspects of a plot which can be adapted (axes, transformation of variables, legends, etc.), and so on. For this reason, ggplot2 is based on a theoretical book which proposes a so-called [*grammar of graphics*](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448/ref=as_li_ss_tl?ie=UTF8&qid=1477928463&sr=8-1&keywords=the+grammar+of+graphics&linkCode=sl1&tag=ggplot2-20&linkId=f0130e557161b83fbe97ba0e9175c431) (hence the *gg* in the name ggplot2) written by [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson). But, don't panic: you don't have to know anything about grammar. The main idea is that a plot is made up of a set of independent components that can be composed in many different ways. In brief we will see how to do it.
-
-There is plenty of information about ggplot2 on the web, but I recommend you:
-
-1. the best source of information is of course the book written by the author himself which has been recently [published](http://www.springer.com/br/book/9783319242750). The book is also available [online](https://github.com/hadley/ggplot2-book),
-2. for a general overview of the package you can visit the [documentation](http://docs.ggplot2.org/current/) of the package,
-3. very useful are also the webpage [Cookbook for R](http://www.cookbook-r.com/Graphs/) (based on the book [*R Graphics Cookbook. Practical Recipes for Visualizing Data*](http://shop.oreilly.com/product/0636920023135.do) by Winston Chang) and the cheatsheet you can find [here](https://www.rstudio.com/resources/cheatsheets/).
-
-But, first of all, in order to use ggplot2 we have of course to install it. Actually I recommend to install the already mentioned metapackage [`tidyverse`](http://tidyverse.org/) which is a collection of packages written mainly by Hadley Wickham for doing most of the most operations with dataframes you will ever need ([`dplyr`](http://dplyr.tidyverse.org/), [`readr`](http://readr.tidyverse.org/), [`tidyr`](http://tidyr.tidyverse.org/), [`forcats`](http://forcats.tidyverse.org/), etc.). `ggplot2`is also included in the metapackage `tidyverse`.
-
-```{r}
-install.packages("tidyverse")
-# or only ggplot2
-# install.packages("ggplot2")
+```
+eudata
 ```
 
-## A first example: a bar graph
+The tidyverse converts our data to a 'tibble' rather than a 'data frame'. Tibbles are a part of the tidyverse universe that serve the same function as data frames, but make decisions on the backend about how to import and display the data with R. R is a relatively old programming language and, as a result, defaults that made sense during the original implementation are often less helpful now. Tibbles, unlike data frames, do not change variable names, convert the input type, or create row names. You can [learn more about tibbles here](https://perma.cc/4BJY-8M8U). If this does not make sense, don't worry! In most cases, we can treat tibbles like data frames and easily convert between the two. If you need to convert your data frame to a tibble, use the `as_tibble()` function with the data frame's name as the parameter. Likewise, to convert back to a data frame, use the `as.data.frame()` function.
 
-Let's begin with a small example. An interesting aspect in our data relates to the question whether european cities have more profound relationships with cities in their same country, in other EU countries other elsewhere in the world.  Graphically we can inspect this aspect by plotting a bar graph to know which percentage of destination cities are in the same country, how many in other EU-country and how many outside the EU. In ggplot2 we could begin with the following code:
+We will start by exploring the data for cities in six EU countries: Germany, France, Portugal, Poland, Hungary, and Bulgaria (three Western European countries and three Eastern European countries). The tibble you saw above called `eudata` contains this data in 12 variables and 13081 rows.
 
-```{r}
-ggplot(data = eudata, aes(x = typecountry))
+The tibble contains comprehensive information combining urban and demographic data about sister-city relationships. The urban data includes the name of both origin and destination cities (**origincity**, **destinationcity**), their respective countries (**origincountry**, **destinationcountry**), and their geographical coordinates (**originlat**, **originlong**, **destinationlat**, **destinationlong**). It also contains information about the distance between paired cities (**dist**) and each city's administrative relationship status (**eu**). For demographic analysis, we have the population size of both origin and destination cities (**originpopulation**, **destinationpopulation**). This combination of data types should allow us to explore how city characteristics and population patterns influence partnerships.
+
+## Creating Your First Graph
+
+Let's begin by exploring an urban pattern that connects to broader questions about European integration and international relations: do EU cities tend to form stronger sister-city relationships with cities in the same country, in other EU countries, or outside the EU? Answering this question will help us understand not just sister-city relationships but also larger historical processes like post-war reconciliation, European identity development, and urban diplomacy's changing nature. Similar visualization techniques could be used to study other international relationships, such as trade partnerships, cultural exchanges, or diplomatic missions.
+
+Let's start by counting how many destination cities are either domestic (same country as origin city), in a different EU country, or in a non-EU country. Paste the following code into ggplot2:
+
+```
+ggplot(eudata, aes(x = typecountry)) +
+  geom_bar()
 ```
 
-If you press return now, you will be surprised: you will get an empty plot! Axes and plot area are there, but the data are not represented. This is however the expected behaviour. We have to tell ggplot2 which type of plot we want to create. That means: we need to add a layer to our plot. Adding different layers is the way to construct plots with ggplot2. In ggplot2 there are different types of layers. As we will see, there are plenty of different layers (and many more in packages which extend ggplot2 functionality). One crucial type is the so-called  `geom()` (from *geometries*) layer which tells ggplot2 which type of graph we actually want to produce. In our case since we want to create a barplot, we need the `geom_bar()` layer. Adding layers is a simple operation which is achieving by using the command `+`:
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-01.png" alt="A bar graph showing the total count of destination cities that are domestic, EU, and non-EU" caption="Figure 1. Bar graph showing the total count of destination cities that are domestic, EU, and non-EU." %}
 
-```{r}
-ggplot(eudata, aes(x = typecountry)) + geom_bar() 
+The first parameter of the `ggplot()` function is the data (tibble or data frame) containing the information you are exploring, while the second parameter is the aesthetics of the graph. As you may recall from earlier, aesthetics define the variables in your data and how you want to map them to visual properties of the graph. These two are the basis of any plot.
+
+The `geom()` layer tells ggplot2 what type of graph you want to produce. To create a bar plot, you need the `geom_bar()` layer, which you can quickly add using the `+` command as shown in the code above.
+
+Understanding the `ggplot()` syntax can be tricky at first but, once it starts making sense, you will be able to see the power of the standardized framework that underpins ggplot2 (the grammar of graphics). One way to think of this grammar is to view creating plots like constructing a sentence. In this example, you told R: "Create a ggplot graph using the data in `eudata`, map the variable `typecountry` to x and add a layer called `geom_bar()`. This structure is relatively straightforward. [`aes()`](https://perma.cc/AH27-4YE9) itself is not as self-explanatory, but the idea behind it is quite simple: it tells R to map certain variables in the data onto visual properties (aesthetics) of geoms in the graph. Again, do not panic if you do not understand it completely. We will go into more depth later.
+
+You now have your first plot! You may notice that ggplot2 has made some decisions on its own: background color, font size of the labels, etc. The default settings are usually sufficient, but you can customize these aspects if you prefer.
+
+Because ggplot2 works within a consistent syntax, you can easily modify your plots to look different, or display different data. For instance, say you wanted percentages rather than raw counts. Using the following code, you can create a new tibble that calculates the percentage and adds them under a new column named **perc** (again, see the lesson [Data Wrangling and Managment in R](/en/lessons/data-wrangling-and-management-in-r) about dplyr for details if this code does not make sense to you). Then, you only need to make a few changes to the code to aggregate the data per type of country, add a new column with percentages, and then display the new plot:
+
 ```
-![plot10](images/plot10.png)
-
-Let's take a look at the most important command in our example: `ggplot()` and its syntax which can be at the beginning a little strange.
-
-A small trick to learn ggplot2 is to think about the creation of plots like the construction of sentences. In our example we are telling R the following: "create a ggplot graph using the data in `eudata` and map the variable `typecountry` to x and add a layer of `geom_bar()` ". As you can see, the structure is very straightforward, except for the use of [`aes()`](http://ggplot2.tidyverse.org/reference/aes.html), which means in ggplot parlance *aesthetics*. It is not maybe a very telling expression, but the idea is very simple: we tell R that it has to map variables in the data to visual properties (aesthetics) of geoms in the graph. Do not panic if you do not understand it completely by now. We will go into depth in brief.
-
-Now we have our first plot with ggplot2. As you can see, ggplot2 has taken some decisions on its own: background color, fontsize of the labels, etc. I think you would like to improve the quality and appearance of the plot and later on in this tutorial we will see how to do it.
-
-However, this plot does not convey the information we wanted, since it represents raw count data and not percentages. There are several ways to achieve it. One of them is transforming the data. Using the following code we create a new dataframe which aggregates the data per type of country and adds a new column named `perc` with the percentage values (again: see the [tutorial](https://programminghistorian.org/lessons/data_wrangling_and_management_in_R) about `dplyr` for details):
-
-```{r}
-# we aggregate the data per type of country and add a new column with percentages
 eudata.perc <- eudata %>%
-    group_by(typecountry) %>%
-    summarise(total = n()) %>%
-    mutate(perc = total/sum(total))
+  group_by(typecountry) %>%
+  summarise(total = n()) %>%
+  mutate(perc = total/sum(total))
 
 ggplot(data = eudata.perc, aes(x = typecountry, y = perc)) +
-    geom_bar(stat = "identity")
+  geom_bar(stat = "identity")
 ```
-![plot11](images/plot11.png)
 
-There is an important difference between the first barplot and this one. In our previous plot ggplot2 counted itself the number of cities in every group (in the original dataframe this information is not present). But in this case our dataframe already contains the value ggplot2 must use for plotting the bars. Therefore we have to provide ggplot2 with the information where it can find this value. This information is in the column `perc`, so we add  `y = perc` as a parameter of `aes()`. But this is not enough. The tricky point is that per default `geom_bar()` uses internally the parameter `stat = "count"`. This means that, as already mentioned, it will count how many times a value appears (in other words: it aggregates the data for you). Having the data already aggregated, we have just to inform ggplot2 that the values are already there by passing the parameter `stat = "identity"`. 
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-02.png" alt="Bar graph showing percentage of destination cities that are domestic, EU, and non-EU." caption="Figure 2. Bar graph showing percentage of destination cities that are domestic, EU, and non-EU." %}
 
-Nevertheless, with this graph we can not compare countries. This could be achieved by two means: either by using a bar for every country or by making a graph for each country (`facetting` in ggplot2 parlance). Let see now how to create a plot which splits the information per country
+There is an important difference between the first plot (Figure 1) and this one. In the previous plot, ggplot2 counted the number of cities in every group (domestic, EU, non-EU). In our new plot, the tibble already contained each bar's numerical value, stored in the **perc** column. This is why we specify `y = perc` as a parameter of `aes()`. The tricky part is that by default, `geom_bar()` will use the parameter `stat = "count"`. This means it will count how many times a value appears. In other words, it aggregates data for you. However, you can inform ggplot2 that you have already calculated your values by using the parameter `stat = "identity"`.
 
-```{r}
-# we aggregate the data per country and type of country and add a new column with percentages
-eudata.perc.country <- eudata %>%
-    group_by(origincountry, typecountry) %>%
-    summarise(total = n()) %>%
-    mutate(perc = total/sum(total))
+Figure 2 shows that most sister cities are from a different country than the origin city, yet still within the EU (around 68%). This could be due to geographical proximity, cultural similarities, or economic ties within the European Union. you can get a more detailed look by adding in the name of each origin country to the visualization. You could decide to visualize this either by breaking down each bar into percentages by origin country (Figure 3), or by creating separate graphs for each origin country (this is called 'facetting' in ggplot2 lingo, which we [cover below](#Facetting-a-Graph)). Let's try the first approach, aggregating the data per country and per type of country while adding a new column with percentages:
 
-ggplot(data = eudata.perc.country, aes(x = typecountry, y = perc, fill = origincountry)) +
-    geom_bar(stat = "identity", position="dodge")
 ```
-![plot25](images/plot25.png)
+`eudata.perc.country` <- eudata %>%
+  group_by(origincountry, typecountry) %>%
+  summarise(total = n()) %>%
+  mutate(perc = total/sum(total))
 
-Again, we have to manipulate the data to get it/them in the form we need, aggregating per country and per type of country (EU, non-EU, etc). But let's take a look at the command for the plot. We passed a new parameter to the `ggplot()` command, namely `fill` indicating the column we want to use for the different bars. And we add the parameter `position` to `geom_bar()`, to achieve that the bar do not get stacked (which is the default), but put side by side. By using `fill` ggplot2 has chosen some colors for use and has colorized the columns of the graph according to the countries. 
+ggplot(data = `eudata.perc.country`, aes(x = typecountry, y = perc, fill = origincountry)) +
+  geom_bar(stat = "identity", position="dodge")
+```
 
-As for the results, we can see that most of the countries analyzed have strong relationships with other EU countries with around 70-80% (Germany, France, Hungary,...). However, two others, Bulgaria and Portugal, have so many relationships with EU as with non-EU countries, which is maybe related to the colonial past (in the case of Portugal). This will need of course further investigations. 
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-03.png" alt="Bar graph showing the percentage of destination cities that are domestic, EU, and non-EU with aggregated data per country and type of country." caption="Figure 3. Bar graph showing the percentage of destination cities that are domestic, EU, and non-EU, aggregating data by country name and type." %}
 
-## Other `geom`s: histograms, distribution plots and boxplots
+For this plot (Figure 3), you created a tibble that aggregated data by origin country and destination country type (EU, non-EU, domestic). You mapped the `origincountry` to the `fill` aesthetic in the `ggplot()` command, which defines the color range of the bars. You also added the `dodge` position to `geom_bar(`) so that the bars do not get stacked (which is the default), but are instead placed side by side.
 
-So far we have seen the two most important syntax aspects needed for operate with ggplot2: adding layers and adding parameters to these layers. As I have already mentioned, one of the most important type of layers are the so called `geom`s. Using these layers is pretty straightforward in ggplot2: every plot type has a `geom` which can be added to `ggplot()`. For [histograms](http://ggplot2.tidyverse.org/reference/geom_histogram.html) we have `geom_histogram()`, for [boxplots](http://ggplot2.tidyverse.org/reference/geom_boxplot.html) `geom_boxplot()`, for [violin plots](http://ggplot2.tidyverse.org/reference/geom_violin.html) `geom_violin()`, for [dotplots](http://ggplot2.tidyverse.org/reference/geom_dotplot.html) `geom_dotplot()`, for [scatterplot](http://ggplot2.tidyverse.org/reference/geom_point.html) `geom_point()`, and so on. Every command can have parameters which let us configure aspects of the `geom()` (size of the points, colors, and so on). 
+Now that you have visualized urban relationships (partnerships between cities), let's explore how these patterns interact with demographic characteristics such population size.
 
-We want now to take a lot at the distribution of the variable `dist` in our data, that is the distribution of the distances in kilometres of the sister cities. Doing so, we can analyze whether the cities with which the origin cities have a relationship are distant or not. We will then compare distributions of distances by using a boxplot to see differences between countries. We could so tentatively answer the question whether cities in the six analyzed countries tend to have relations with cities in their proximity or not. 
+Figure 3 reveals that most countries in our analysis (Hungary, France, Poland and Germany) strongly prefer to establish sister-city relationships with other European Union countries, with approximately 60-80% of their partnerships in the EU. However, Bulgaria and Portugal differ from this trend: both of these countries seem to have a roughly equal proportion of sister city relationships with EU and non-EU countries. This suggests that Bulgaria and Portugal have a more balanced approach towards forming partnerships that involves actively engaging with cities outside the European Union.
 
-The distribution of the variable `dist` is very skewed, since some (~900 of 13000) of the cities are very far away. This leads to a histogram which is not very informative. We can either take `log10(dist)` as our variable, that is, using the logarithm of the value, or filter the data to exclude the values above 5000kms. Honestly speaking, none of these methods is really convincing, but as far as we know that we are operating with manipulated data it is not so dangerous. Let's take a look at the simple code: 
+In the case of Portugal, this more global outlook might be attributed to its extensive colonial history which may have fostered long-lasting cultural, linguistic, and economic ties with cities in its former colonies, such as those in Brazil, Angola, and Mozambique.
 
-```{r}
-# we filter the data. Remember that you have to
-# load tidyverse or dplyr, otherwise filter will throw an error
+As for Bulgaria, we would need further investigation to uncover the factors contributing to its relatively high percentage of non-EU sister-city partnerships. Possible explanations include its geographic location at the edge of the European Union, its cultural and linguistic ties to countries in the Balkans and Eastern Europe, or its economic relationships with countries outside the EU.
+
+While these initial observations provide a starting point for understanding relationship patterns, it is essential to delve deeper into each country's historical, cultural, and political context to comprehend the underlying reasons for these trends.
+
+## Other Geoms: Histograms, Distribution Plots and Box Plots
+
+So far, you have been introduced to the key syntax needed to operate ggplot2: creating layers and adding parameters. One of the most important layers is the `geoms` layer. Using it is quite straightforward, as every plot type has its associated geom:
+- `geom_histogram()` for [histograms](https://perma.cc/64E8-GDFB)
+- `geom_boxplot()` for [box plots](https://perma.cc/SE8K-5GPD)
+- `geom_violin()` for [violin plots](https://perma.cc/9PLE-352E)
+- `geom_dotplot()` for [dot plots](https://perma.cc/Y96C-HSYH)
+- `geom_point()` for [scatter plot](https://perma.cc/4WMT-JNNJ)
+
+[and so on](https://perma.cc/QA4T-2Q3A).
+
+You can easily configure various aspects of each of these `geom()` types, such as their size and color.
+
+To practice handling these geoms, let's create a histogram to visualize an important urban characteristic of sister cities: the distance between them. This spatial aspect can help understand how geographic proximity influences city partnerships. Run the following short chunk of code to filter the data and visualize it. Remember to load tidyverse or dplyr first, to ensure the filter doesn't throw an error.
+
+```
 eudata.filtered <- filter(eudata, dist < 5000)
 
-ggplot(eudata.filtered, aes(x=dist)) + geom_histogram()
-```
-![plot23](images/plot23.png)
-
-As you see, we have just to add the layer `geom_histogram()` and ggplot2 plots what we want. However, making a good histogram is not an easy issue. ggplot2 gives us a warning that it has used internally the parameter `bins=30` and recommends us to pick a better value with `binwidth`. I recommend you to take a look at the help page of [geom_histogram()](http://ggplot2.tidyverse.org/reference/geom_histogram.html) for the many possibilities of configuration.
-
-But, what about the data? The plot shows us that most of the sister cities are in a radius of c.1000kms. But maybe this is a distortion caused by our manipulation of the data. A cumulative distribution function (ECDF) provides a visualisation of this issue. In ggplot2 we can achieve it with this simple command: 
-```{r}
-ggplot(eudata, aes(x=dist)) + stat_ecdf()
-```
-![plot22](images/plot22.png)
-
-We use here again our non-filtered data (the dataframe `eudata`) and we confirm our previous observation, since more or less 75% of the cities are in a radius of c.1000kms. Even more: ~50% seem to be related to cities which are not further than 500kms away. 
-
-Finally we can use a boxplot to see whether there are differences among countries. In other words, whether the cities of some countries tend to establish relationships with distant or close cities. Again doing this in ggplot2 is pretty easy: 
-```{r}
-ggplot(eudata, aes(x = origincountry, y = dist)) + geom_boxplot()
-```
-![plot24](images/plot24.png)
-
-The plot shows that above all German cities have a tendency to look for sister cities in their proximity. If you do an ANOVA test you will see that the differences among the countries are statistically significant. It is up to you to think about hypotheses which could explain this fact. 
-
-## Adding information to graphs (colors, shapes, etc.).
-
-Til now we have played with different `geom`s, but we did not change the default aesthetic decisions that ggplot2 made for us. It's time to take a look at the important function `scales`. Let's begin with a small example which we will slowly modify. In our data we have the population of the origin city and the destination city. We could be interested in knowing whether population is a related variable, that is: are small/big cities more often related to cities in their population range? We can do this using a [scatterplot](https://en.wikipedia.org/wiki/Scatter_plot) showing both population data:
-
-```{r}
-# we extract a random sample of 15% of the cities
-eudata.sample <- sample_frac(eudata, 0.15)
-
-# we create the plot
-ggplot(data = eudata.sample,
-       aes(x = log(originpopulation),
-           y = log(destinationpopulation))) +
-       geom_point()
-```
-![plot1](images/plot1.png)
-
-Two notes before continuing: since the dataframe `eudata` has many points, this leads to a so called overplotting (too many points). Therefore we select a random sample of 15% of the cities in our dataframe with the function [`sample_frac()`](http://dplyr.tidyverse.org/reference/sample.html) (in package `dplyr` ). Moreover we use the natural log of the population data to overcome the skewness of the data.
-
-But we want to make changes to the graph adding information. There are three different elements which are worth looking at:
-
-1. every ggplot2 function (eg. `geom_point()`) can take arguments to modify concrete  aspects, 
-2. `scales` control the way variables are mapped from the data to the
-   plot. This affects axes, legends, etc.
-3. `themes` refer to the 'static' elements of the plot: the
-   background's elements (color, lines, etc.), the fontsize, etc. 
-
-We will begin with the most simple transformation: we want to change the size and the color of the points:
-
-```{r}
-ggplot(data = eudata.sample,
-       aes(x = log(originpopulation),
-           y = log(destinationpopulation))) +
-       geom_point(size = 3, color = "red")
+ggplot(eudata.filtered, aes(x=dist)) +
+  geom_histogram()
 ```
 
-![plot2](images/plot2.png)
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-04.png" alt="Histogram showing distances (in natural log) between sister cities." caption="Figure 4. Histogram showing distances between sister cities." %}
 
-As you can see, this can easily be done: every function can get arguments which influence how the function makes its job. In this case, we pass to the function `geom_point()` different arguments (`size` and `color` or `colour`) which are straightforward. To find out which arguments are avalaible you can visit the help page of `geom_point()` by typing `?geom_point` in R or here [online](http://ggplot2.tidyverse.org/reference/geom_point.html).
+As shown by the code above, you only needed to add `geom_histogram()` to create a histogram. However, making an effective histogram involves a bit more work. It is important, for example, to determine a [bin size](https://perma.cc/4ABG-MV73) that makes sense for the data. The bin size, also known as the 'interval' or 'bandwidth', refers to the width of each bar, and determines how data is grouped and displayed along the x-axis. In the histogram created in Figure 4, ggplot2 defaulted to a binwidth of 30 (`bins=30`) – but a warning message recommends picking a better value. You can explore more configuration possibilities in the [`geom_histogram()` documentation](https://perma.cc/G29K-53LK).
 
-The plot looks now a bit better, but there are still a lot of things to improve. For instance, we want to add titles to the axes. Manipulating axes (and legends) is done by using the corresponding `scales` functions which we will cover later on. But since changing the titles is a very common action, ggplot has a shorter command to achieve it: [`labs()`](http://ggplot2.tidyverse.org/reference/labs.html) (which stands for *labels*):
+This simple graph shows a right-[skewed](https://perma.cc/LA9B-YVGG) distribution: the `dist` variable tells us that while the majority of sister cities tend to be geographically close, there are a few exceptions in which cities form partnerships with far-off counterparts. 
 
-```{r}
-ggplot(data = eudata.sample,
-       aes(x = log(originpopulation),
-           y = log(destinationpopulation))) +
-    geom_point(size = 3, color = "red") +
-    labs(title = "Population data of origin and destination city",
-         caption = "Data: www.wikidata.org",
-         x = "Population of origin city (log)",
-         y = "Population of destination city (log)")
+You can use a [cumulative distribution function (ECDF)](https://perma.cc/QL57-3BGA) using the unfiltered dataset to gain additional insights into this pattern and better understand the spatial distribution of sister-city relationships. Think of the ECDF like climbing a mountain: just as a mountain's profile reveals its shape, the ECDF's curve reveals the shape of the `dist` variable's distribution. A right-skewed distribution would look like a mountain with a steep initial ascent (many cities with short distances) followed by a gentle slope toward the summit (fewer cities with longer distances). This would confirm that the skewness observed in the `dist` variable is a genuine feature of how cities form partnerships. Unlike a histogram, which can change shape depending on how you group the distances, the ECDF's mountain profile remains consistent. 
+
+In ggplot2, you can create an ECDF by adding the `stat_ecdf()` layer to your plot. Here's an example:
+
+```
+ggplot(eudata, aes(x=dist)) +
+  stat_ecdf()
 ```
 
-![plot3](images/plot3.png)
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-05.png" alt="ECDF Graph showing the distances between sister cities." caption="Figure 5. ECDF graph showing the distances between sister cities." %}
 
-If we are happy with our graph we can save it with a simple command:
+Let's examine this ECDF plot created using the unfiltered `eudata` data frame: it confirms previous observations about the skewed distribution. Approximately 75% of cities have sister-city relationships within a radius of around 1000 kilometers. Even more intriguing is that roughly 50% of the cities are connected to sister cities no more than 500 kilometers away.
 
-```{r}
+Lastly, you will create a box plot to compare how different countries structure their urban relationships across space. This visualization will help understand how certain countries tend to form more localized urban networks while others maintain broader geographic connections. By comparing the distribution of distances, you can identify national patterns in how cities build their international relationships.
+
+```
+ggplot(eudata.filtered, aes(x = origincountry, y = dist)) +
+  geom_boxplot()
+```
+
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-06.png" alt="Boxplots showing distances (in km) between sister cities of different countries." caption="Figure 6. Box plots showing distances (in km) between sister cities, grouped by country." %}
+
+Figure 6 reveals an interesting pattern for German cities especially: it shows that they tend to establish sister-city relationships with cities that are geographically closer, as indicated by the lower median distance and smaller spread of the box compared to other countries. This could reflect Germany's position as a central and well-connected country within the EU, whose geographic location and strong economic ties with its neighbors could encourage the formation of regional partnerships within a smaller radius.
+
+## Advanced Manipulations to Graphs' Appearance
+
+So far, you have relied on ggplot2 to automatically decide your graphs' appearance. However, you'll certainly encounter various reasons to adapt these choices, for example to improve readability, highlight specific aspects of the data, or adhere to specific style guidelines. ggplot2 offers a wide range of customization options to fine-tune the appearance of its plots. To learn how to do this, you'll start with a simple plot and build on it step by step.
+
+Let's explore how demographic characteristics influence urban relationships by examining the population size of sister cities. This analysis connects to broader historical questions about how city size affects international influence, how urban hierarchies develop, and how demographic patterns shape cultural and economic exchanges. Similar approaches could be used to study historical questions about urbanization patterns, the development of metropolitan regions, or the relationship between population size and economic development.
+
+You will begin by creating a scatter plot connecting the population size of origin and destination cities. A scatter plot is a graph that uses dots or points to represent the intersecting values of two variables for each observation. In this case, each point on the scatterplot will represent a sister-city pair, with the x-coordinate indicating the population size of the origin city and the y-coordinate representing the population size of the destination city. If we observe a clear positive trend, with points clustering along a diagonal line from the bottom left to the top right of the plot, it will suggest that cities tend to form relationships with other cities of similar population size.
+
+Since `eudata` contains 13081 entries, using them all would lead to overplotting. Therefore, in this example, you will select a random sample of 15% of the cities in the data, using the function [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html). It's also helpful to work with the [natural logarithm](https://perma.cc/C8NX-WHP7) of the population size to overcome skewness. Since you are using a random data selection, you must 'set a seed' to ensure reproducibility. This means that if you run the code again, ggplot2 will reselect the same random sample. You can do this with the `set.seed()` function:
+
+```
+set.seed(123)
+```
+
+Next extract a random sample of 15% of the cities:
+
+```
+eudata.sample <- slice_sample(eudata, prop = 0.15)
+```
+
+Then create a plot by running the following code: 
+
+```
+ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationpopulation))) +
+  geom_point()
+```
+
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-07.png" alt="Scatter plot displaying the relationship of population (in natural logarithm) in 15% of the sister cities that were randomly selected." caption="Figure 7. Scatter plot comparing the population size (in natual logarithm) of randomly selected sister-city pairs." %}
+
+Now that you have created this basic plot, you can start playing with its appearance. Why not begin by applying a fixed size and color to the points? The code below changes the point color to a dark burgundy, using the hex code #4B0000:
+
+```
+ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationpopulation))) +
+  geom_point(size = 0.8, color = "#4B0000")
+```
+
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-08.png" alt="Changing the size and color of the points of a scatterplot." caption="Figure 8. Changing the size and color of the points in the scatter plot." %}
+
+To discover other available arguments, you can visit the `geom_point()` function's [documentation](https://perma.cc/4WMT-JNNJ), or simply type `?geom_point` in R.
+
+You can keep improving the plot by adding axis labels and a title. Manipulating axes is usually done through the corresponding `scales` functions, which we will cover later on. But since changing the plot's legends is a very common action, ggplot also provides the shorter function [`labs()`](https://perma.cc/544S-88AV) (which stands for labels) for this specific purpose:
+
+```
+ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationpopulation))) +
+  geom_point(size = 0.8, color = "#4B0000") +
+  labs(title = "Population size of origin and destination city", caption = "Data: [www.wikidata.org](http://www.wikidata.org)", x =     "Population of origin city (log)", y = "Population of destination city (log)")
+```
+
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-09.png" alt="Scatterplot with added titles and caption using the labs() function." caption="Figure 9. Adding axis labels and a title." %}
+
+Once you are happy with your graph, you can save it:
+
+```
 ggsave("eudata.png")
-# for getting a pdf
-# ggsave("eudata.pdf")
 ```
 
-This will create a [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics) file with the last plot we have constructed. The function `ggsave()` has [many parameters](http://ggplot2.tidyverse.org/reference/ggsave.html) you can adjust (dpi, height, width, format, etc.).
+To save it as a PDF, run the following command: 
 
-But let us make other changes. In many cases we want to add information to the graph using different colors (or shapes) for every group. For instance we could color the points of our previous scatterplot using colors for the different types of cities (in the same country, in a EU-country or in a non-EU-country). Let's  create a first version of this new graph using the previous code: 
-
-```{r}
-ggplot(data = eudata.sample,
-       aes(x = log(originpopulation),
-           y = log(destinationpopulation))) +
-    geom_point(size = 3, alpha = 0.7, aes( color = typecountry )) +
-    labs(title = "Population data of origin and destination city",
-         caption = "Data: www.wikidata.org",
-         x = "Population of origin city (log)",
-         y = "Population of destination city (log)")
 ```
-![plot04](images/plot04.png)
-
-Three aspects are here relevant:
-
-  * we modify `geom_point()` adding an argument: `aes(color = typecountry)`. The tricky question is here: why do we use `aes()` and not just `color = typecountry` without putting it inside of `aes()`? You can try it on your own (you will get an error). The reason is very easy: using `aes()` we are telling ggplot2 that it has to map the argument `color` to the variable `typecountry`. In other words: we are telling ggplot2 that `typecountry` is a variable of the data we are using. Inside `aes()` we could have chosen another aspect, for instance the shape and relate it to a variable  with `aes(shape = typecountry)` (the plot does not look very good, so that I will not put it here),
-  * since there are too many points I haved added the parameter `alpha` to make the points a little bit transparent,
-  * ggplot2 has made some decisions for us: it selects colors on its own and it adds automatically a legend to the graph. 
-
-## Scales: colors, legends, axes
-
-But: how can we modify colors and legend? The so-called `scales` are your friend. Citing the ggplot2 book: "scales control the mapping from data to aesthetics. They take your data and turn it into something that you can see, like size, colour, position or shape". And at the same time, scales provide the tools that let you read the plot: the axes and legends. There are [many different scales](http://ggplot2.tidyverse.org/reference/#section-scales) you can use.
-
-Admittedly, scales are maybe the least intuitive element in ggplot2. Noteworthing is the fact that the naming scheme for scales is made up of three pieces separated by “_“:
-
-  1. scales,
-  2. The name of the aesthetic (e.g., colour, shape or x),
-  3. The name of the scale (e.g., continuous, discrete, brewer).
-
-But let's take a look at it with our previous graph. In our last graph we can control 3 different scales: 
-
-1. `scales_x_continuous()` which controls the data of the x-axis (when `x` is continuous),
-2. `scales_y_continuous()` which controls the data of y-axis (when `y` is continuous),
-3. `scales_colour`: which controls the color(s) used. 
-
-We will take a look at the possibilities of changing colors. (Nevertheless I have to warn you: the selection of colors for graphs is by no means an easy task; there is a lot of theoretical work done on this). We could do several things: manually passing some colors or  using a predefined color scala.
-
-First of all we store our graph in a varible to use it several times, changing only some aspects. This is a very convenient way of ggplot2 to make different versions of the same graph:
-
-```{r}
-p1 <- ggplot(data = eudata.sample,
-       aes(x = log(originpopulation),
-           y = log(destinationpopulation))) +
-       geom_point(size = 3, alpha = 0.7, aes( color = typecountry )) +
-       labs(title = "Population data of origin and destination city",
-         caption = "Data: www.wikidata.org",
-         x = "Population of origin city (log)",
-         y = "Population of destination city (log)")
+ggsave("eudata.pdf")
 ```
 
-Now we can add manually the colors using `scale_colour_manual()`. In this case we use colors which are [already defined in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf), but we could also use hexadecimal codes for specific colors. As you see, [`scale_colour_manual()`](http://ggplot2.tidyverse.org/reference/scale_manual.html) takes a compulsory argument (`values =`), namely a vector with the names of colors. 
+This will create a `.png` file of the last plot you constructed. The function `ggsave()` also comes with [many adjustable parameters](https://perma.cc/SL2S-X2PU) (dpi, height, width, format, and more).
 
-```{r}
-p1 + scale_colour_manual(values = c("red", "blue", "green"))
+You may sometimes want to enhance your graph by encoding additional information, using different colors or shapes. This is particularly useful if you want to represent [categorical variables](https://perma.cc/FZ9W-FQ8L) alongside the main variables of interest. In the scatter plot (Figure 8), you used static values to determine the size and color of the points. However, you could also map these aesthetic properties to specific columns in the data, in order to systematically visualize your different categories.
+
+For instance, say you want to distinguish between the different sister-city relationships by highlighting the type of destination country in each pair. Our dataset's `typecountry` variable is a categorical variable which indicates whether the destination city is in the same country as the origin city, in another EU country, or another non-EU country. To incorporate this information, you can map the `typecountry` variable to the `color` parameter by passing the `aes()` function to `geom_point()`:
+
 ```
-![plot05](images/plot05.png)
-
-In this way we can create graphs with our preferred colors. But often it is more recommendable to use already defined colors scalas, such as the [color brewer palettes](http://colorbrewer2.org/). ggplot2 has already these palettes [integrated](http://ggplot2.tidyverse.org/reference/scale_brewer.html) and a specific `scale` for using them (`scale_colour_brewer()`):
-
-```{r}
-p1 + scale_colour_brewer(palette = "Dark2") # you can try others such as "Set1", "Accent", etc.
+ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationpopulation))) +
+  geom_point(size = 0.8, alpha = 0.7, aes( color = typecountry )) +
+  labs(title = "Population size of origin and destination city", caption = "Data: [www.wikidata.org](http://www.wikidata.org)", x =     "Population of origin city (log)", y = "Population of destination city (log)")
 ```
-![plot06](images/plot06.png)
 
-But let's look at another slightly different example. In the last graph we used a qualitative variable (`typecountry`) with different colors. But what about a continuous variable? Let's say we want to add more information to our plot including the distance between the cities (we use again the log of the distance because of the skewness). We want to do it using the red color to signalise the distance. Its intensity should represent the distance. We could try the following code:
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-10.png" alt="Scatterplot using colors to distinguish different types of sister city relationships based on the location of the destination city." caption="Figure 10. Using colors in scatter plots to visualize different country types." %}
 
-```{r}
-p2 <- ggplot(data = eudata.sample,
-       aes(x = log(originpopulation),
-           y = log(destinationpopulation))) +
-       geom_point(size = 3, aes( color = log(dist) )) +
-       labs(title = "Population data of origin and destination city",
-         subtitle = "Colored by distance between cities",
-         caption = "Data: www.wikidata.org",
-         x = "Population of origin city (log)",
-         y = "Population of destination city (log)")
-		 
+The code above has two major changes. First, we modified `geom_point()` by adding the argument `aes(color = typecountry)`. Second, since there are too many overlapping points, we added the `alpha` parameter to give them 70% transparency. Again, ggplot2 has selected default colors and legends for the graph.
+
+### Scales: Colors, Legends, and Axes
+
+Next, you'll explore ggplot2's `scales` function. You can think of scales as a set of rules, or a mapping system. They take your raw data (like population numbers or country names) and define how those values should be represented visually – what color something should be, where it should be placed on the graph, how big it should appear, etc. Without scales, ggplot2 wouldn't know how to translate your data into a meaningful picture.
+
+Let's use the sister-city data as an example. When you create a plot, scales work behind the scenes to transform your raw data into visual elements. They specify, for example, how country names convert into different colors ('French cities should be shown in blue'), or how distance between cities translates into point size ('cities with populations over one million should be shown as large points'). These rules ensure that every element of your data is displayed consistently throughout your visualization, making it easier for readers to understand the patterns and relationships you're trying to show.
+
+In ggplot2, scales follow a naming convention consisting of three parts separated by underscores:
+
+1. The prefix `scale`.
+2. The name of the scale being modified. As mentioned earlier, aesthetics define the visual properties of the plot that are mapped to data. Scales, on the other hand, control how those aesthetic mappings are translated into specific visual representations. This includes how data values are mapped to colors or shapes, and their position on the x and y axes.
+3. The type of scale being applied (continuous, discrete, brewer).
+
+Before you start adding scales, it will be helpful to store your previous plot in a variable `p1`: this is a convenient way to create different versions of the same plot in order to vary only certain aspects of it.
+
+```
+p1 <- ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationpopulation))) +
+  geom_point(size = 0.8, alpha = 0.7, aes( color = typecountry )) +
+  labs(title = "Population size of origin and destination city", caption = "Data: [www.wikidata.org](http://www.wikidata.org)", x =     "Population of origin city (log)", y = "Population of destination city (log)")
+```
+
+One common use of scales is to change the colors of a plot. To manually specify the colors you want, you can use the `scale_color_manual()` function and provide a [vector](https://perma.cc/XV2R-DLSY) of color values, using color names [defined by R](https://perma.cc/TM3F-D8JP) or their hexadecimal codes. [`scale_colour_manual()`](https://perma.cc/T72S-NYXC) takes a compulsory argument (`values =`), namely a vector of the color names. In this way, you can create graphs with your chosen colors:
+
+```
+p1 +
+  scale_colour_manual(values = c("red", "blue", "green"))
+```
+
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-11.png" alt="Scatter plot that uses scale_colour_manual() to change the colors of the scatterplot points." caption="Figure 11. Using scale_colour_manual() to specify the colors of the scatter plot's points." %}
+
+However, you can also simply rely on predefined color scales, such as the [color brewer palettes](http://colorbrewer2.org). It's better to use these whenever possible, because choosing the right colors for visualizations is a very complicated issue (for instance, avoiding colors that are not distinguishable by people with impaired vision). Fortunately, ggplot2 comes with `scale_colour_brewer()` already [integrated](https://perma.cc/BST9-7GMG):
+
+```
+p1 +
+  scale_colour_brewer(palette = "Dark2") # you can try others such as "Set1", "Accent", etc.
+```
+
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-12.png" alt="Scatter plot that uses scale_colour_brewer() to change the colors of the scatterplot points." caption="Figure 12. Using scale_colour_brewer() to change the colors of the scatter plot's points." %}
+
+In the scatter plot above, you learned how to represent a qualitative (or categorical) variable (`typecountry`) using three different colors. In the next scatter plot, let's try to represent a [continuous variable](https://perma.cc/DT7J-MQD3) instead – for example, the distance between origin and destination cities, which we can show using varying intensities of color. You might try to simply map this color to the distance `log(dist)`, which is the continuous variable in this case:
+
+
+```
+p2 <- ggplot(data = eudata.sample, aes(x = log(originpopulation),y = log(destinationpopulation))) +
+  geom_point(size = 0.8, aes( color = log(dist) )) +
+  labs(title = "Population size of origin and destination city", subtitle = "Colored by distance between cities",
+    caption = "Data: [www.wikidata.org](http://www.wikidata.org)", x = "Population of origin city (log)", y = "Population of            destination city (log)")
+
 p2
 ```
 
-![plot07](images/plot07.png)
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-13.png" alt="Scatter plot showing population size of origin and destination city colored by distance between cities." caption="Figure 13. Mapping the plot colors to the distance between cities." %}
 
-As you can see, there are two problems with this graph: 
+Immediately, you'll notice that this code hasn't produced the most intuitive visualization:
 
-1. blue is the used color and not red,
-2. the scala is not convincing since smaller distances are represented by the more dark blue. 
+1. By default, ggplot2 uses a blue color gradient for continuous variables when no specific color is specified.
 
-Again we need to use scales, but in this case another function. ggplot2 does not use in this case discrete colors (that is, one color for every distinct value of the qualitative variable), but only one color which is graduated. For this reason the scale we have to use is one which deals with gradients. There are [several for doing this](http://ggplot2.tidyverse.org/reference/scale_gradient.html). We will use `scale_colour_gradient`. We can define the low and the high value of the gradient: 
+2. The default scale is also counterintuitive, because shorter distances are represented by a darker blue, not lighter (which we would expect).
 
-```{r}
-p2 + scale_colour_gradient(low = "white", high = "red3")
+In this example, again, using a scale will provide the tools to correct these defaults and create visualizations that more accurately and effectively communicate the underlying data. To represent a continuous variable, gradient – or 'continuous' – color scales assign colors to values based on a smooth transition between hues or shades. This allows for an accurate representation of the continuous variable, as the gradual color change corresponds to the change in the variable's value. Using a gradient scale, you can visualize the distribution of values and identify patterns or trends in the data.
+
+There are [several methods for creating gradient scales in ggplot2](https://perma.cc/K6J3-GSQS). For our purpose, we will use the `scale_colour_gradient()` function. This allows you to assign specific colors to the minimum and maximum values of the continuous variable. ggplot2 then automatically interpolates the colors for the intermediate values based on the chosen gradient.
+
+You can work with the `p2` object created earlier and use the `+` operator to modify it. You've already mapped the `dist` variable (distance between cities) to the color aesthetic using `color = dist` inside the `aes()` function. Now, add the `scale_colour_gradient()` function to customize the color gradient. In the code below, you set the color for the lowest value of the `dist` variable to white and the highest value to the hex code for a dark burgundy (#4B0000). This means lighter shades of red will represent shorter distances, while darker shades represent longer distances.
+
+```
+p2 +
+  scale_colour_gradient(low = "white", high = "red3")
 ```
 
-![plot08](images/plot08.png)
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-14.png" alt="Scatter plot showing population size of origin and destination city colored by distance between cities using scale_colour_gradient()" caption="Figure 14. Population size of origin and destination city colored by distance between cities using scale_colour_gradient()." %}
 
-Other scales with gradients (`scales_colour_gradient2` and `scales_colour_gradientn`) have other possibilities. I encourage you to explore them looking at the [documentation page](http://ggplot2.tidyverse.org/reference/scale_gradient.html). By the way: as you can see from the plot, small cities tend to establish relationships with cities which  are not so distant.
+What can we learn from this graph? To a certain extent, it appears that smaller cities tend to establish relationships with cities that are closer. In the previous sections, you examined the distribution of distances between sister cities using a histogram and an ECDF plot. These visualizations revealed that most sister-city relationships are characterized by short distances, mostly within a radius of 500 to 1000 kilometers. Comparing findings across different visualizations can strengthen the depth of the observed patterns and highlight the importance of considering certain key variables.
 
-Finally we will slightly modify the legend, which is something (as I have already mentioned) which is controlled by the scales. We want to modify of course the terrible title of the legend and some of its parameters:
+Building upon these insights, let's now modify the scatter plot's legend. Customizing it will improve clarity, making it easier for readers to interpret and understand the conveyed information.
 
-```{r}
-p2 <- p2 + scale_colour_gradient(low = "white",
-                                 high = "red3",
-                                 guide = guide_colorbar(title = "Distance in log(km)",
-                                                  direction = "horizontal",
-                                                  title.position = "top"))
-												  
+You can modify the legend by editing the `guide` parameter within the `scale_colour_gradient()` function. The guide parameter specifies the legend's title, position, and orientation. Here, you will also use the `guide_colorbar()` function to create a color bar legend representing the range of distances between cities.
+
+```
+p2 <- p2 +
+  scale_colour_gradient(low = "white", high = "red3", guide = guide_colorbar(title = "Distance in log(km)", direction =
+    "horizontal", title.position = "top"))
+
 p2
 ```
-![plot09](images/plot09.png)
 
-The legend is controlled by the parameter [`guide`](http://ggplot2.tidyverse.org/reference/guides.html). In this case we tell ggplot2 to use a [`guide_colorbar()`](http://ggplot2.tidyverse.org/reference/guide_colourbar.html) with the parameters you can see regarding the title (caption, position, etc.). 
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-15.png" alt="Scatter plot showing population size of origin and destination city colored by distance between cities using scale_colour_gradient() and guide_colorbar()." caption="Figure 15. Modifying the title and adding a color bar." %}
 
+### Facetting a Graph
 
-## Faceting a graph 
+Another great feature of ggplot2 is that it allows you to split your data into different plots based on a certain variable. In ggplot2, this is called [facetting](https://perma.cc/B8NV-6LVE). The simplest facetting function is `facet_wrap()`, but you can also check out the richer [`facet_grid()`](https://perma.cc/A5UY-5HUQ) for more options.
 
-Previously we create a plot which compared cities and their relationships with cities in EU countries, non-EU countries using different colors for each country. Nevertheless, ggplot2 provides also a very effective way to make plots which can include information splitted by categories (space, time, and so). We can so represent the same data, but in separated graphs per country. For doing this ggplot2 has powerful possibilities, which are summarised under the label [*facetting*](http://ggplot2.tidyverse.org/reference/index.html#section-facetting). The most simple facetting function is [`facet_wrap()`](http://ggplot2.tidyverse.org/reference/facet_wrap.html), but you can also take a look at the richer [`facet_grid()`](http://ggplot2.tidyverse.org/reference/facet_grid.html).
+Earlier in the lesson, you created a plot which highlighted whether destination cities were within the same country as the origin city, in a different EU or a non-EU country. Using the `eudata.perc.country` tibble, you could facet this graph by adding a `facet_wrap()` layer based on the different origin countries:
 
-Using our previous dataframe `eudata.perc.country` we can add a new layer in the following way:
-```{r}
-ggplot(eudata.perc.country, aes(x = typecountry, y = perc)) +
-    geom_bar(stat = "identity") +
-    facet_wrap(~origincountry)
 ```
-![plot13](images/plot13.png)
-
-We have only added the layer `facet_wrap(~origincountry)` to the previous command. By doing so, we tell ggplot2 to create one graph per country. Important is the use of the operator `~` which is very often used in R for the so-called formulae. We can control for the number of rows and columns in the grid. As already mentioned, take a look at the rich documentation.
-
-## Themes: changing static elements of the graphs
-
-Modifying the appearance of the graph is also one of the most frequent requirements. This can be achieved in ggplot2 with the use of `themes` which control things like fonts, ticks, panel strips, and backgrounds. `themes` are one of the most powerful and rich features of ggplot2, which makes it impossible to treat here every aspect.I will only mention two aspects. First, the fact that ggplot2 comes with a number of [built-in themes](http://ggplot2.tidyverse.org/reference/ggtheme.html). The most important are `theme_grey()` (the default on), `theme_bw()`, `theme_dark()`, `theme_void()`, etc. Second, that you can easily create you own themes and use them in your plots. 
-
-Using another theme diffent from the default one is again a very simple thing. We apply it as a new layer using `+`: 
-
-```{r}
-p3 <- ggplot(eudata.perc.country, aes(x = typecountry, y = perc)) +
-     	geom_bar(stat = "identity") +
-        facet_wrap(~origincountry)
-
-p3 + theme_bw()
+ggplot(`eudata.perc.country`, aes(x = typecountry, y = perc)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~origincountry)
 ```
-![plot14](images/plot14.png)
 
-Several packages add additional themes to ggplot2. You can for instance install [`ggthemes`](https://github.com/jrnold/ggthemes) or [`ggtech`](https://github.com/ricardo-bion/ggtech) where you will find themes such as `theme_excel` (a theme replicating the classic ugly gray charts in Excel), `theme_wsj` (a theme based on the plots in the *The Wall Street Journal*), etc. For instance to use this last theme we just need to do the following: 
+The tilde (`~`) operator is commonly used in R formulas. Here, it indicates which variable ggplot2 should use to define the facetting structure. In other words, `~origincountry` formula tells ggplot2 to split the data based on the value of the `origincountry` variable, then create a separate graph to represent each value (in this case, each country). The resulting plot will display the bar graphs in a grid layout:
 
-```{r}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-16.png" alt="Faceted bar graphs using facet_wrap() where the bar graph for each country is displayed in a grid pattern." caption="Figure 16. Facetting a graph with facet_wrap()." %} 
+
+### Themes: Changing Static Elements
+
+Since the appearance of a graph is crucial for effectively communicating different insights, ggplot2 provides themes to help customize your visualizations further. These themes control the non-data elements of the plot, such as the background color and font styles.
+
+Setting a theme is very simple: just apply it as a new layer using the `+` operator. Here's a classic dark-on-light theme:
+
+```
+p3 <- ggplot(`eudata.perc.country`, aes(x = typecountry, y = perc)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~origincountry)
+
+p3 +
+  theme_bw()
+```
+
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-17.png" alt="Faceted bar graph with changed static elements using the theme_bw() function." caption="Figure 17. Changing static elements using theme_bw()." %}
+
+You can also install several packages which provide additional themes, such as [ggthemes](https://github.com/jrnold/ggthemes) or [ggtech](https://github.com/ricardo-bion/ggtech). In these, you will find for example `theme_excel` (replicating the classic charts in Excel) and `theme_wsj` (based on the plots in [_The Wall Street Journal_](https://perma.cc/ZDD6-SP95)). The advantage of using ggplot2's themes to replicate these recognizable styles is not only simplicity, but also the fact that ggplot2 automatically takes into account the grammar of graphics when mapping your data to elements of the graph. 
+
+For instance, to mimic graphs created by _The Wall Street Journal_, you can write the following:
+
+```
 install.packages("ggthemes")
+
 library(ggthemes)
 
-p3 + theme_wsj()
+p3 +
+  theme_wsj()
 ```
-![plot15](images/plot15.png)
 
-But more interesting is of course the possibility to modify yourself some aspects of the graph. There are two main possibilities: 
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-18.png" alt="Bar graph with changed static elements using the theme_wsj() function from the ggthemes package." caption="Figure 18. Changing static elements using The Wall Street Journal theme." %}
 
-1. create your own theme, taking for instance the code of the existing ones and modifying the concrete aspects you are interested in. The definition of the default themes can be found [here](https://github.com/tidyverse/ggplot2/blob/master/R/theme-defaults.r). 
-2. modify concrete aspects of the theme we are using. Unfortunately it is not possible in such a lesson to go into every single aspect which can be manipulated. [Here](http://ggplot2.tidyverse.org/reference/theme.html) you can find how many different arguments can be used (and see some examples): `panel.grid.major`, `panel.grid.minor`, `plot.background`, `legend.background`, `legend.margin`, and many others. 
+### Extending ggplot2 with Other Packages
 
-## Extending ggplot2 with other packages
+One of ggplot2's strengths is its extensive collection of [extensions](http://www.ggplot2-exts.org/) that can help enhance your analysis with specialized visualizations like network graphs (useful for showing relationships between cities, for example), time series graphs (for tracking demographic changes over time), and ridgeline plots (for comparing population distributions across different urban areas).
 
-As already mentioned, one of the strengths of ggplot2 is the fact that a lot of [extensions](http://www.ggplot2-exts.org/) have been written in the last years. You can create with them [network graphs](https://briatte.github.io/ggnetwork/), [radar charts](https://github.com/ricardo-bion/ggradar), [time series graphs](https://github.com/AtherEnergy/ggTimeSeries), so called [ridgeline plots](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html) and many more. Their use is incredibly easy. Let's see an example. 
+Let's explore an example showcasing a ggplot2 extension that creates more advanced and visually striking plots. In this case, we will create a [ridgeline plot](https://perma.cc/D9Z2-XHAV) – also known as a 'joyplot' – designed to visualize changes in distributions over time, across different categories. Ridgeline plots are particularly effective for comparing multiple distributions in a compact and aesthetically pleasing manner.
 
-We will make a so called ridgeline plot which create the impression of a mountain range. They can be quite useful for visualizing changes in distributions over time or space, if I may cite from the webpage of the project. We will visualize the population data of the origin cities. This simple code is enough (we use a log-transformation because of the skewness of the data):
+To create a ridgeline plot, you're going to use the ggridges package (one of many ggplot2 extensions). This adds a new layer called `geom_density_ridges()` and a new theme `theme_ridges()`, which expands R's plotting possibilities.
 
-```{r}
+This code is simple enough (again, using a log transformation due to the data's skewness):
+
+```
 install.packages("ggridges")
 library(ggridges)
 
 ggplot(eudata, aes(x=log(originpopulation), y = origincountry)) +
-    geom_density_ridges() +
-    theme_ridges() +
-    labs(title = "Population (log) of the origin cities",
-         caption = "Data: www.wikidata.org",
-         x = "Population (log)",
-         y = "Country")
+  geom_density_ridges() +
+  theme_ridges() +
+  labs(title = "Population (log) of the origin cities", caption = "Data: [www.wikidata.org](http://www.wikidata.org)", x =
+    "Population (log)", y = "Country")
 ```
-![plot26](images/plot26.png)
 
-The library `ggridges` adds a new layer `geom_density_ridges()` and a new theme `theme_ridges()` which easily expand the possibilities of plotting data in R. 
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-19.png" alt="Ridge plot showing the population (log) of different countries origins." caption="Figure 19. Extending ggplot2 with the ggridges package." %}
+
+This visualization of population distributions shows how urban demographic patterns vary by country. For example, Poland, Portugal and Bulgaria show distinct demographic profiles, with their cities tending toward larger population sizes, as indicated by the peaks on the right side of their respective density curves. 
+
+## Conclusion
+
+Through the analysis of sister-city relationships in the European Union using ggplot2 and its extensions, we've demonstrated how different visualization techniques can reveal patterns in urban networks and demographic characteristics. The dataset allowed us to uncover several key insights: cities tend to form partnerships within a 500-1000 km radius, countries vary significantly in their preference for domestic versus international partnerships, and population size plays a role in partnership formation. 
+
+However, this is just the tip of the iceberg of ggplot2's possibilities. With an extensive ecosystem of extensions and packages, ggplot2 offers endless opportunities for customization and adaptation to specific data visualization needs. Whether you're working with time series data, network graphs, or geospatial information, there's likely a ggplot2 extension that can help you create compelling and informative visualizations. As you continue to explore and work with ggplot2, remember that effective data visualization is an iterative process that requires experimentation, refinement, and a keen understanding of your audience and communication goals. By mastering the principles and techniques this tutorial covers, you will be well-equipped to create impactful visualizations that illuminate the stories hidden within your data.
+
+## Additional Resources
+
+To gain a more thorough understanding of ggplot2, we recommend you explore some of the following sources:
+
+* The [official ggplot2 site](https://ggplot2.tidyverse.org/).
+
+* Hadley Wickham's books [`ggplot2`: _Elegant Graphics for Data Analysis_](https://ggplot2-book.org/) and [_R for Data Science_](http://r4ds.hadley.nz/).
+
+* Hadley Wickham's [original paper](https://doi.org/10.1198/jcgs.2009.07098) on the grammar of graphics.
+
+* Leland Wilkson's original book [_The Grammar of Graphics_](https://doi.org/10.1007/0-387-28695-0).
+
+* Selva Prabhakaran's [tutorial on r-statistics.co](https://perma.cc/6Q2Q-L7UD).
+
+* Data Science Dojo's video [Introduction to Data Visualization with ggplot2](https://www.youtube.com/watch?v=NXjPcXx42Yc).
+
+* UC Business Analytics' [R Programming Guide](https://perma.cc/KZT6-GW9C).
+
+* The official ggplot2 [extensions page](https://www.ggplot2-exts.org/) and [accompanying gallery](http://www.ggplot2-exts.org/gallery/).
+
+* R Project’s [overview about extending ggplot2](https://perma.cc/465N-F9WU).
+
+* The [general documentation](https://ggplot2.tidyverse.org/reference/).
+
+* The [Cookbook for R](http://www.cookbook-r.com/Graphs/) book (based on  Winston Chang's [_R Graphics Cookbook. Practical Recipes for Visualizing Data_](http://shop.oreilly.com/product/0636920023135.do)).
+
+* This official [R cheatsheet](https://www.rstudio.com/resources/cheatsheets/).
+
+* The gradient scale [documentation page](https://perma.cc/8BWE-MVLV).
