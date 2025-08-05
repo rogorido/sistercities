@@ -326,19 +326,19 @@ ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationp
 
 El código anterior tiene dos modificaciones importantes. En primer lugar, modificamos `geom_point()` agregando el argumento `aes(color = typecountry)`. En segundo lugar, ya que había demasiados puntos superpuestos, agregamos el parámetro `alpha` para que tengan una transparencia del 70%. De nuevo, ggplot2 ha seleccionado colores y leyendas de serie por defecto para el gráfico.
 
-### Scales: Colors, Legends, and Axes
+### Scales: colores, leyendas y ejes
 
-Next, you'll explore ggplot2's `scales` function. You can think of scales as a set of rules, or a mapping system. They take your raw data (like population numbers or country names) and define how those values should be represented visually – what color something should be, where it should be placed on the graph, how big it should appear, etc. Without scales, ggplot2 wouldn't know how to translate your data into a meaningful picture.
+A continuación, exploraremos la función `scales` de ggplot2. Los `scales` pueden considerarse como una serie de reglas o un sistema de mapeo. Actúan como un conjunto de reglas, o un sistema de mapeo, que toman tus datos brutos (como números de población o nombres de países) y definen cómo estos valores deberían representarse visualmente -qué color deben tener, dónde deben aparecer en el gráfico, cuán grande deben aparecer, etc. Sin `scales`, ggplot2 no sabe cómo traducir tus datos en una imagen significativa.
 
-Let's use the sister-city data as an example. When you create a plot, scales work behind the scenes to transform your raw data into visual elements. They specify, for example, how country names convert into different colors ('French cities should be shown in blue'), or how distance between cities translates into point size ('cities with populations over one million should be shown as large points'). These rules ensure that every element of your data is displayed consistently throughout your visualization, making it easier for readers to understand the patterns and relationships you're trying to show.
+Tomemos nuestros propios datos como ejemplo. Cuando creas un gráfico, los `scales` se encargan de transformar tus datos brutos en elementos visuales. Especifican, por ejemplo, cómo se convierten los nombres de los países en colores diferentes ('las ciudades francesas deben mostrarse en azul'), o cómo la distancia entre las ciudades se traduce en el tamaño de los puntos ('las ciudades con poblaciones superiores a un millón deben mostrarse como puntos grandes'). Estas reglas garantizan que cada elemento de tus datos se muestre de manera consistente en toda tu visualización, lo que facilita a los lectores entender los patrones y relaciones que estás tratando de mostrar.
 
-In ggplot2, scales follow a naming convention consisting of three parts separated by underscores:
+Los `scales` de ggplot2 siguen una convención de nomenclatura consistente en tres partes separadas por guiones bajos:
 
-1. The prefix `scale`.
-2. The name of the scale being modified. As mentioned earlier, aesthetics define the visual properties of the plot that are mapped to data. Scales, on the other hand, control how those aesthetic mappings are translated into specific visual representations. This includes how data values are mapped to colors or shapes, and their position on the x and y axes.
-3. The type of scale being applied (continuous, discrete, brewer).
+1. El prefijo `scale`.
+2. El nombre de la escala que se modifica. Como se mencionó anteriormente, los estilos definen las propiedades visuales de la gráfica que se mapean a los datos. Las escalas, por otro lado, controlan cómo esas mapeos de los estilos se traducen en representaciones visuales específicas. Esto incluye cómo los valores de los datos se traducen en colores o formas, y su posición en las coordenadas x e y.
+3. El tipo de escala que se quiere aplicar (continua, discreta, brewer).
 
-Before you start adding scales, it will be helpful to store your previous plot in a variable `p1`: this is a convenient way to create different versions of the same plot in order to vary only certain aspects of it.
+Antes de comenzar a agregar escalas, será útil almacenar la gráfica anterior en una variable `p1`: esta es una forma conveniente de crear diferentes versiones de la misma gráfica para variar solo ciertas partes de ella.
 
 ```
 p1 <- ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationpopulation))) +
@@ -348,6 +348,8 @@ p1 <- ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destin
 
 One common use of scales is to change the colors of a plot. To manually specify the colors you want, you can use the `scale_color_manual()` function and provide a [vector](https://perma.cc/XV2R-DLSY) of color values, using color names [defined by R](https://perma.cc/TM3F-D8JP) or their hexadecimal codes. [`scale_colour_manual()`](https://perma.cc/T72S-NYXC) takes a compulsory argument (`values =`), namely a vector of the color names. In this way, you can create graphs with your chosen colors:
 
+Un uso común de los `scales` es cambiar los colores de un gráfico. Para especificar manualmente los colores que deseas, puedes utilizar la función `scale_color_manual()` y proporcionar un [vector](https://perma.cc/XV2R-DLSY) de valores de color, utilizando nombres de color [definidos por R](https://perma.cc/TM3F-D8JP) o sus códigos hexadecimales. La función `scale_colour_manual()` [requiere un argumento obligatorio](https://perma.cc/T72S-NYXC), a saber, un vector de nombres de color. De esta manera, puedes crear gráficos con los colores que elijas:
+
 ```
 p1 +
   scale_colour_manual(values = c("red", "blue", "green"))
@@ -355,7 +357,7 @@ p1 +
 
 {% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-11.png" alt="Scatter plot that uses scale_colour_manual() to change the colors of the scatterplot points." caption="Figure 11. Using scale_colour_manual() to specify the colors of the scatter plot's points." %}
 
-However, you can also simply rely on predefined color scales, such as the [color brewer palettes](http://colorbrewer2.org). It's better to use these whenever possible, because choosing the right colors for visualizations is a very complicated issue (for instance, avoiding colors that are not distinguishable by people with impaired vision). Fortunately, ggplot2 comes with `scale_colour_brewer()` already [integrated](https://perma.cc/BST9-7GMG):
+Sin embargo, también se pueden basar simplemente en escalas de colores predefinidas, como las paletas [de color brewer](http://colorbrewer2.org). Es mejor utilizar estas cuando sea posible, porque elegir los colores adecuados para las visualizaciones es un problema muy complicado (por ejemplo, evitar colores que no son distinguibles para personas con visión deficiente). Afortunadamente, ggplot2 incluye la función `scale_colour_brewer()` ya [integrada](https://perma.cc/BST9-7GMG).
 
 ```
 p1 +
@@ -364,8 +366,7 @@ p1 +
 
 {% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-12.png" alt="Scatter plot that uses scale_colour_brewer() to change the colors of the scatterplot points." caption="Figure 12. Using scale_colour_brewer() to change the colors of the scatter plot's points." %}
 
-In the scatter plot above, you learned how to represent a qualitative (or categorical) variable (`typecountry`) using three different colors. In the next scatter plot, let's try to represent a [continuous variable](https://perma.cc/DT7J-MQD3) instead – for example, the distance between origin and destination cities, which we can show using varying intensities of color. You might try to simply map this color to the distance `log(dist)`, which is the continuous variable in this case:
-
+En el gráfico de dispersión que se muestra anteriormente, aprendimos cómo representar una variable cualitativa (o categórica) (`typecountry`) mediante tres colores diferentes. En el siguiente gráfico de dispersión, intentaremos representar una variable continua (`distancia`) –por ejemplo, la distancia entre ciudades de origen y destino- mediante intensidades variables de color. Intentemos simplemente mapear este color a la variable de distancia `log(dist)`, que es la variable continua en este caso:
 
 ```
 p2 <- ggplot(data = eudata.sample, aes(x = log(originpopulation),y = log(destinationpopulation))) +
@@ -378,17 +379,17 @@ p2
 
 {% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-13.png" alt="Scatter plot showing population size of origin and destination city colored by distance between cities." caption="Figure 13. Mapping the plot colors to the distance between cities." %}
 
-Immediately, you'll notice that this code hasn't produced the most intuitive visualization:
+Inmediatamente, se notará que este código no ha producido la visualización más intuitiva:
 
-1. By default, ggplot2 uses a blue color gradient for continuous variables when no specific color is specified.
+1. Por defecto, ggplot2 utiliza una gradiente de color azul para las variables continuas cuando no se especifica un color específico.
 
-2. The default scale is also counterintuitive, because shorter distances are represented by a darker blue, not lighter (which we would expect).
+2. La escala por defecto también es contraintuitiva, ya que las distancias más cortas se representan por un azul más oscuro, no más claro (que sería lo que esperaríamos).
 
-In this example, again, using a scale will provide the tools to correct these defaults and create visualizations that more accurately and effectively communicate the underlying data. To represent a continuous variable, gradient – or 'continuous' – color scales assign colors to values based on a smooth transition between hues or shades. This allows for an accurate representation of the continuous variable, as the gradual color change corresponds to the change in the variable's value. Using a gradient scale, you can visualize the distribution of values and identify patterns or trends in the data.
+En este ejemplo, de nuevo, utilizar un `scale` proporciona las herramientas para corregir estos valores por defecto y crear visualizaciones que comuniquen más efectivamente y precisamente los datos subyacentes. Para representar una variable continua, las escalas de color graduado – o 'continuo' – asignan colores a los valores basados en una transición suave entre tonos o matices. Esto permite una representación precisa de la variable continua, ya que el cambio de color gradual corresponde al cambio de valor de la variable. Utilizar una escala graduada te permite visualizar la distribución de valores e identificar patrones o tendencias en los datos.
 
-There are [several methods for creating gradient scales in ggplot2](https://perma.cc/K6J3-GSQS). For our purpose, we will use the `scale_colour_gradient()` function. This allows you to assign specific colors to the minimum and maximum values of the continuous variable. ggplot2 then automatically interpolates the colors for the intermediate values based on the chosen gradient.
+Hay [diferentes métodos para crear escalas graduadas en ggplot2](https://perma.cc/K6J3-GSQS). Para nuestro propósito, usaremos la función `scale_colour_gradient()`. Esto te permite asignar colores específicos a los mínimos y máximos valores de la variable continua. ggplot2 luego interpola automáticamente los colores para los valores intermedios en función del elegido gradient.
 
-You can work with the `p2` object created earlier and use the `+` operator to modify it. You've already mapped the `dist` variable (distance between cities) to the color aesthetic using `color = dist` inside the `aes()` function. Now, add the `scale_colour_gradient()` function to customize the color gradient. In the code below, you set the color for the lowest value of the `dist` variable to white and the highest value to the hex code for a dark burgundy (#4B0000). This means lighter shades of red will represent shorter distances, while darker shades represent longer distances.
+Puedes trabajar con el objeto `p2` creado anteriormente y utilizar el operador `+` para modificarlo. Ya habías mapeado la variable `dist` (distancia entre ciudades) al color utilizando `color = dist` dentro de la función `aes()`. Ahora, agrega la función `scale_colour_gradient()` para personalizar el gradiente de colores. En el siguiente código, establecemos el color para el valor más bajo de la variable `dist` como blanco y el valor más alto como un púrpura oscuro (#4B0000). Esto significa que los tonos más claros de rojo representan distancias cortas, mientras que los tonos más oscuros representan distancias largas.
 
 ```
 p2 +
@@ -397,11 +398,11 @@ p2 +
 
 {% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-14.png" alt="Scatter plot showing population size of origin and destination city colored by distance between cities using scale_colour_gradient()" caption="Figure 14. Population size of origin and destination city colored by distance between cities using scale_colour_gradient()." %}
 
-What can we learn from this graph? To a certain extent, it appears that smaller cities tend to establish relationships with cities that are closer. In the previous sections, you examined the distribution of distances between sister cities using a histogram and an ECDF plot. These visualizations revealed that most sister-city relationships are characterized by short distances, mostly within a radius of 500 to 1000 kilometers. Comparing findings across different visualizations can strengthen the depth of the observed patterns and highlight the importance of considering certain key variables.
+¿Qué podemos derivar de este gráfico? En cierto modo, parece que las ciudades más pequeñas tienden a establecer relaciones con ciudades que son más cercanas. En las secciones anteriores, examinaste la distribución de las distancias entre las ciudades hermanadas utilizando un gráfico de histograma y un gráfico de ECDF. Estas visualizaciones revelaron que las relaciones entre ciudades se caracterizan principalmente por cortas distancias, principalmente dentro de un radio de 500 a 1000 kilómetros. Comparando los hallazgos en diferentes visualizaciones puede mejorar nuestra comprensión de los patrones observados y resaltar la importancia de considerar ciertos factores clave.
 
-Building upon these insights, let's now modify the scatter plot's legend. Customizing it will improve clarity, making it easier for readers to interpret and understand the conveyed information.
+A partir de estas consideraciones, ahora modifiquemos la leyenda del gráfico de dispersión. Personalizarla mejorará la claridad, haciéndolo más fácil de interpretar y entender para los lectores.
 
-You can modify the legend by editing the `guide` parameter within the `scale_colour_gradient()` function. The guide parameter specifies the legend's title, position, and orientation. Here, you will also use the `guide_colorbar()` function to create a color bar legend representing the range of distances between cities.
+Puedes modificar la leyenda alterando el parámetro `guide` dentro de la función `scale_colour_gradient()`. El parámetro `guide` especifica el título, la posición y la orientación de la leyenda. Aquí también se utilizará la función `guide_colorbar()` para crear una leyenda de color barra que represente la gama de distancias entre las ciudades.
 
 ```
 p2 <- p2 +
@@ -413,11 +414,11 @@ p2
 
 {% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-15.png" alt="Scatter plot showing population size of origin and destination city colored by distance between cities using scale_colour_gradient() and guide_colorbar()." caption="Figure 15. Modifying the title and adding a color bar." %}
 
-### Facetting a Graph
+### Facetando un Gráfico
 
-Another great feature of ggplot2 is that it allows you to split your data into different plots based on a certain variable. In ggplot2, this is called [facetting](https://perma.cc/B8NV-6LVE). The simplest facetting function is `facet_wrap()`, but you can also check out the richer [`facet_grid()`](https://perma.cc/A5UY-5HUQ) for more options.
+Otra gran característica de ggplot2 es que permite dividir tus datos en diferentes gráficos según una cierta variable. En ggplot2, este proceso se conoce como [facetting](https://perma.cc/B8NV-6LVE). La función más sencilla para esta tarea es `facet_wrap()`, pero también puedes explorar la función más rica [`facet_grid()`](https://perma.cc/A5UY-5HUQ) para más opciones.
 
-Earlier in the lesson, you created a plot which highlighted whether destination cities were within the same country as the origin city, in a different EU or a non-EU country. Using the `eudata.perc.country` tibble, you could facet this graph by adding a `facet_wrap()` layer based on the different origin countries:
+Anteriormente, habíamos creado un gráfico que resaltaba si las ciudades de destino estaban dentro del mismo país que la ciudad de origen, en un país diferente pero de la UE o en un país no UE. Utilizando el tibble `eudata.perc.country`, podrías dividir este gráfico agregando `facet_wrap()` según los diferentes países de origen:
 
 ```
 ggplot(`eudata.perc.country`, aes(x = typecountry, y = perc)) +
@@ -425,15 +426,15 @@ ggplot(`eudata.perc.country`, aes(x = typecountry, y = perc)) +
   facet_wrap(~origincountry)
 ```
 
-The tilde (`~`) operator is commonly used in R formulas. Here, it indicates which variable ggplot2 should use to define the facetting structure. In other words, `~origincountry` formula tells ggplot2 to split the data based on the value of the `origincountry` variable, then create a separate graph to represent each value (in this case, each country). The resulting plot will display the bar graphs in a grid layout:
+El operador de virgulilla (`~`) se utiliza comúnmente en fórmulas de R. En este caso, indica qué variable debe utilizar ggplot2 para definir la estructura de los paneles. En otras palabras, la fórmula `~origincountry` le dice a ggplot2 que divida los datos según el valor de la variable `origincountry`, y luego cree un gráfico separado para representar cada valor (en este caso, cada país). El gráfico resultante mostrará los gráficos de barras separados en paneles:
 
 {% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-16.png" alt="Faceted bar graphs using facet_wrap() where the bar graph for each country is displayed in a grid pattern." caption="Figure 16. Facetting a graph with facet_wrap()." %} 
 
-### Themes: Changing Static Elements
+### Temas: modificando elementos estáticos
 
-Since the appearance of a graph is crucial for effectively communicating different insights, ggplot2 provides themes to help customize your visualizations further. These themes control the non-data elements of the plot, such as the background color and font styles.
+Dado que la apariencia de un gráfico, es crucial para comunicar diferentes aspectos de manera efectiva, ggplot2 proporciona temas para ayudar a personalizar visualizaciones adicionales. Estos temas controlan los elementos no relacionados estrictamente con los datos, sino cuestiones como el color de fondo y los estilos de fuentes.
 
-Setting a theme is very simple: just apply it as a new layer using the `+` operator. Here's a classic dark-on-light theme:
+Establecer un tema es muy sencillo: solo aplícalo como una capa nueva usando el operador `+`. Aquí mostramos un tema oscuro sobre claro:
 
 ```
 p3 <- ggplot(`eudata.perc.country`, aes(x = typecountry, y = perc)) +
@@ -446,9 +447,9 @@ p3 +
 
 {% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-17.png" alt="Faceted bar graph with changed static elements using the theme_bw() function." caption="Figure 17. Changing static elements using theme_bw()." %}
 
-You can also install several packages which provide additional themes, such as [ggthemes](https://github.com/jrnold/ggthemes) or [ggtech](https://github.com/ricardo-bion/ggtech). In these, you will find for example `theme_excel` (replicating the classic charts in Excel) and `theme_wsj` (based on the plots in [_The Wall Street Journal_](https://perma.cc/ZDD6-SP95)). The advantage of using ggplot2's themes to replicate these recognizable styles is not only simplicity, but also the fact that ggplot2 automatically takes into account the grammar of graphics when mapping your data to elements of the graph. 
+También puedes instalar varios paquetes que proporcionan temas adicionales, como [ggthemes](https://github.com/jrnold/ggthemes) o [ggtech](https://github.com/ricardo-bion/ggtech). En estos, encontrarás, por ejemplo, `theme_excel` (replicando los clásicos gráficos de Excel) y `theme_wsj` (basado en los gráficos de [_The Wall Street Journal_](https://perma.cc/ZDD6-SP95)). El beneficio de utilizar temas de ggplot2 para replicar estos estilos reconocibles no solo es la simplicidad, sino también el hecho de que ggplot2 toma automáticamente en cuenta el lenguaje de las gráficas cuando mapea tus datos a elementos del gráfico.
 
-For instance, to mimic graphs created by _The Wall Street Journal_, you can write the following:
+Para replicar los gráficos creados por _The Wall Street Journal_, puedes escribir lo siguiente:
 
 ```
 install.packages("ggthemes")
@@ -461,15 +462,15 @@ p3 +
 
 {% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-18.png" alt="Bar graph with changed static elements using the theme_wsj() function from the ggthemes package." caption="Figure 18. Changing static elements using The Wall Street Journal theme." %}
 
-### Extending ggplot2 with Other Packages
+### Extendiendo ggplot2 con otros paquetes
 
-One of ggplot2's strengths is its extensive collection of [extensions](http://www.ggplot2-exts.org/) that can help enhance your analysis with specialized visualizations like network graphs (useful for showing relationships between cities, for example), time series graphs (for tracking demographic changes over time), and ridgeline plots (for comparing population distributions across different urban areas).
+Una de las fortalezas de ggplot2 es su amplia colección de [extensiones](http://www.ggplot2-exts.org/) que pueden ayudar a enriquecer tu análisis con visualizaciones especializadas como gráficos de red (útiles para mostrar relaciones entre ciudades, por ejemplo), series de tiempo (para rastrear cambios demográficos a lo largo del tiempo), y gráficos de ridgeline (para comparar las distribuciones poblacionales en diferentes áreas urbanas).
 
-Let's explore an example showcasing a ggplot2 extension that creates more advanced and visually striking plots. In this case, we will create a [ridgeline plot](https://perma.cc/D9Z2-XHAV) – also known as a 'joyplot' – designed to visualize changes in distributions over time, across different categories. Ridgeline plots are particularly effective for comparing multiple distributions in a compact and aesthetically pleasing manner.
+Vamos a explorar un ejemplo que muestra un paquete de extensión de ggplot2 que crea gráficos más avanzados e impresionantes. En este caso, vamos a crear un [gráfico de ridgeline](https://perma.cc/D9Z2-XHAV) – también conocido como 'joyplot' – diseñado para visualizar los cambios en las distribuciones sobre el tiempo, a lo largo de diferentes categorías. Los gráficos de ridgeline son particularmente efectivos para comparar múltiples distribuciones de manera compacta y atractiva.
 
-To create a ridgeline plot, you're going to use the ggridges package (one of many ggplot2 extensions). This adds a new layer called `geom_density_ridges()` and a new theme `theme_ridges()`, which expands R's plotting possibilities.
+Para crear un gráfico de ridgeline, necesitarás el paquete `ggridges` (uno de muchos paquetes de extensiones de ggplot2). Esto añade una capa llamada `geom_density_ridges()` y un tema llamado `theme_ridges()`, que amplía las posibilidades de plotear en R.
 
-This code is simple enough (again, using a log transformation due to the data's skewness):
+Esta codificación es lo suficientemente simple (de nuevo, utilizando una transformación logarítmica debido a la asimetría en la distribución de los datos):
 
 ```
 install.packages("ggridges")
@@ -484,15 +485,17 @@ ggplot(eudata, aes(x=log(originpopulation), y = origincountry)) +
 
 {% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-19.png" alt="Ridge plot showing the population (log) of different countries origins." caption="Figure 19. Extending ggplot2 with the ggridges package." %}
 
-This visualization of population distributions shows how urban demographic patterns vary by country. For example, Poland, Portugal and Bulgaria show distinct demographic profiles, with their cities tending toward larger population sizes, as indicated by the peaks on the right side of their respective density curves. 
+Esta visualización de las distribuciones de la población muestra cómo varían los patrones demográficos urbanos según el país. Por ejemplo, Polonia, Portugal y Bulgaria presentan perfiles demográficos distintos, pues sus ciudades tienden a tener tamaños de población más grandes, como se indica en los picos de los respectivos gráficos de densidad.
 
-## Conclusion
-
-Through the analysis of sister-city relationships in the European Union using ggplot2 and its extensions, we've demonstrated how different visualization techniques can reveal patterns in urban networks and demographic characteristics. The dataset allowed us to uncover several key insights: cities tend to form partnerships within a 500-1000 km radius, countries vary significantly in their preference for domestic versus international partnerships, and population size plays a role in partnership formation. 
+## Conclusión
 
 However, this is just the tip of the iceberg of ggplot2's possibilities. With an extensive ecosystem of extensions and packages, ggplot2 offers endless opportunities for customization and adaptation to specific data visualization needs. Whether you're working with time series data, network graphs, or geospatial information, there's likely a ggplot2 extension that can help you create compelling and informative visualizations. As you continue to explore and work with ggplot2, remember that effective data visualization is an iterative process that requires experimentation, refinement, and a keen understanding of your audience and communication goals. By mastering the principles and techniques this tutorial covers, you will be well-equipped to create impactful visualizations that illuminate the stories hidden within your data.
 
-## Additional Resources
+A través del análisis de las relaciones de hermanamiento de las ciudades de la Unión Europea utilizando ggplot2 y sus extensiones, hemos demostrado cómo diferentes técnicas de visualización pueden revelar patrones en las redes urbanas y características demográficas. El conjunto de datos nos permitió descubrir varias claves que merecen mayor investigación: las ciudades tienden a crear relaciones dentro de una distancia de 500 a 1000 km; los países con los que se asocian varían significativamente con una preferencia por alianzas nacionales frente a internacionales: y el tamaño de la población juega un papel en la formación de estas relaciones.
+
+Sin embargo, esto es solo la punta del iceberg de las posibilidades de ggplot2. Con un extenso ecosistema de extensiones y paquetes, ggplot2 ofrece oportunidades infinitas para la personalización y la adaptación a necesidades específicas a la hora de visualizar datos. Si trabajas con datos de series temporales, con gráficos de redes o con información geoespacial, es probable que una extensión de ggplot2 pueda ayudarte a crear visualizaciones atractivas e informativas. Al seguir explorando y trabajando con ggplot2, recuerda que la visualización efectiva de los datos es un proceso iterativo que requiere experimentación, refinamiento y una comprensión aguda de tu audiencia y objetivos de comunicación. Si dominas bien los principios y técnicas que cubre esta lección, estarás bien equipado para crear visualizaciones impactantes que iluminen las historias ocultas en tus datos.
+
+## Recursos adicionales
 
 To gain a more thorough understanding of ggplot2, we recommend you explore some of the following sources:
 
