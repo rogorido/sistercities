@@ -88,7 +88,7 @@ En el lenguaje de los gráficos, toda la composición de las representaciones gr
 4. [Objetos geométricos](https://perma.cc/U24P-LYHG) (o 'geoms' en el lenguaje de ggplot2): cómo quieres representar tus datos. En la mayoría de los casos, esto determina el tipo de gráfico que usas, como un gráfico de barras, una gráfica de línea o un histograma.
 5. [Estadística](https://perma.cc/J4HW-MXLK): las cálculos que puedes realizar sobre tus datos antes de visualizarlos.
 6. [Facetas](https://perma.cc/K8M5-7NKV): la capacidad de categorizar y dividir los datos en múltiples subgráficos.
-7. [Sistemas de coordenadas](https://perma.cc/H335-PJMH): cómo ggplot2 coloca diferentes geoms en la gráfica. La coordinada más común es el [sistema de coordenadas cartesianas](https://perma.cc/5HNS-XBMJ), pero ggplot2 también puede plotear [coordenadas polares](https://perma.cc/XBN8-QJ9Q) y [proyecciones estereográficas](https://perma.cc/T3LU-4NVA).
+7. [Sistemas de coordenadas](https://perma.cc/H335-PJMH): cómo ggplot2 coloca diferentes geoms en la gráfica. La coordinada más común es el [sistema de coordenadas cartesianas](https://perma.cc/5HNS-XBMJ), pero ggplot2 también puede representar [coordenadas polares](https://perma.cc/XBN8-QJ9Q) y [proyecciones estereográficas](https://perma.cc/T3LU-4NVA).
 
 Para comenzar a utilizar ggplot2, es necesario instalar y cargarlo. Recomendamos instalar [tidyverse](https://www.tidyverse.org), una colección de paquetes R, entre ellos ggplot2, que trabajan juntos para proporcionar un flujo de trabajo coherente y eficiente a la hora de manipular, explorar y visualizar datos. En el corazón de la filosofía de tidyverse se encuentra el concepto de ['datos tidies'](https://perma.cc/XGM5-7SYY), un enfoque estándar para estructurar los datos para hacer que sea más fácil trabajar con ellos. En este tipo de datos, cada variable es una columna, cada observación es una fila y cada tipo de unidad de observación es una tabla. Esta estructura permite un enfoque coherente y predecible al trabajar con datos a lo largo de diferentes paquetes y funciones dentro de la colección tidyverse. Para obtener más detalles, consulta el libro [_R para Ciencia de Datos. Importar, Ensamblar, Transformar, Visualizar y Modelar Datos_](https://perma.cc/W8CR-JW2L) escrito por Hadley Wickham et al.
 
@@ -152,11 +152,7 @@ ggplot(data = eudata.perc, aes(x = typecountry, y = perc)) +
   geom_bar(stat = "identity")
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-02.png" alt="Bar graph showing percentage of destination cities that are domestic, EU, and non-EU." caption="Figure 2. Bar graph showing percentage of destination cities that are domestic, EU, and non-EU." %}
-
-There is an important difference between the first plot (Figure 1) and this one. In the previous plot, ggplot2 counted the number of cities in every group (domestic, EU, non-EU). In our new plot, the tibble already contained each bar's numerical value, stored in the **perc** column. This is why we specify `y = perc` as a parameter of `aes()`. The tricky part is that by default, `geom_bar()` will use the parameter `stat = "count"`. This means it will count how many times a value appears. In other words, it aggregates data for you. However, you can inform ggplot2 that you have already calculated your values by using the parameter `stat = "identity"`.
-
-Figure 2 shows that most sister cities are from a different country than the origin city, yet still within the EU (around 68%). This could be due to geographical proximity, cultural similarities, or economic ties within the European Union. you can get a more detailed look by adding in the name of each origin country to the visualization. You could decide to visualize this either by breaking down each bar into percentages by origin country (Figure 3), or by creating separate graphs for each origin country (this is called 'facetting' in ggplot2 lingo, which we [cover below](#Facetting-a-Graph)). Let's try the first approach, aggregating the data per country and per type of country while adding a new column with percentages:
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-02.png" alt="Gráfica de barras que muestra la proporción de ciudades de destino que son nacionales, de la UE y no de la UE." caption="Figura 2. Gráfica de barras que muestra la proporción de ciudades de destino que son nacionales, de la UE y no de la UE." %}
 
 Hay una diferencia importante entre el primer gráfico (Figura 1) y este. En el gráfico anterior, ggplot2 contó el número de ciudades en cada grupo (doméstico, UE, no-UE). En este gráfico nuevo, la tibble ya contenía el valor numérico de cada barra, almacenado en la columna **perc**. Esta es la razón por la que especificamos `y = perc` como un parámetro de `aes()`. La parte difícil es que por defecto, `geom_bar()` utilizará el parámetro `stat = "count"`. Esto significa que contará cuántas veces aparece un valor. En otras palabras, agrupará los datos para ti. Sin embargo, puedes informar a ggplot2 que ya has calculado tus valores utilizando el parámetro `stat = "identity"`.
 
@@ -172,11 +168,7 @@ ggplot(data = `eudata.perc.country`, aes(x = typecountry, y = perc, fill = origi
   geom_bar(stat = "identity", position="dodge")
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-03.png" alt="Bar graph showing the percentage of destination cities that are domestic, EU, and non-EU with aggregated data per country and type of country." caption="Figure 3. Bar graph showing the percentage of destination cities that are domestic, EU, and non-EU, aggregating data by country name and type." %}
-
-Figure 3 reveals that most countries in our analysis (Hungary, France, Poland and Germany) strongly prefer to establish sister-city relationships with other European Union countries, with approximately 60-80% of their partnerships in the EU. However, Bulgaria and Portugal differ from this trend: both of these countries seem to have a roughly equal proportion of sister city relationships with EU and non-EU countries. This suggests that Bulgaria and Portugal have a more balanced approach towards forming partnerships that involves actively engaging with cities outside the European Union.
-
-In the case of Portugal, this more global outlook might be attributed to its extensive colonial history which may have fostered long-lasting cultural, linguistic, and economic ties with cities in its former colonies, such as those in Brazil, Angola, and Mozambique.
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-03.png" alt="Gráfico de barras con el porcentaje de ciudades de destino que son nacionales, EU y no EU, con datos agregados por país y tipo de país." caption="Figura 3. Gráfico de barras con el porcentaje de ciudades de destino que son nacionales, EU y no EU, con datos agregados por país y tipo de país." %}
 
 Para este gráfico (Figure 3), hemos creado un tibble que agrupó los datos según el origen del país y el tipo de país de destino (UE, no-UE, nacional). Hemos mapeado la variable `origincountry` a la estética de rellenado (`fill`) del comando `ggplot()` que define el rango de colores de las barras. También hemos agregado a `geom_bar()` el parámetro `position` con el valor `dodge` para que las barras no se superpongan (lo cual es el estándar por defecto), sino que se coloquen una al lado de otra. 
 
@@ -190,20 +182,7 @@ En cuanto a Bulgaria, se necesitarían investigaciones más a fondo para descubr
 
 Mientras que estas primeras observaciones proporcionan un punto de partida para comprender los patrones de relaciones, es esencial profundizar en el contexto histórico, cultural y político de cada país para comprender las razones subyacentes a estas tendencias.
 
-## Otros geoms: histogramas, gráficos de dispersión y diagramas de caja
-
-So far, you have been introduced to the key syntax needed to operate ggplot2: creating layers and adding parameters. One of the most important layers is the `geoms` layer. Using it is quite straightforward, as every plot type has its associated geom:
-- `geom_histogram()` for [histograms](https://perma.cc/64E8-GDFB)
-- `geom_boxplot()` for [box plots](https://perma.cc/SE8K-5GPD)
-- `geom_violin()` for [violin plots](https://perma.cc/9PLE-352E)
-- `geom_dotplot()` for [dot plots](https://perma.cc/Y96C-HSYH)
-- `geom_point()` for [scatter plot](https://perma.cc/4WMT-JNNJ)
-
-[and so on](https://perma.cc/QA4T-2Q3A).
-
-You can easily configure various aspects of each of these `geom()` types, such as their size and color.
-
-To practice handling these geoms, let's create a histogram to visualize an important urban characteristic of sister cities: the distance between them. This spatial aspect can help understand how geographic proximity influences city partnerships. Run the following short chunk of code to filter the data and visualize it. Remember to load tidyverse or dplyr first, to ensure the filter doesn't throw an error.
+## Otros geoms: histogramas, gráficos de dispersión y gráficos de caja
 
 Hasta ahora hemos presentado los elementos clave de la sintaxis para operar con ggplot2: crear capas y agregar parámetros. Una de las capas más importantes es la capa `geoms`. Su uso es bastante directo, ya que cada tipo de gráfico tiene su `geom` asociado: 
 - `geom_histogram()` para gráficos de [histograma](https://perma.cc/64E8-GDFB)
@@ -223,7 +202,7 @@ ggplot(eudata.filtered, aes(x=dist)) +
   geom_histogram()
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-04.png" alt="Histogram showing distances (in natural log) between sister cities." caption="Figure 4. Histogram showing distances between sister cities." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-04.png" alt="Gráfico que muestra las distancias (en logaritmo natural) entre las ciudades hermanadas." caption="Figura 4. Gráfico que muestra las distancias (en logaritmo natural) entre las ciudades hermanadas." %}
 
 Como muestra el código de arriba, solo era necesario agregar `geom_histogram()` para crear un histograma. Sin embargo, crear un  histograma efectivo implica un poco más trabajo. Es importante, por ejemplo, determinar el tamaño de la [celda](https://perma.cc/4ABG-MV73) que da sentido a los datos. El tamaño de esa celda, también conocido como 'intervalo' o 'ancho de banda', se refiere al ancho de cada barra y determina cómo se agrupa y se muestran los datos a lo largo del eje x. En el gráfico representado en la figura 4, ggplot2 se apoyó en un valor  de 30 (`bins=30`) – pero se emite un mensaje de advertencia que recomienda elegir un valor mejor. Puedes explorar más posibilidades de configuración en la [documentación de `geom_histogram()`](https://perma.cc/G29K-53LK).
 
@@ -238,7 +217,7 @@ ggplot(eudata, aes(x=dist)) +
   stat_ecdf()
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-05.png" alt="ECDF Graph showing the distances between sister cities." caption="Figure 5. ECDF graph showing the distances between sister cities." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-05.png" alt="Gráfico ECDF que muestra distancias entre ciudades hermanadas." caption="Figura 5. Gráfico ECDF que muestra distancias entre ciudades hermanadas." %}
 
 Vamos a examinar este gráfico de FDA creado utilizando el dataframe `eudata` no filtrado: confirma observaciones previas sobre la distribución desigual. Cerca del 75% de las ciudades tienen relaciones dentro de un radio de alrededor de 1000 kilómetros. Incluso más intrigante es que aproximadamente el 50% de las ciudades están conectadas a otras ciudades que no distan más de 500 kilómetros de distancia. 
 
@@ -249,7 +228,7 @@ ggplot(eudata.filtered, aes(x = origincountry, y = dist)) +
   geom_boxplot()
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-06.png" alt="Boxplots showing distances (in km) between sister cities of different countries." caption="Figure 6. Box plots showing distances (in km) between sister cities, grouped by country." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-06.png" alt="Gráfico de cajas con distancias (en kms) entre ciudades hermanadas de diferentes países." caption="Figura 6. Gráfico de cajas con distancias (en kms) entre ciudades hermanadas agrupadas por países.." %}
 
 El gráfico 6 revela un patrón interesante de las ciudades alemanas, especialmente: muestra que tienden a establecer relaciones de hermanamiento con ciudades que están geográficamente más cerca, según indican los valores más bajos del promedio de distancia y menor dispersión de la caja en comparación con otros países. Esto podría reflejar la posición de Alemania como un país central y bien conectado dentro de la UE, con una ubicación geográfica fuerte y estrechas relaciones económicas con sus vecinos, que podrían fomentar la formación de alianzas regionales a una distancia más pequeña.
 
@@ -280,7 +259,7 @@ ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationp
   geom_point()
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-07.png" alt="Scatter plot displaying the relationship of population (in natural logarithm) in 15% of the sister cities that were randomly selected." caption="Figure 7. Scatter plot comparing the population size (in natual logarithm) of randomly selected sister-city pairs." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-07.png" alt="Gráfico de dispersión que muestra la relación entre la población (en logaritmo natural) en 15% de las ciudades hermanadas seleccionadas al azar." caption="Figura 7. Gráfico de dispersión que compara la población (en logaritmo natural) en ciudades hermanadas seleccionadas al azar." %}
 
 Ahora que hemos creado este gráfico básico, podemos empezar a jugar con su apariencia. ¿Por qué no empezar aplicando un tamaño fijo y un color a los puntos? El siguiente código cambia el color de los puntos a un borgoña, utilizando el código hexadecimal #4B0000:
 
@@ -289,7 +268,7 @@ ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationp
   geom_point(size = 0.8, color = "#4B0000")
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-08.png" alt="Changing the size and color of the points of a scatterplot." caption="Figure 8. Changing the size and color of the points in the scatter plot." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-08.png" alt="Cambinado el tamaño y el color de los puntos del gráfico de dispersión." caption="Figura 8. Cambinado el tamaño y el color de los puntos del gráfico de dispersión." %}
 
 Para descubrir otros argumentos disponibles, puedes visitar la documentación de la función `geom_point()` (https://perma.cc/4WMT-JNNJ), o simplemente escribe `?geom_point` en R.
 
@@ -301,7 +280,7 @@ ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationp
   labs(title = "Population size of origin and destination city", caption = "Data: [www.wikidata.org](http://www.wikidata.org)", x =     "Population of origin city (log)", y = "Population of destination city (log)")
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-09.png" alt="Scatterplot with added titles and caption using the labs() function." caption="Figure 9. Adding axis labels and a title." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-09.png" alt="Gráfico de dispersión con títulos y pie añadidos usando la función labs()." caption="Figure 9. Títulos y etiquetas de ejes añadidas." %}
 
 Una vez que estás satisfecho con tu gráfico, lo puedes grabar:
 
@@ -324,7 +303,7 @@ ggplot(data = eudata.sample, aes(x = log(originpopulation), y = log(destinationp
   labs(title = "Population size of origin and destination city", caption = "Data: [www.wikidata.org](http://www.wikidata.org)", x =     "Population of origin city (log)", y = "Population of destination city (log)")
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-10.png" alt="Scatterplot using colors to distinguish different types of sister city relationships based on the location of the destination city." caption="Figure 10. Using colors in scatter plots to visualize different country types." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-10.png" alt="Gráfico de dispersión que usa colores para distinguir diferentes tipos de relaciones de ciudades hermanadas basadas en la ubicación de la ciudad de destino." caption="Figura 10. Uso de colores en gráficos de dispersión para visualizar diferentes tipos de países." %}
 
 El código anterior tiene dos modificaciones importantes. En primer lugar, modificamos `geom_point()` agregando el argumento `aes(color = typecountry)`. En segundo lugar, ya que había demasiados puntos superpuestos, agregamos el parámetro `alpha` para que tengan una transparencia del 70%. De nuevo, ggplot2 ha seleccionado colores y leyendas de serie por defecto para el gráfico.
 
@@ -357,7 +336,7 @@ p1 +
   scale_colour_manual(values = c("red", "blue", "green"))
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-11.png" alt="Scatter plot that uses scale_colour_manual() to change the colors of the scatterplot points." caption="Figure 11. Using scale_colour_manual() to specify the colors of the scatter plot's points." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-11.png" alt="Gráfico de dispersión que usa scale_colour_manual() para cambiar los colores de los puntos." caption="Figura 11. Uso de scale_colour_manual() para especificar los colores de los puntos." %}
 
 Sin embargo, también se pueden basar simplemente en escalas de colores predefinidas, como las paletas [de color brewer](http://colorbrewer2.org). Es mejor utilizar estas cuando sea posible, porque elegir los colores adecuados para las visualizaciones es un problema muy complicado (por ejemplo, evitar colores que no son distinguibles para personas con visión deficiente). Afortunadamente, ggplot2 incluye la función `scale_colour_brewer()` ya [integrada](https://perma.cc/BST9-7GMG).
 
@@ -366,7 +345,7 @@ p1 +
   scale_colour_brewer(palette = "Dark2") # you can try others such as "Set1", "Accent", etc.
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-12.png" alt="Scatter plot that uses scale_colour_brewer() to change the colors of the scatterplot points." caption="Figure 12. Using scale_colour_brewer() to change the colors of the scatter plot's points." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-12.png" alt="Gráfico de dispersión que usa scale_colour_brewer() para cambiar el color de los puntos." caption="Figura 12. Uso de scale_colour_brewer() para cambiar el color de los puntos." %}
 
 En el gráfico de dispersión que se muestra anteriormente, aprendimos cómo representar una variable cualitativa (o categórica) (`typecountry`) mediante tres colores diferentes. En el siguiente gráfico de dispersión, intentaremos representar una variable continua (`distancia`) –por ejemplo, la distancia entre ciudades de origen y destino- mediante intensidades variables de color. Intentemos simplemente mapear este color a la variable de distancia `log(dist)`, que es la variable continua en este caso:
 
@@ -379,9 +358,9 @@ p2 <- ggplot(data = eudata.sample, aes(x = log(originpopulation),y = log(destina
 p2
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-13.png" alt="Scatter plot showing population size of origin and destination city colored by distance between cities." caption="Figure 13. Mapping the plot colors to the distance between cities." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-13.png" alt="Gráfica de dispersión que muestra el tamaño de población de la ciudad de origen y destino coloreada según la distancia entre las ciudades." caption="Figura 13. Mapeando los colores a la distancia entre las ciudades." %}
 
-Inmediatamente, se notará que este código no ha producido la visualización más intuitiva:
+Inmediatamente se nota que este código no ha producido la visualización más intuitiva:
 
 1. Por defecto, ggplot2 utiliza una gradiente de color azul para las variables continuas cuando no se especifica un color específico.
 
@@ -398,7 +377,7 @@ p2 +
   scale_colour_gradient(low = "white", high = "red3")
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-14.png" alt="Scatter plot showing population size of origin and destination city colored by distance between cities using scale_colour_gradient()" caption="Figure 14. Population size of origin and destination city colored by distance between cities using scale_colour_gradient()." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-14.png" alt="Gráfico de dispersión que muestra tamaño de población de ciudad de origen y destino, coloreado por distancia entre ciudades utilizando scale_colour_gradient()" caption="Figura 14. Tamaño de población de ciudad de origen y ciudad de destino coloreado según la distancia entre ambas usando scale_colour_gradient()." %}
 
 ¿Qué podemos derivar de este gráfico? En cierto modo, parece que las ciudades más pequeñas tienden a establecer relaciones con ciudades que son más cercanas. En las secciones anteriores, examinaste la distribución de las distancias entre las ciudades hermanadas utilizando un gráfico de histograma y un gráfico de ECDF. Estas visualizaciones revelaron que las relaciones entre ciudades se caracterizan principalmente por cortas distancias, principalmente dentro de un radio de 500 a 1000 kilómetros. Comparando los hallazgos en diferentes visualizaciones puede mejorar nuestra comprensión de los patrones observados y resaltar la importancia de considerar ciertos factores clave.
 
@@ -414,7 +393,7 @@ p2 <- p2 +
 p2
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-15.png" alt="Scatter plot showing population size of origin and destination city colored by distance between cities using scale_colour_gradient() and guide_colorbar()." caption="Figure 15. Modifying the title and adding a color bar." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-15.png" alt="Gráfica de dispersión que muestra el tamaño de población de la ciudad de origen y destino coloreada por la distancia entre ciudades utilizando scale_colour_gradient() y guide_colorbar()." caption="Figura 15. Modificando el título y añadiendo una barra de color." %}
 
 ### Facetando un Gráfico
 
@@ -430,7 +409,7 @@ ggplot(`eudata.perc.country`, aes(x = typecountry, y = perc)) +
 
 El operador de virgulilla (`~`) se utiliza comúnmente en fórmulas de R. En este caso, indica qué variable debe utilizar ggplot2 para definir la estructura de los paneles. En otras palabras, la fórmula `~origincountry` le dice a ggplot2 que divida los datos según el valor de la variable `origincountry`, y luego cree un gráfico separado para representar cada valor (en este caso, cada país). El gráfico resultante mostrará los gráficos de barras separados en paneles:
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-16.png" alt="Faceted bar graphs using facet_wrap() where the bar graph for each country is displayed in a grid pattern." caption="Figure 16. Facetting a graph with facet_wrap()." %} 
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-16.png" alt="Gráficos de barra en paneles usando facet_wrap() donde cada gráfico representa a un país y se muestra en un panel." caption="Figura 16. Faceteando el gráfico con facet_wrap()." %} 
 
 ### Temas: modificando elementos estáticos
 
@@ -447,7 +426,7 @@ p3 +
   theme_bw()
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-17.png" alt="Faceted bar graph with changed static elements using the theme_bw() function." caption="Figure 17. Changing static elements using theme_bw()." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-17.png" alt="Gráfico de barras en panel con elementos estáticos modificados usando la funcióntheme_bw()." caption="Figura 17. Cambiando elementos estáticos por medio de theme_bw()." %}
 
 También puedes instalar varios paquetes que proporcionan temas adicionales, como [ggthemes](https://github.com/jrnold/ggthemes) o [ggtech](https://github.com/ricardo-bion/ggtech). En estos, encontrarás, por ejemplo, `theme_excel` (replicando los clásicos gráficos de Excel) y `theme_wsj` (basado en los gráficos de [_The Wall Street Journal_](https://perma.cc/ZDD6-SP95)). El beneficio de utilizar temas de ggplot2 para replicar estos estilos reconocibles no solo es la simplicidad, sino también el hecho de que ggplot2 toma automáticamente en cuenta el lenguaje de las gráficas cuando mapea tus datos a elementos del gráfico.
 
@@ -462,7 +441,7 @@ p3 +
   theme_wsj()
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-18.png" alt="Bar graph with changed static elements using the theme_wsj() function from the ggthemes package." caption="Figure 18. Changing static elements using The Wall Street Journal theme." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-18.png" alt="Gráfico de barras con elementos modificados usando theme_wsj() del paquete ggthemes." caption="Figura 18. Cambiando elementos estáticos usando el tema de The Wall Street Journal." %}
 
 ### Extendiendo ggplot2 con otros paquetes
 
@@ -470,7 +449,7 @@ Una de las fortalezas de ggplot2 es su amplia colección de [extensiones](http:/
 
 Vamos a explorar un ejemplo que muestra un paquete de extensión de ggplot2 que crea gráficos más avanzados e impresionantes. En este caso, vamos a crear un [gráfico de ridgeline](https://perma.cc/D9Z2-XHAV) – también conocido como 'joyplot' – diseñado para visualizar los cambios en las distribuciones sobre el tiempo, a lo largo de diferentes categorías. Los gráficos de ridgeline son particularmente efectivos para comparar múltiples distribuciones de manera compacta y atractiva.
 
-Para crear un gráfico de ridgeline, necesitarás el paquete `ggridges` (uno de muchos paquetes de extensiones de ggplot2). Esto añade una capa llamada `geom_density_ridges()` y un tema llamado `theme_ridges()`, que amplía las posibilidades de plotear en R.
+Para crear un gráfico de ridgeline, necesitarás el paquete `ggridges` (uno de muchos paquetes de extensiones de ggplot2). Esto añade una capa llamada `geom_density_ridges()` y un tema llamado `theme_ridges()`, que amplía las posibilidades de crear gráficos en R.
 
 Esta codificación es lo suficientemente simple (de nuevo, utilizando una transformación logarítmica debido a la asimetría en la distribución de los datos):
 
@@ -485,13 +464,11 @@ ggplot(eudata, aes(x=log(originpopulation), y = origincountry)) +
     "Population (log)", y = "Country")
 ```
 
-{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-19.png" alt="Ridge plot showing the population (log) of different countries origins." caption="Figure 19. Extending ggplot2 with the ggridges package." %}
+{% include figure.html filename="en-or-urban-demographic-data-r-ggplot2-19.png" alt="Gráfico ridge que muestra la población (log) de diferentes países de origen." caption="Figure 19. Extendiendo ggplot2 con el paquete ggridges." %}
 
 Esta visualización de las distribuciones de la población muestra cómo varían los patrones demográficos urbanos según el país. Por ejemplo, Polonia, Portugal y Bulgaria presentan perfiles demográficos distintos, pues sus ciudades tienden a tener tamaños de población más grandes, como se indica en los picos de los respectivos gráficos de densidad.
 
 ## Conclusión
-
-However, this is just the tip of the iceberg of ggplot2's possibilities. With an extensive ecosystem of extensions and packages, ggplot2 offers endless opportunities for customization and adaptation to specific data visualization needs. Whether you're working with time series data, network graphs, or geospatial information, there's likely a ggplot2 extension that can help you create compelling and informative visualizations. As you continue to explore and work with ggplot2, remember that effective data visualization is an iterative process that requires experimentation, refinement, and a keen understanding of your audience and communication goals. By mastering the principles and techniques this tutorial covers, you will be well-equipped to create impactful visualizations that illuminate the stories hidden within your data.
 
 A través del análisis de las relaciones de hermanamiento de las ciudades de la Unión Europea utilizando ggplot2 y sus extensiones, hemos demostrado cómo diferentes técnicas de visualización pueden revelar patrones en las redes urbanas y características demográficas. El conjunto de datos nos permitió descubrir varias claves que merecen mayor investigación: las ciudades tienden a crear relaciones dentro de una distancia de 500 a 1000 km; los países con los que se asocian varían significativamente con una preferencia por alianzas nacionales frente a internacionales: y el tamaño de la población juega un papel en la formación de estas relaciones.
 
