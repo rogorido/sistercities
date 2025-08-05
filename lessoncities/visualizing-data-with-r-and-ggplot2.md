@@ -1,5 +1,5 @@
 ---
-title: "Visualizing Urban and Demographic Data in R with ggplot2"
+title: "Visualizando datos urbanos y demográficos en R con ggplot2"
 slug: urban-demographic-data-r-ggplot2
 layout: lesson
 collection: lessons
@@ -12,18 +12,20 @@ reviewers:
 - Amanda Regan
 editors:
 - Giulia Osti
+translators:
+- Igor Sosa Mayor
 review-ticket: https://github.com/programminghistorian/ph-submissions/issues/606
 difficulty: 2
 activity: presenting
 topics: [r, data-visualization]
-abstract: This lesson demonstrates how to use R's ggplot2 package to create sophisticated data visualizations through a 'grammar of graphics' framework. Using historical data about European sister-city relationships in the post-second world war period, including partnerships, population sizes, and geographic distances, the lesson guides readers through the process of creating various plots while exploring urban and demographic patterns.
+abstract: Esta lección demuestra cómo utilizar la biblioteca R ggplot2 para crear visualizaciones sofisticadas de datos mediante una gramática de gráficos. Utilizando datos históricos sobre relaciones de hermanamiento entre ciudades en Europa en el período posterior a la Segunda Guerra mundial, incluyendo acuerdos, tamaños de población y distancias geográficas, la lección guía a los lectores a través del proceso de creación de diferentes gráficos mientras explora patrones urbanos y demográficos.
 avatar_alt: Crop of hand-drawn nautical chart showing two cities in Spain
 doi: 10.46430/phen0123
 ---
 
 {% include toc.html %}
 
-## Introduction
+## Introducción
 
 Después de la Segunda Guerra Mundial, las ciudades europeas se enfrentaron a una tarea monumental: reconstruir no sólo su infraestructura física, sino también sus relaciones internacionales. Un foco fascinante a través del cual examinar la reconstrucción posbélica es las [ciudades hermanadas](https://perma.cc/H2ER-XTRS). Estas alianzas formales se desarrollaron entre las ciudades en el período de posguerra para fomentar la cooperación y el entendimiento transfronterizos.
 
@@ -33,7 +35,7 @@ El paquete de R [ggplot2](http://ggplot2.tidyverse.org) proporciona herramientas
 
 Este curso se diferencia de las guías estándar de ggplot2 al enfocarse específicamente en las necesidades de los historiadores urbanos. En lugar de utilizar conjuntos de datos generales, trabajaríamos con datos históricos sobre relaciones entre ciudades hermanadas para demostrar cómo los técnicas visuales pueden iluminar patrones y procesos históricos. A través de este enfoque, aprenderás a crear visualizaciones que revelen alianzas complejas y hacer encuentros históricos más accesibles a un público más amplio.
 
-## Objetivos del Lecció
+## Objetivos de la lección
 
 Al final de esta lección, deberás ser capaz de hacer las siguientes cosas con el paquete ggplot2:
 
@@ -497,30 +499,30 @@ Sin embargo, esto es solo la punta del iceberg de las posibilidades de ggplot2. 
 
 ## Recursos adicionales
 
-To gain a more thorough understanding of ggplot2, we recommend you explore some of the following sources:
+Para obtener una comprensión más profunda de ggplot2, se recomienda explorar las siguientes fuentes:
 
-* The [official ggplot2 site](https://ggplot2.tidyverse.org/).
+* El [sitio oficial de ggplot2](https://ggplot2.tidyverse.org/).
 
-* Hadley Wickham's books [`ggplot2`: _Elegant Graphics for Data Analysis_](https://ggplot2-book.org/) and [_R for Data Science_](http://r4ds.hadley.nz/).
+* Los libros de Hadley Wickham [`ggplot2`: _Gráficos elegantes para el análisis de datos_](https://ggplot2-book.org/) y [_R para el análisis de datos_](http://r4ds.hadley.nz/).
 
-* Hadley Wickham's [original paper](https://doi.org/10.1198/jcgs.2009.07098) on the grammar of graphics.
+* El [paper original de Hadley Wickham](https://doi.org/10.1198/jcgs.2009.07098) sobre la gramática de gráficos.
 
-* Leland Wilkson's original book [_The Grammar of Graphics_](https://doi.org/10.1007/0-387-28695-0).
+* El libro original de Leland Wilkson [_La gramática de gráficos_](https://doi.org/10.1007/0-387-28695-0).
 
-* Selva Prabhakaran's [tutorial on r-statistics.co](https://perma.cc/6Q2Q-L7UD).
+* La tutoría de [Selva Prabhakaran en r-statistics.co](https://perma.cc/6Q2Q-L7UD).
 
-* Data Science Dojo's video [Introduction to Data Visualization with ggplot2](https://www.youtube.com/watch?v=NXjPcXx42Yc).
+* El video de Data Science Dojo [Introducción a la visualización de datos con ggplot2](https://www.youtube.com/watch?v=NXjPcXx42Yc).
 
-* UC Business Analytics' [R Programming Guide](https://perma.cc/KZT6-GW9C).
+* El [guión de programación R de UC Business Analytics](https://perma.cc/KZT6-GW9C).
 
-* The official ggplot2 [extensions page](https://www.ggplot2-exts.org/) and [accompanying gallery](http://www.ggplot2-exts.org/gallery/).
+* La página oficial de [extensiones de ggplot2](https://www.ggplot2-exts.org/) y [su galería](http://www.ggplot2-exts.org/gallery/).
 
-* R Project’s [overview about extending ggplot2](https://perma.cc/465N-F9WU).
+* La [descripción general de R sobre extender ggplot2](https://perma.cc/465N-F9WU).
 
-* The [general documentation](https://ggplot2.tidyverse.org/reference/).
+* La [documentación general de ggplot2](https://ggplot2.tidyverse.org/reference/).
 
-* The [Cookbook for R](http://www.cookbook-r.com/Graphs/) book (based on  Winston Chang's [_R Graphics Cookbook. Practical Recipes for Visualizing Data_](http://shop.oreilly.com/product/0636920023135.do)).
+* El [libro "Cookbook for R"](http://www.cookbook-r.com/Graphs/) (basado en la obra de Winston Chang [_R Graphics Cookbook. Practical Recipes for Visualizing Data_](http://shop.oreilly.com/product/0636920023135.do)).
 
-* This official [R cheatsheet](https://www.rstudio.com/resources/cheatsheets/).
+* La [chuleta oficial de R](https://www.rstudio.com/resources/cheatsheets/).
 
-* The gradient scale [documentation page](https://perma.cc/8BWE-MVLV).
+* La página de [escalas de graduado](https://perma.cc/8BWE-MVLV).
